@@ -48,7 +48,8 @@ swap：交换分区， 32G </br>
 EFI：启动程序：1G </br> 
 /home: 逻辑分区，剩下的707G </br> 
 
-2. 下载**对应Ubtuntu系统**版本(20.04)[AutoLabor代码(ROS1-noetic)](http://www.autolabor.com.cn/download)
+2. 下载**对应Ubtuntu系统**版本(20.04)[AutoLabor代码(ROS1-noetic)](http://www.autolabor.com.cn/download)</br>
+由于autolabor所支持的设备太过于老旧以及多器械的驱动未曾更新并存在被删库的风险，步骤2方法会出现诸多不便的操作，包括并不限于手搓驱动，以及自己实时调参。
 3. (非必选)国内大神“鱼香ROS”一键配置Ubuntu操作系统各种配置
 - 可通过terminal直接安装[主页｜鱼香ROS](https://fishros.org.cn/forum/topic/20/%E5%B0%8F%E9%B1%BC%E7%9A%84%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85%E7%B3%BB%E5%88%97)
 - 安装说明：[FishROS 安装 GitHub 仓库](https://github.com/fishros/install)
