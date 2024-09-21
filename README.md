@@ -63,15 +63,14 @@ EFI：启动程序：1G </br>
 ## Autoware部署AWSIM联合仿真
 **参考文档**:[AWSIM官方安装文档](https://github.com/tier4/AWSIM/blob/v1.0.1/docs/GettingStarted/QuickStartDemo/index.md)
 
-
-'''bash
+1. 进入
+```bash
 export ROS_LOCALHOST_ONLY=1
 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 
 if [ ! -e /tmp/cycloneDDS_configured ]; then
-	sudo sysctl -w net.core.rmem_max=2147483647
-	sudo ip link set lo multicast on
-	touch /tmp/cycloneDDS_configured
+    sudo sysctl -w net.core.rmem_max=2147483647
+    sudo ip link set lo multicast on
+    touch /tmp/cycloneDDS_configured
 fi
-'''
 
