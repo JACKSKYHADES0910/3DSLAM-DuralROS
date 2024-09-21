@@ -61,7 +61,7 @@ EFI：启动程序：1G </br>
     ```
 
 ## Autoware部署AWSIM联合仿真
-**参考文档**:[AWSIM官方安装文档](https://github.com/tier4/AWSIM/blob/v1.0.1/docs/GettingStarted/QuickStartDemo/index.md)
+**参考文档**: [AWSIM官方安装文档](https://github.com/tier4/AWSIM/blob/v1.0.1/docs/GettingStarted/QuickStartDemo/index.md)
 
 1. 进入 `.bashrc` 
     ```bash
@@ -84,7 +84,8 @@ EFI：启动程序：1G </br>
    ```bash
    sudo apt install libvulkan1
    ````
-4. 下载 `AWSIM_vXXX.zip` 并解压
-   [AWSIM Demo for ubuntu](https://github.com/tier4/AWSIM/releases/download/v1.0.1/AWSIM_v1.0.1.zip)
+4. 下载 `AWSIM_vXXX.zip` 并解压</br>
+   `AWSIM_v1.0.1.zip`: [AWSIM Demo for ubuntu](https://github.com/tier4/AWSIM/releases/download/v1.0.1/AWSIM_v1.0.1.zip) 
+   
 
 
