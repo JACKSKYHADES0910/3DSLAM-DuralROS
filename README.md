@@ -80,8 +80,8 @@ EFI：启动程序：1G </br>
 3. 安装所需依赖
    ```bash
    sudo apt update
-   
-   ```bash
-   sudo apt install libvulkan1
+
+  ```bash
+  sudo apt install libvulkan1
 
 
