@@ -80,8 +80,11 @@ EFI：启动程序：1G </br>
 3. 安装所需依赖
    ```bash
    sudo apt update
-
-  ```bash
-  sudo apt install libvulkan1
+   ```
+   ```bash
+   sudo apt install libvulkan1
+   ````
+4. 下载 `AWSIM_vXXX.zip` 并解压
+   [AWSIM Demo for ubuntu](https://github.com/tier4/AWSIM/releases/download/v1.0.1/AWSIM_v1.0.1.zip)
 
 
