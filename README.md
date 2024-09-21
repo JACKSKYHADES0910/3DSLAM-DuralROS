@@ -77,4 +77,11 @@ EFI：启动程序：1G </br>
         sudo ip link set lo multicast on
         touch /tmp/cycloneDDS_configured
     fi
+3. 安装所需依赖
+   ```bash
+   sudo apt update
+   
+   ```bash
+   sudo apt install libvulkan1
+
 
