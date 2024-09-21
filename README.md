@@ -85,7 +85,25 @@ EFI：启动程序：1G </br>
    sudo apt install libvulkan1
    ````
 4. 下载 `AWSIM_vXXX.zip` 并解压</br>
-   `AWSIM_v1.0.1.zip`: [AWSIM Demo for ubuntu](https://github.com/tier4/AWSIM/releases/download/v1.0.1/AWSIM_v1.0.1.zip) 
+   `AWSIM_v1.0.1.zip`: [AWSIM Demo for ubuntu](https://github.com/tier4/AWSIM/releases/download/v1.0.1/AWSIM_v1.0.1.zip)</br>
+   修改文件权限</br>
+   ![修改图片权限](https://github.com/tier4/AWSIM/raw/v1.0.1/docs/GettingStarted/QuickStartDemo/Image_1.png)</br>
+   在`Download`路径打开`terminal`
+   ```bash
+   sudo apt install unzip
+   sudo unzip AWSIM_v1.0.1
+   ```
+5. 打开AWSIM仿真器
+   ```bash
+   ./<path to AWSIM folder>/AWSIM.x86_64
+   ```
+   查看`topic`订阅情况
+   ```
+   ros2 topic list
+   ```
+6. 下载AWSIM在autoware上面运行的地图</br>
+     [AWSIM_autoware_map](https://github.com/tier4/AWSIM/releases/download/v1.0.0/nishishinjuku_autoware_map.zip)</br>
+     同上步骤解压，放在与`AWSIM.x86_64`启动项同级目录位置
    
 
 
