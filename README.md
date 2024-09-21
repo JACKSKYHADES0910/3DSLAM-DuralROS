@@ -61,6 +61,7 @@ EFI：启动程序：1G </br>
     ```
 
 ## Autoware部署AWSIM联合仿真
+**参考文档**:[AWSIM官方安装文档](https://github.com/tier4/AWSIM/blob/v1.0.1/docs/GettingStarted/QuickStartDemo/index.md)
 
 
 
