@@ -63,7 +63,7 @@ EFI：启动程序：1G </br>
 ## Autoware部署AWSIM联合仿真
 **参考文档**:[AWSIM官方安装文档](https://github.com/tier4/AWSIM/blob/v1.0.1/docs/GettingStarted/QuickStartDemo/index.md)
 
-1. 进入
+1. 进入 `.bashrc` 文件中添加**AWSIM**所需要的环境变量
 ```bash
 export ROS_LOCALHOST_ONLY=1
 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
