@@ -104,6 +104,19 @@ EFI：启动程序：1G </br>
 6. 下载AWSIM在autoware上面运行的地图</br>
      [AWSIM_autoware_map](https://github.com/tier4/AWSIM/releases/download/v1.0.0/nishishinjuku_autoware_map.zip)</br>
      同上步骤解压，放在与`AWSIM.x86_64`启动项同级目录位置
-   
+
+   -启动AWISM仿真器
+   ```bash
+   ./<path to AWSIM folder>/AWSIM.x86_64
+   ```
+
+   -启动autoware.universe(`map`地址要指向AWSIM地图路径)
+   ```bash
+   # 新开一个终端
+   cd autoware_universe
+   source install/setup.bash
+   ros2 launch autoware_launch e2e_simulator.launch.xml vehicle_model:=sample_vehicle sensor_model:=awsim_sensor_kit map_path:=<your mapfile location>
+   ```
+   ![Autoware.universe与AWISM联合仿真](https://github.com/tier4/AWSIM/raw/v1.0.1/docs/GettingStarted/QuickStartDemo/Image_Initial.png)</br>
 
 
