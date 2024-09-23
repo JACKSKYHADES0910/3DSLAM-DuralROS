@@ -1,3 +1,12 @@
+# 目录
+- [3DSLAM-DuralROS](#3dslam-duralros)
+  - [概述](#概述)
+  - [硬件参数](#硬件参数)
+  - [记录](#记录)
+  - [Autoware部署AWSIM联合仿真](#autoware部署awsim联合仿真)
+
+
+
 # 3DSLAM-DuralROS
 3DSLAM-DuralROS 是一款针对机器人操作系统（ROS1 和 ROS2）进行优化的先进SLAM（同步定位与地图构建）解决方案。该系统以AutoLabor M1机器人底盘为基础，设计出适用于室内室外的高度可靠的**导航**和**避障**技术。3DSLAM-DuralROS 不仅能够进行高效的**地图建构**和**定位**，还能在复杂多变的环境中实现精确导航和**实时避障**，满足现代自动化需求。
 
