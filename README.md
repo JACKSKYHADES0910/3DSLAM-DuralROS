@@ -80,7 +80,8 @@
 
 ## 建图
 1. Lego-loam</br>
-  一种轻量级和地面优化的激光雷达里程计和**建图**方法，用于实时估计地面车辆的六自由度姿态
+  - 一种轻量级和地面优化的激光雷达里程计和**建图**方法，用于实时估计地面车辆的六自由度姿态
+  - 参考文档：Github安装 [LeGO-LOAM](https://github.com/RobustFieldAutonomyLab/LeGO-LOAM)
 
 
 ## Autoware部署AWSIM联合仿真
