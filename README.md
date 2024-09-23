@@ -68,6 +68,14 @@ EFI：启动程序：1G </br>
     ```bash
     wget http://fishros.com/install -O fishros && . fishros
     ```
+4. 安装autoware.ai 和 autoware.universe
+5. 安装autolabor以及调参cmd_vel
+   - 准备另一台电脑，下载autolabor官方网站制作的`.iso`文件安装系统，拷贝`catkin_ws`文件并备份到U盘中
+   - 下载连接： [AutolaborOS-24.04-amd64.iso (Ubuntu18.04 ROS Melodic)](http://www.autolabor.com.cn/download?hmsr=gwstastics&hmpl=os&hmcu=24.04)</br>
+   - 将`catkin_ws`拷贝至所运行的主机中，此文件运行在`ROS1-neotic`环境下运行 
+   
+7. 
+
 
 ## Autoware部署AWSIM联合仿真
 **参考文档**: [AWSIM官方安装文档](https://github.com/tier4/AWSIM/blob/v1.0.1/docs/GettingStarted/QuickStartDemo/index.md)
