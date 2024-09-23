@@ -48,7 +48,7 @@
 5. 上位机: [惠普暗影精灵](https://www.omen.com/cn/zh/laptops.html "HP-OMEN官网")
 
 ## 准备工作
-    **准备工作部分是根据本人实操所记录的流程，观看者可根据所需内容选取，非必要部分可以跳过！**
+  **准备工作部分是根据本人实操所记录的流程，观看者可根据所需内容选取，非必要部分可以跳过！**
 1. 安装系统 Ubuntu 20.04 + 系统分区</br>
    参考链接:[Windows10+Ubuntu20.04双系统 惠普暗影精灵OMEN](https://blog.csdn.net/Robert_Q/article/details/115842915)
       >根目录：</br> 
@@ -69,12 +69,15 @@
     ```bash
     wget http://fishros.com/install -O fishros && . fishros
     ```
-4. 安装autoware.ai 和 autoware.universe
-5. 安装autolabor以及调参cmd_vel
+4. 安装autoware.ai 和 autoware.universe</br>
+   参考文档：
+   - autoware.ai可以从gitub直接拉包： [autoware.ai](https://github.com/autowarefoundation/autoware_ai)
+   - autoware.universe比较复杂，需要配置nvidia/tensort/cudnn等配置，可以参看CSDN大佬编写文档： [autoware.universe](https://blog.csdn.net/zardforever123/article/details/132528899)
+6. 安装autolabor以及调参cmd_vel
    - 准备另一台电脑，下载autolabor官方网站制作的`.iso`文件安装系统，拷贝`catkin_ws`文件并备份到U盘中
    - 下载连接： [AutolaborOS-24.04-amd64.iso (Ubuntu18.04 ROS Melodic)](http://www.autolabor.com.cn/download?hmsr=gwstastics&hmpl=os&hmcu=24.04)</br>
    - 将`catkin_ws`拷贝至所运行的主机中，此文件运行在`ROS1-neotic`环境下运行 
-6. 
+7. 
 
 
 ## Autoware部署AWSIM联合仿真
