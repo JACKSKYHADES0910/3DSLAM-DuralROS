@@ -64,20 +64,23 @@
    - 可通过terminal直接安装[主页｜鱼香ROS](https://fishros.org.cn/forum/topic/20/%E5%B0%8F%E9%B1%BC%E7%9A%84%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85%E7%B3%BB%E5%88%97)
    - 安装说明：[FishROS 安装 GitHub 仓库](https://github.com/fishros/install)
 
-- 一键安装指令
-
-    ```bash
-    wget http://fishros.com/install -O fishros && . fishros
-    ```
+    - 一键安装指令
+    
+        ```bash
+        wget http://fishros.com/install -O fishros && . fishros
+        ```
 4. 安装autoware.ai 和 autoware.universe</br>
    参考文档：
    - autoware.ai可以从gitub直接拉包： [autoware.ai](https://github.com/autowarefoundation/autoware_ai)
    - autoware.universe比较复杂，需要配置nvidia/tensort/cudnn等配置，可以参看CSDN大佬编写文档： [autoware.universe](https://blog.csdn.net/zardforever123/article/details/132528899)
-6. 安装autolabor以及调参cmd_vel
+5. 安装autolabor以及调参cmd_vel
    - 准备另一台电脑，下载autolabor官方网站制作的`.iso`文件安装系统，拷贝`catkin_ws`文件并备份到U盘中
    - 下载连接： [AutolaborOS-24.04-amd64.iso (Ubuntu18.04 ROS Melodic)](http://www.autolabor.com.cn/download?hmsr=gwstastics&hmpl=os&hmcu=24.04)</br>
    - 将`catkin_ws`拷贝至所运行的主机中，此文件运行在`ROS1-neotic`环境下运行 
-7. 
+
+## 建图
+1. Lego-loam</br>
+  一种轻量级和地面优化的激光雷达里程计和**建图**方法，用于实时估计地面车辆的六自由度姿态
 
 
 ## Autoware部署AWSIM联合仿真
