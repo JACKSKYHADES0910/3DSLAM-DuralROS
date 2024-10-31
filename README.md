@@ -161,16 +161,25 @@
 ---
 - Lego-LOAM
 
-Lego-LOAM（Lightweight and Ground-Optimized LiDAR Odometry and Mapping）是一种轻量级且对地面优化的激光雷达建图方式。它的核心在于利用六自由度（6DoF）的姿态估计来实时生成车辆周围的点云地图。Lego-LOAM 使用的是**左手坐标系**，不太适合 Autoware 这样的应用环境，但对于非 Autoware 的应用仍然是一个高效的选择。
+Lego-LOAM（Lightweight and Ground-Optimized LiDAR Odometry and Mapping）是一种轻量级的激光雷达建图方式，专为地面车辆设计，能够实时生成车辆周围的高精度点云地图。它的核心是通过**六自由度（6DoF）姿态估计**进行实时定位和建图，利用激光雷达测距数据在静态或平坦环境中进行建图，适合小规模场景的高效建图和里程计应用。Lego-LOAM 使用**左手坐标系**，因此不适合右手坐标系需求的 Autoware 环境，但在其他系统中有广泛的应用价值。
 
-- **应用场景**：适合静态或平坦的环境，在地面导航、工业仓储等场景中表现良好。
+- **核心算法**：
+  - **LOAM（LiDAR Odometry and Mapping）**：Lego-LOAM 基于 LOAM 框架，将激光雷达的里程计与建图功能分离，确保里程计实时运行并以一定频率构建地图。其分割过程包括特征提取、点云配准和地图更新。
+  - **特征点提取**：通过计算激光雷达点云的曲率，Lego-LOAM 提取出角点和平面点，减少计算量的同时提高定位精度。
+  - **ICP（Iterative Closest Point）**：Lego-LOAM 采用 ICP 算法将连续扫描的数据进行匹配，实现高效、精确的点云配准。
+
+- **应用场景**：适合静态或平坦的环境，如地面导航、工业仓储和无人车项目等。其地面优化的设计特别适合平坦地形环境中高效的建图和定位。
 
 - **安装与配置**：
-  - Lego-LOAM 的安装代码：
+  - Lego-LOAM 需要在 ROS1 Noetic 版本下运行，并依赖 Eigen 和 PCL 等库。请确认安装 ROS Noetic 版本，并确保安装了 Eigen、PCL 和其他必要的依赖项。
+  - Lego-LOAM 的安装步骤如下：
     ```bash
     # 克隆仓库
     git clone https://github.com/RobustFieldAutonomyLab/LeGO-LOAM.git
     cd LeGO-LOAM
+
+    # 设置工作空间并安装必要的依赖项
+    rosdep install --from-paths src --ignore-src -r -y
 
     # 编译项目
     mkdir build && cd build
@@ -178,6 +187,7 @@ Lego-LOAM（Lightweight and Ground-Optimized LiDAR Odometry and Mapping）是一
     make
     ```
   - 参考文档：[LeGO-LOAM GitHub 仓库](https://github.com/RobustFieldAutonomyLab/LeGO-LOAM)
+
 
 ---
 
