@@ -142,14 +142,92 @@
 
 # 2. 实车部署
 ## 2.1 实车建图
-在建图过程当中，我们选择了`Lego-loam`和`ndt_map`两种建图方式，其中`Lego-loam`是左手坐标系建图，`ndt_map`是右手坐标系建图，**autoware.universe需要右手坐标系建图**，所以我们选择`ndt_map`来进行建图
-1. Lego-loam</br>
-    - 一种轻量级和地面优化的激光雷达里程计和**建图**方法，用于实时估计地面车辆的六自由度姿态
-    - 参考文档：Github安装 [LeGO-LOAM](https://github.com/RobustFieldAutonomyLab/LeGO-LOAM)
-2. ndt_map</br>
-    - autoware.universe选择`ndt_map`
-    - NDT_MAP 是受到Autoware的启发，结合了ndt_mapping和lego_loam的回环检测技术，能够创建出精细且动态更新的环境模型
-    -  参考文档：Github安装 [ndt_map](https://github.com/jyakaranda/ndt_map)
+
+在建图过程中，我们选择了 `Lego-LOAM`、`ndt_map` 和 `Cartographer` 三种建图方式。每种方式都有其特点和适用场景，以下对各方法进行了详细说明：
+
+---
+
+### 1. Lego-LOAM
+
+Lego-LOAM（Lightweight and Ground-Optimized LiDAR Odometry and Mapping）是一种轻量级且对地面优化的激光雷达建图方式。它的核心在于利用六自由度（6DoF）的姿态估计来实时生成车辆周围的点云地图。Lego-LOAM 使用的是**左手坐标系**，不太适合 Autoware 这样的应用环境，但对于非 Autoware 的应用仍然是一个高效的选择。
+
+- **应用场景**：适合静态或平坦的环境，在地面导航、工业仓储等场景中表现良好。
+
+- **安装与配置**：
+  - Lego-LOAM 的安装代码：
+    ```bash
+    # 克隆仓库
+    git clone https://github.com/RobustFieldAutonomyLab/LeGO-LOAM.git
+    cd LeGO-LOAM
+
+    # 编译项目
+    mkdir build && cd build
+    cmake ..
+    make
+    ```
+  - 参考文档：[LeGO-LOAM GitHub 仓库](https://github.com/RobustFieldAutonomyLab/LeGO-LOAM)
+
+---
+
+### 2. NDT_MAP
+
+NDT_MAP 是一种基于正态分布变换（NDT, Normal Distributions Transform）的建图方式，尤其适合在动态变化的复杂环境中使用。它结合了 `ndt_mapping` 和 `Lego-LOAM` 的回环检测技术，生成细致且动态更新的环境模型。NDT_MAP 使用**右手坐标系**，适配 Autoware 等应用环境，在复杂、动态的场景中表现出色。
+
+- **应用场景**：适合复杂、动态环境中的机器人导航应用，如城市交通、自动驾驶等。
+
+- **安装与配置**：
+  - NDT_MAP 的安装代码：
+    ```bash
+    # 克隆仓库
+    git clone https://github.com/jyakaranda/ndt_map.git
+    cd ndt_map
+
+    # 编译项目
+    mkdir build && cd build
+    cmake ..
+    make
+    ```
+  - 参考文档：[ndt_map GitHub 仓库](https://github.com/jyakaranda/ndt_map)
+
+---
+
+### 3. Cartographer
+
+Cartographer 是由 Google 开发的一个实时建图和定位框架，广泛应用于 2D 和 3D 的 SLAM 任务中。它能够通过激光雷达和 IMU 数据实现高效建图和定位，支持**右手坐标系**，因此可以与 Autoware 等平台很好地集成。
+
+- **应用场景**：适合室内外环境的实时定位与建图应用，如物流、自动驾驶、巡检机器人等。
+
+- **安装与配置**：
+  - Cartographer 的安装代码：
+    ```bash
+    # 安装依赖
+    sudo apt-get update
+    sudo apt-get install -y python3-wstool python3-rosdep ninja-build
+
+    # 克隆仓库
+    mkdir -p ~/cartographer_ws/src
+    cd ~/cartographer_ws
+    wstool init src
+    wstool merge -t src https://raw.githubusercontent.com/cartographer-project/cartographer_ros/master/cartographer_ros.rosinstall
+    wstool update -t src
+
+    # 安装 ROS 依赖
+    rosdep update
+    rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} -y
+
+    # 编译
+    catkin_make_isolated --install --use-ninja
+    ```
+  - 参考文档：[Cartographer GitHub 仓库](https://github.com/cartographer-project/cartographer)
+
+---
+
+### 建图方式选择建议
+
+- **如果需要实时性和较高精度的建图**：推荐使用 Cartographer，其速度和精度在实际应用中表现良好。
+- **如果环境较为平坦，且对实时性要求高**：可以选择 Lego-LOAM，特别适合地面应用。
+- **如果环境复杂、动态变化较大**：建议使用 NDT_MAP，其回环检测和更新能力适合复杂环境。
+
 ## 2.2 实车定位
 ## 2.3 实车导航
 
