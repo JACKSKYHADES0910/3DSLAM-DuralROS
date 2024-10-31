@@ -265,12 +265,28 @@ Cartographer 是 Google 开发的一款实时建图与定位框架，支持**2D*
 
 定位部分采用**手动标定与自动匹配相结合**的策略，以确保初始定位精确并实现后续的自动定位。主要定位算法基于 Cartographer，通过其独特的扫描匹配和图优化机制来实现高精度定位。具体流程如下：
 
+## 2.2 实车定位
+
+实车定位采用**手动标定与自动匹配相结合**的策略，以确保初始定位的精确性并在后续实现持续的自动定位。Cartographer 是核心定位算法，其通过独特的扫描匹配和图优化机制，实现高精度的实时定位。具体流程如下：
+
 ### 1. 首次手动标定
-   - 在首次启动时，操作人员需要进行手动标定，以确保机器人能够准确地识别其初始位置。
-   - 通过在建好的地图上选择起始点位置，完成与实际环境的对齐。这一过程包括：
-     - **初始姿态调整**：确保机器人朝向与地图一致，以减少后续算法计算误差。
+   - 在首次启动时，操作人员需要进行手动标定，以确保机器人准确识别其初始位置。
+   - 在建好的地图上选择起始位置，并将其与实际环境对齐，包括：
+     - **初始姿态调整**：确保机器人朝向与地图方向一致，减少算法的初始误差。
      - **传感器数据同步**：启用 LiDAR、IMU 等传感器，确保各传感器的数据与初始位置同步。
-   - 手动标定后，系统将该位置和姿态作为起始参考点，供后续 Cartographer 定位算法使用。
+   - 手动标定后，系统将该位置和姿态作为起始参考点，供 Cartographer 定位算法使用。
+
+   ```xml
+   <!-- cartographer_node 启动文件的示例配置 -->
+   <node name="cartographer_node" pkg="cartographer_ros" type="cartographer_node" output="screen">
+       <param name="use_sim_time" value="false"/>
+       <param name="initial_pose_x" value="0.0"/>
+       <param name="initial_pose_y" value="0.0"/>
+       <param name="initial_pose_a" value="0.0"/>
+       <remap from="scan" to="velodyne_scan"/>
+   </node>
+   ```
+   上述配置文件示例用于设定 Cartographer 节点的初始位置和姿态角度（initial_pose_x, initial_pose_y, initial_pose_a），以便进行精确的初始标定。
 
 ### 2. 自动匹配定位（基于 Cartographer）
    - 手动标定完成后，系统启用 Cartographer 的自动定位算法，根据实时传感器数据与地图匹配，实现持续自动定位。
@@ -279,14 +295,39 @@ Cartographer 是 Google 开发的一款实时建图与定位框架，支持**2D*
      - **IMU 融合**：Cartographer 会使用 IMU 数据来改进姿态估计，尤其在点云不足的区域（如长直走廊）中，IMU 能提供更稳定的姿态信息，减少位姿误差的积累。
      - **回环检测和闭环校正**：当机器人识别到已访问过的区域时，Cartographer 的回环检测模块会触发闭环校正，将当前位置与之前的位置对齐，从而消除累积误差。这一特性确保地图长期稳定，特别适合大范围巡航。
    - **自动纠偏**：Cartographer 不断在前端扫描匹配和后端图优化之间交替工作，以确保机器人在长时间运行中的定位精度和稳定性。
+     ```xml
+     -- trajectory_builder 配置文件示例
+         TRAJECTORY_BUILDER.pure_localization = true
+         TRAJECTORY_BUILDER_2D.min_range = 0.3
+         TRAJECTORY_BUILDER_2D.max_range = 30.0
+         TRAJECTORY_BUILDER_2D.use_imu_data = true
+         TRAJECTORY_BUILDER_2D.use_online_correlative_scan_matching = true
+         TRAJECTORY_BUILDER_2D.submaps.num_range_data = 35
+         MAP_BUILDER.use_trajectory_builder_2d = true
+     ```
+
 
 ### 3. 动态环境下的定位优化
    - Cartographer 的自动匹配系统能够根据实时传感器数据和先验地图进行动态调整。针对复杂和动态变化的环境，Cartographer 会通过其扫描匹配机制不断更新机器人位置。
    - 在动态环境中，Cartographer 利用 NDT 和 ICP 算法适应环境变化，确保机器人在有障碍物或移动物体的场景中定位稳定。
+   ```xml
+   -- 动态环境的优化配置示例
+      POSE_GRAPH.optimization_problem.huber_scale = 1e1
+      POSE_GRAPH.optimize_every_n_nodes = 90
+      POSE_GRAPH.constraint_builder.min_score = 0.55
+      POSE_GRAPH.constraint_builder.global_localization_min_score = 0.6
+   ```
+
 
 ### 4. 定位精度与误差管理
    - 系统会持续监测定位精度，并根据实时环境和传感器反馈自适应调整参数，减小误差。
    - Cartographer 的闭环检测和多传感器融合机制能够在长时间运行后自动校准累积误差，确保长期定位的稳定性。通过后端的图优化，Cartographer 将多个扫描结果整合到全局地图中，以进一步降低漂移。
+   ```xml
+   # 调用 Cartographer ROS 服务完成路径优化
+   rosservice call /finish_trajectory 0
+   rosservice call /write_state "{filename: '/path/to/map.bag.pbstream'}"
+   ```
+
 
 
 
