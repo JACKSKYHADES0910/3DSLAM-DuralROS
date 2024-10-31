@@ -146,7 +146,7 @@
 在建图过程中，我们选择了 `Lego-LOAM`、`ndt_map` 和 `Cartographer` 三种建图方式。每种方式都有其特点和适用场景，以下对各方法进行了详细说明：
 
 ---
-### 对比
+### 对比（请按照适配场景选择所需建图工具）
 
 | 特性           | **Lego-LOAM**                                                                                                                                                  | **NDT_MAP**                                                                                                                                                                | **Cartographer**                                                                                                                                                               |
 |----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -168,7 +168,6 @@ Lego-LOAM（Lightweight and Ground-Optimized LiDAR Odometry and Mapping）是一
   - **特征点提取**：通过计算激光雷达点云的曲率，Lego-LOAM 提取出角点和平面点，减少计算量的同时提高定位精度。
   - **ICP（Iterative Closest Point）**：Lego-LOAM 采用 ICP 算法将连续扫描的数据进行匹配，实现高效、精确的点云配准。
 
-- **应用场景**：适合静态或平坦的环境，如地面导航、工业仓储和无人车项目等。其地面优化的设计特别适合平坦地形环境中高效的建图和定位。
 
 - **安装与配置**：
   - Lego-LOAM 需要在 ROS1 Noetic 版本下运行，并依赖 Eigen 和 PCL 等库。请确认安装 ROS Noetic 版本，并确保安装了 Eigen、PCL 和其他必要的依赖项。
@@ -193,16 +192,23 @@ Lego-LOAM（Lightweight and Ground-Optimized LiDAR Odometry and Mapping）是一
 
 - NDT_MAP
 
-NDT_MAP 是一种基于正态分布变换（NDT, Normal Distributions Transform）的建图方式，尤其适合在动态变化的复杂环境中使用。它结合了 `ndt_mapping` 和 `Lego-LOAM` 的回环检测技术，生成细致且动态更新的环境模型。NDT_MAP 使用**右手坐标系**，适配 Autoware 等应用环境，在复杂、动态的场景中表现出色。
+NDT_MAP 是一种基于正态分布变换（NDT, Normal Distributions Transform）的激光雷达建图方法，特别适合动态变化的复杂环境。NDT_MAP 将**ndt_mapping**技术与**回环检测**结合，实现高精度的环境建模和实时更新。NDT_MAP 使用**右手坐标系**，因此与 Autoware 等右手坐标系的应用平台兼容性极佳，尤其在复杂、动态的场景中表现优异。
 
-- **应用场景**：适合复杂、动态环境中的机器人导航应用，如城市交通、自动驾驶等。
+- **核心算法**：
+  - **Normal Distributions Transform（NDT）**：NDT 利用正态分布来表示激光雷达点云中的特征区域，将空间划分成多个栅格，并为每个栅格建立正态分布模型，从而对环境特征进行建模。通过在模型中匹配新的点云数据，可以高效实现定位和建图。
+  - **回环检测**：NDT_MAP 结合回环检测技术，能够在已建图的区域中识别重复路径，从而实现地图的闭环校正和更新，提升建图的精确性和连续性。
+
 
 - **安装与配置**：
-  - NDT_MAP 的安装代码：
+  - NDT_MAP 需要在 ROS 环境下运行，建议在 ROS1 Noetic 版本中使用。安装前确保已配置 Eigen 和 PCL 等必备依赖库。
+  - NDT_MAP 的安装步骤如下：
     ```bash
     # 克隆仓库
     git clone https://github.com/jyakaranda/ndt_map.git
     cd ndt_map
+
+    # 安装所需依赖项
+    rosdep install --from-paths src --ignore-src -r -y
 
     # 编译项目
     mkdir build && cd build
@@ -213,27 +219,32 @@ NDT_MAP 是一种基于正态分布变换（NDT, Normal Distributions Transform�
 
 ---
 
-- Cartographer
+- Cartographer(我们团队选择的工具)
 
-Cartographer 是由 Google 开发的一个实时建图和定位框架，广泛应用于 2D 和 3D 的 SLAM 任务中。它能够通过激光雷达和 IMU 数据实现高效建图和定位，支持**右手坐标系**，因此可以与 Autoware 等平台很好地集成。
+Cartographer 是 Google 开发的一款实时建图与定位框架，支持**2D** 和 **3D** 的 SLAM 应用，适用于多种场景。该系统结合了激光雷达和 IMU 数据，能够高效地完成建图和定位任务。Cartographer 支持**右手坐标系**，与 Autoware 等主流右手坐标系平台具有良好的兼容性。其模块化设计使其能够处理室内外环境中的复杂建图和定位需求。
 
-- **应用场景**：适合室内外环境的实时定位与建图应用，如物流、自动驾驶、巡检机器人等。
+- **核心算法**：
+  - **Graph SLAM（图优化 SLAM）**：Cartographer 采用图优化的 SLAM 算法，将环境中多个传感器数据构建成图结构，通过前端的里程计估计和后端的图优化来提升定位和建图精度。
+  - **回环检测和闭环校正**：在地图的回环检测中，Cartographer 自动检测路径闭环并进行调整，从而修正定位误差并优化地图结构，以提高长时间建图的精确性。
+  - **扫描匹配**：通过激光雷达数据的扫描匹配技术，Cartographer 能够在动态环境下实现高效的定位与建图，适应性强。
+
 
 - **安装与配置**：
-  - Cartographer 的安装代码：
+  - Cartographer 需要在 ROS 环境下运行，建议使用 ROS1 Noetic 版本，安装前需确保配置了 Eigen、PCL、Cerres 等必要的依赖项。
+  - Cartographer 的安装步骤如下：
     ```bash
-    # 安装依赖
+    # 安装基础依赖
     sudo apt-get update
     sudo apt-get install -y python3-wstool python3-rosdep ninja-build
 
-    # 克隆仓库
+    # 克隆仓库并初始化工作空间
     mkdir -p ~/cartographer_ws/src
     cd ~/cartographer_ws
     wstool init src
     wstool merge -t src https://raw.githubusercontent.com/cartographer-project/cartographer_ros/master/cartographer_ros.rosinstall
     wstool update -t src
 
-    # 安装 ROS 依赖
+    # 安装 ROS 依赖项
     rosdep update
     rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} -y
 
