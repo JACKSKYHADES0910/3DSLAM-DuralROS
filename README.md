@@ -329,7 +329,24 @@ Cartographer 是 Google 开发的一款实时建图与定位框架，支持**2D*
    rosservice call /finish_trajectory 0
    rosservice call /write_state "{filename: '/path/to/map.bag.pbstream'}"
    ```
+   - 保存的 `.pbstream` 文件可以在后续启动 Cartographer 时加载，以快速恢复先前的地图状态，适用于重复性任务或多次启动需求的应用场景。
 
+  ```xml
+  <!-- 恢复 .pbstream 地图文件的 Cartographer 启动文件示例 -->
+  <node name="cartographer_node" pkg="cartographer_ros" type="cartographer_node" output="screen">
+      <param name="use_sim_time" value="false"/>
+      <param name="load_state_filename" value="/path/to/map.bag.pbstream"/>
+      <remap from="scan" to="velodyne_scan"/>
+  </node>
+  ```
+   - 上述启动文件示例中，通过设置 `load_state_filename` 参数，将 `.pbstream` 文件加载到 Cartographer 中，实现地图和定位状态的恢复。这样，机器人可以直接基于已有地图进行定位，而无需重新进行完整的地图构建。
+
+   - 注意事项：
+
+      - 文件路径：确保 `.pbstream` 文件的路径正确且可访问，否则 Cartographer 将无法加载地图。
+      - 坐标对齐：在加载保存的地图状态时，请确保机器人实际位置与地图中的初始位置一致，以减少误差。
+      - 地图更新：如果环境发生显著变化，建议重新构建或更新地图，以确保定位准确性。
+   - 总结：通过 Cartographer 的 `.pbstream` 文件保存和恢复功能，用户可以在多次启动或重复任务中快速恢复地图状态，减少重复构图的时间消耗。同时，通过回环检测和图优化，Cartographer 提供了稳定可靠的定位效果，适应动态环境的变化。
 
 
 
