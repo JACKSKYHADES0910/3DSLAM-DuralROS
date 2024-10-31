@@ -49,6 +49,8 @@
 4. 相机: [Kinetic V2](https://learn.microsoft.com/en-us/windows/apps/design/devices/kinect-for-windows "Kinetic V2 for windows")
 5. 上位机: [惠普暗影精灵](https://www.omen.com/cn/zh/laptops.html "HP-OMEN官网")
 
+---
+
 ## 1.2 准备工作
   **准备工作部分是根据本人实操所记录的流程，观看者可根据所需内容选取，非必要部分可以跳过！**
 1. 安装系统 Ubuntu 20.04 + 系统分区</br>
@@ -80,6 +82,7 @@
    - 下载连接： [AutolaborOS-24.04-amd64.iso (Ubuntu18.04 ROS Melodic)](http://www.autolabor.com.cn/download?hmsr=gwstastics&hmpl=os&hmcu=24.04)</br>
    - 将`catkin_ws`拷贝至所运行的主机中，此文件运行在`ROS1-neotic`环境下运行 
 
+---
 
 ## 1.3 Autoware AWSIM Simulation
    **参考文档**: [AWSIM官方安装文档](https://github.com/tier4/AWSIM/blob/v1.0.1/docs/GettingStarted/QuickStartDemo/index.md)
@@ -139,13 +142,14 @@
      ros2 launch autoware_launch e2e_simulator.launch.xml vehicle_model:=sample_vehicle sensor_model:=awsim_sensor_kit map_path:=<your mapfile location>
      ```
      ![Autoware.universe与AWISM联合仿真](https://github.com/tier4/AWSIM/raw/v1.0.1/docs/GettingStarted/QuickStartDemo/Image_Initial.png)</br>
+---
 
 # 2. 实车部署
 ## 2.1 实车建图
 
 在建图过程中，我们选择了 `Lego-LOAM`、`ndt_map` 和 `Cartographer` 三种建图方式。每种方式都有其特点和适用场景，以下对各方法进行了详细说明：
 
----
+
 ### 对比（请按照适配场景选择所需建图工具）
 
 | 特性           | **Lego-LOAM**                                                                                                                                                  | **NDT_MAP**                                                                                                                                                                | **Cartographer**                                                                                                                                                               |
@@ -158,7 +162,6 @@
 | **硬件需求**   | 硬件需求较低，适合一般计算设备                                                                                                                                  | 硬件需求较高，适合配备 GPU 的计算环境                                                                                                                                       | 内存消耗大，对传感器配置要求高                                                                                                                                                  |
 | **安装配置**   | 简单，依赖较少                                                                                                                                                 | 中等，需要配置 Autoware 环境                                                                                                                                                | 配置复杂，需要多个传感器的支持                                                                                                                                                  |
 
----
 ## Lego-LOAM
 
 Lego-LOAM（Lightweight and Ground-Optimized LiDAR Odometry and Mapping）是一种轻量级的激光雷达建图方式，专为地面车辆设计，能够实时生成车辆周围的高精度点云地图。它的核心是通过**六自由度（6DoF）姿态估计**进行实时定位和建图，利用激光雷达测距数据在静态或平坦环境中进行建图，适合小规模场景的高效建图和里程计应用。Lego-LOAM 使用**左手坐标系**，因此不适合右手坐标系需求的 Autoware 环境，但在其他系统中有广泛的应用价值。
@@ -188,7 +191,6 @@ Lego-LOAM（Lightweight and Ground-Optimized LiDAR Odometry and Mapping）是一
   - 参考文档：[LeGO-LOAM GitHub 仓库](https://github.com/RobustFieldAutonomyLab/LeGO-LOAM)
 
 
----
 ## NDT_MAP
 
 NDT_MAP 是一种基于正态分布变换（NDT, Normal Distributions Transform）的激光雷达建图方法，特别适合动态变化的复杂环境。NDT_MAP 将**ndt_mapping**技术与**回环检测**结合，实现高精度的环境建模和实时更新。NDT_MAP 使用**右手坐标系**，因此与 Autoware 等右手坐标系的应用平台兼容性极佳，尤其在复杂、动态的场景中表现优异。
@@ -216,7 +218,6 @@ NDT_MAP 是一种基于正态分布变换（NDT, Normal Distributions Transform�
     ```
   - 参考文档：[ndt_map GitHub 仓库](https://github.com/jyakaranda/ndt_map)
 
----
 ## Cartographer(我们团队选择的工具)
 
 Cartographer 是 Google 开发的一款实时建图与定位框架，支持**2D** 和 **3D** 的 SLAM 应用，适用于多种场景。该系统结合了激光雷达和 IMU 数据，能够高效地完成建图和定位任务。Cartographer 支持**右手坐标系**，与 Autoware 等主流右手坐标系平台具有良好的兼容性。其模块化设计使其能够处理室内外环境中的复杂建图和定位需求。
@@ -251,13 +252,14 @@ Cartographer 是 Google 开发的一款实时建图与定位框架，支持**2D*
     ```
   - 参考文档：[Cartographer GitHub 仓库](https://github.com/cartographer-project/cartographer)
 
----
 
 ### 建图方式选择建议
 
 - **如果需要实时性和较高精度的建图**：推荐使用 Cartographer，其速度和精度在实际应用中表现良好。
 - **如果环境较为平坦，且对实时性要求高**：可以选择 Lego-LOAM，特别适合地面应用。
 - **如果环境复杂、动态变化较大**：建议使用 NDT_MAP，其回环检测和更新能力适合复杂环境。
+
+---
 
 ## 2.2 实车定位
 ## 2.3 实车导航
