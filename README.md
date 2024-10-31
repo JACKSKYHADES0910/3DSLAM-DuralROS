@@ -1,9 +1,8 @@
 **视频展示** [建图定位导航(Youtube)](https://www.youtube.com/watch?v=1bbiSgneRYA)
 # 目录
-1. [3DSLAM-DuralROS](#1-3dslam-duralros)
-   - 1.1 [概述](#11-概述)
-   - 1.2 [硬件参数](#12-硬件参数)
-   - 1.3 [准备工作](#13-准备工作)
+1. [3DSLAM-DuralROS概述](#1-3dslam-duralros)
+   - 1.1 [硬件参数](#11-硬件参数)
+   - 1.2 [准备工作](#12-准备工作)
    - 1.4 [建图](#14-建图)
    - 1.5 [Autoware 部署 AWSIM 联合仿真](#15-autoware-部署-awsim联合仿真)
 2. [实车部署](#2-实车部署)
@@ -14,13 +13,10 @@
 
 
 
-# 1. 3DSLAM-DuralROS
+# 1. 3DSLAM-DuralROS概述
 3DSLAM-DuralROS 是一款针对机器人操作系统（ROS1 和 ROS2）进行优化的先进SLAM（同步定位与地图构建）解决方案。该系统以AutoLabor M1机器人底盘为基础，设计出适用于室内室外的高度可靠的**导航**和**避障**技术。3DSLAM-DuralROS 不仅能够进行高效的**地图建构**和**定位**，还能在复杂多变的环境中实现精确导航和**实时避障**，满足现代自动化需求。
 
-## 概述
-
-
-## 硬件参数
+## 1.1 硬件参数
 
 **主机参数**
 
@@ -54,7 +50,7 @@
 4. 相机: [Kinetic V2](https://learn.microsoft.com/en-us/windows/apps/design/devices/kinect-for-windows "Kinetic V2 for windows")
 5. 上位机: [惠普暗影精灵](https://www.omen.com/cn/zh/laptops.html "HP-OMEN官网")
 
-## 准备工作
+## 1.2 准备工作
   **准备工作部分是根据本人实操所记录的流程，观看者可根据所需内容选取，非必要部分可以跳过！**
 1. 安装系统 Ubuntu 20.04 + 系统分区</br>
    参考链接:[Windows10+Ubuntu20.04双系统 惠普暗影精灵OMEN](https://blog.csdn.net/Robert_Q/article/details/115842915)
