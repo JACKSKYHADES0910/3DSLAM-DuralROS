@@ -286,7 +286,7 @@ Cartographer 是 Google 开发的一款实时建图与定位框架，支持**2D*
        <remap from="scan" to="velodyne_scan"/>
    </node>
    ```
-   上述配置文件示例用于设定 Cartographer 节点的初始位置和姿态角度（initial_pose_x, initial_pose_y, initial_pose_a），以便进行精确的初始标定。
+   - 上述配置文件示例用于设定 Cartographer 节点的初始位置和姿态角度（`initial_pose_x`, `initial_pose_y`, `initial_pose_a`），以便进行精确的初始标定。
 
 ### 2. 自动匹配定位（基于 Cartographer）
    - 手动标定完成后，系统启用 Cartographer 的自动定位算法，根据实时传感器数据与地图匹配，实现持续自动定位。
@@ -294,7 +294,7 @@ Cartographer 是 Google 开发的一款实时建图与定位框架，支持**2D*
      - **前端扫描匹配**：Cartographer 使用激光雷达的点云数据与现有地图进行实时扫描匹配，通过**匹配精细的点云数据**来估计机器人的相对位移。前端会在局部地图中持续校正机器人位置，确保高实时性。
      - **IMU 融合**：Cartographer 会使用 IMU 数据来改进姿态估计，尤其在点云不足的区域（如长直走廊）中，IMU 能提供更稳定的姿态信息，减少位姿误差的积累。
      - **回环检测和闭环校正**：当机器人识别到已访问过的区域时，Cartographer 的回环检测模块会触发闭环校正，将当前位置与之前的位置对齐，从而消除累积误差。这一特性确保地图长期稳定，特别适合大范围巡航。
-   - **自动纠偏**：Cartographer 不断在前端扫描匹配和后端图优化之间交替工作，以确保机器人在长时间运行中的定位精度和稳定性。
+     - **自动纠偏**：Cartographer 不断在前端扫描匹配和后端图优化之间交替工作，以确保机器人在长时间运行中的定位精度和稳定性。
      ```xml
      #trajectory_builder 配置文件示例
          TRAJECTORY_BUILDER.pure_localization = true
@@ -305,6 +305,7 @@ Cartographer 是 Google 开发的一款实时建图与定位框架，支持**2D*
          TRAJECTORY_BUILDER_2D.submaps.num_range_data = 35
          MAP_BUILDER.use_trajectory_builder_2d = true
      ```
+     - 以上配置文件示例中，将 `TRAJECTORY_BUILDER.pure_localization` 设置为 `true` 以启用纯定位模式，并对激光雷达的最小和最大范围、IMU 数据、在线相关扫描匹配等参数进行了调整，适用于自动匹配定位。
 
 
 ### 3. 动态环境下的定位优化
@@ -317,6 +318,7 @@ Cartographer 是 Google 开发的一款实时建图与定位框架，支持**2D*
       POSE_GRAPH.constraint_builder.min_score = 0.55
       POSE_GRAPH.constraint_builder.global_localization_min_score = 0.6
    ```
+   - 上述配置文件示例中设置了 `POSE_GRAPH.optimization_problem.huber_scale` 和 `POSE_GRAPH.constraint_builder.min_score` 等参数，以应对动态环境下的定位优化需求，提高对动态物体的适应性。
 
 
 ### 4. 定位精度与误差管理
