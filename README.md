@@ -3,8 +3,7 @@
 1. [3DSLAM-DuralROS概述](#1-3dslam-duralros)
    - 1.1 [硬件参数](#11-硬件参数)
    - 1.2 [准备工作](#12-准备工作)
-   - 1.4 [建图](#14-建图)
-   - 1.5 [Autoware 部署 AWSIM 联合仿真](#15-autoware-部署-awsim联合仿真)
+   - 1.3 [Autoware 部署 AWSIM 联合仿真](#13-autoware-部署-awsim联合仿真)
 2. [实车部署](#2-实车部署)
    - 2.1 [建图](#21-实车建图)
    - 2.2 [定位](#22-实车定位)
@@ -81,18 +80,8 @@
    - 下载连接： [AutolaborOS-24.04-amd64.iso (Ubuntu18.04 ROS Melodic)](http://www.autolabor.com.cn/download?hmsr=gwstastics&hmpl=os&hmcu=24.04)</br>
    - 将`catkin_ws`拷贝至所运行的主机中，此文件运行在`ROS1-neotic`环境下运行 
 
-## 建图</br>
-在建图过程当中，我们选择了`Lego-loam`和`ndt_map`两种建图方式，其中`Lego-loam`是左手坐标系建图，`ndt_map`是右手坐标系建图，**autoware.universe需要右手坐标系建图**，所以我们选择`ndt_map`来进行建图
-1. Lego-loam</br>
-    - 一种轻量级和地面优化的激光雷达里程计和**建图**方法，用于实时估计地面车辆的六自由度姿态
-    - 参考文档：Github安装 [LeGO-LOAM](https://github.com/RobustFieldAutonomyLab/LeGO-LOAM)
-2. ndt_map</br>
-    - autoware.universe选择`ndt_map`
-    - NDT_MAP 是受到Autoware的启发，结合了ndt_mapping和lego_loam的回环检测技术，能够创建出精细且动态更新的环境模型
-    -  参考文档：Github安装 [ndt_map](https://github.com/jyakaranda/ndt_map)
 
-
-## Autoware部署AWSIM联合仿真
+## 1.3 Autoware部署AWSIM联合仿真
    **参考文档**: [AWSIM官方安装文档](https://github.com/tier4/AWSIM/blob/v1.0.1/docs/GettingStarted/QuickStartDemo/index.md)
 
 1. 进入 `.bashrc` 
@@ -150,5 +139,16 @@
      ros2 launch autoware_launch e2e_simulator.launch.xml vehicle_model:=sample_vehicle sensor_model:=awsim_sensor_kit map_path:=<your mapfile location>
      ```
      ![Autoware.universe与AWISM联合仿真](https://github.com/tier4/AWSIM/raw/v1.0.1/docs/GettingStarted/QuickStartDemo/Image_Initial.png)</br>
+
+
+## 建图</br>
+在建图过程当中，我们选择了`Lego-loam`和`ndt_map`两种建图方式，其中`Lego-loam`是左手坐标系建图，`ndt_map`是右手坐标系建图，**autoware.universe需要右手坐标系建图**，所以我们选择`ndt_map`来进行建图
+1. Lego-loam</br>
+    - 一种轻量级和地面优化的激光雷达里程计和**建图**方法，用于实时估计地面车辆的六自由度姿态
+    - 参考文档：Github安装 [LeGO-LOAM](https://github.com/RobustFieldAutonomyLab/LeGO-LOAM)
+2. ndt_map</br>
+    - autoware.universe选择`ndt_map`
+    - NDT_MAP 是受到Autoware的启发，结合了ndt_mapping和lego_loam的回环检测技术，能够创建出精细且动态更新的环境模型
+    -  参考文档：Github安装 [ndt_map](https://github.com/jyakaranda/ndt_map)
 
 
