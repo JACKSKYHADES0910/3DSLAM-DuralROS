@@ -3,7 +3,7 @@
 1. [3DSLAM-DuralROS概述](#1-3dslam-duralros)
    - 1.1 [硬件参数](#11-硬件参数)
    - 1.2 [准备工作](#12-准备工作)
-   - 1.3 [Autoware 部署 AWSIM 联合仿真](#13-autoware-部署-awsim联合仿真)
+   - 1.3 [Autoware 部署 AWSIM 联合仿真](#13-autoware-awsim-simulation)
 2. [实车部署](#2-实车部署)
    - 2.1 [建图](#21-实车建图)
    - 2.2 [定位](#22-实车定位)
@@ -81,7 +81,7 @@
    - 将`catkin_ws`拷贝至所运行的主机中，此文件运行在`ROS1-neotic`环境下运行 
 
 
-## 1.3 Autoware部署AWSIM联合仿真
+## 1.3 Autoware AWSIM Simulation
    **参考文档**: [AWSIM官方安装文档](https://github.com/tier4/AWSIM/blob/v1.0.1/docs/GettingStarted/QuickStartDemo/index.md)
 
 1. 进入 `.bashrc` 
