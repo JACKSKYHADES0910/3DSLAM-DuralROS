@@ -296,7 +296,7 @@ Cartographer 是 Google 开发的一款实时建图与定位框架，支持**2D*
      - **回环检测和闭环校正**：当机器人识别到已访问过的区域时，Cartographer 的回环检测模块会触发闭环校正，将当前位置与之前的位置对齐，从而消除累积误差。这一特性确保地图长期稳定，特别适合大范围巡航。
    - **自动纠偏**：Cartographer 不断在前端扫描匹配和后端图优化之间交替工作，以确保机器人在长时间运行中的定位精度和稳定性。
      ```xml
-     -- trajectory_builder 配置文件示例
+     #trajectory_builder 配置文件示例
          TRAJECTORY_BUILDER.pure_localization = true
          TRAJECTORY_BUILDER_2D.min_range = 0.3
          TRAJECTORY_BUILDER_2D.max_range = 30.0
@@ -311,7 +311,7 @@ Cartographer 是 Google 开发的一款实时建图与定位框架，支持**2D*
    - Cartographer 的自动匹配系统能够根据实时传感器数据和先验地图进行动态调整。针对复杂和动态变化的环境，Cartographer 会通过其扫描匹配机制不断更新机器人位置。
    - 在动态环境中，Cartographer 利用 NDT 和 ICP 算法适应环境变化，确保机器人在有障碍物或移动物体的场景中定位稳定。
    ```xml
-   -- 动态环境的优化配置示例
+   #动态环境的优化配置示例
       POSE_GRAPH.optimization_problem.huber_scale = 1e1
       POSE_GRAPH.optimize_every_n_nodes = 90
       POSE_GRAPH.constraint_builder.min_score = 0.55
@@ -323,7 +323,7 @@ Cartographer 是 Google 开发的一款实时建图与定位框架，支持**2D*
    - 系统会持续监测定位精度，并根据实时环境和传感器反馈自适应调整参数，减小误差。
    - Cartographer 的闭环检测和多传感器融合机制能够在长时间运行后自动校准累积误差，确保长期定位的稳定性。通过后端的图优化，Cartographer 将多个扫描结果整合到全局地图中，以进一步降低漂移。
    ```xml
-   # 调用 Cartographer ROS 服务完成路径优化
+   #调用 Cartographer ROS 服务完成路径优化
    rosservice call /finish_trajectory 0
    rosservice call /write_state "{filename: '/path/to/map.bag.pbstream'}"
    ```
