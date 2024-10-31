@@ -159,7 +159,7 @@
 | **安装配置**   | 简单，依赖较少                                                                                                                                                 | 中等，需要配置 Autoware 环境                                                                                                                                                | 配置复杂，需要多个传感器的支持                                                                                                                                                  |
 
 ---
-- Lego-LOAM
+##Lego-LOAM
 
 Lego-LOAM（Lightweight and Ground-Optimized LiDAR Odometry and Mapping）是一种轻量级的激光雷达建图方式，专为地面车辆设计，能够实时生成车辆周围的高精度点云地图。它的核心是通过**六自由度（6DoF）姿态估计**进行实时定位和建图，利用激光雷达测距数据在静态或平坦环境中进行建图，适合小规模场景的高效建图和里程计应用。Lego-LOAM 使用**左手坐标系**，因此不适合右手坐标系需求的 Autoware 环境，但在其他系统中有广泛的应用价值。
 
@@ -189,8 +189,7 @@ Lego-LOAM（Lightweight and Ground-Optimized LiDAR Odometry and Mapping）是一
 
 
 ---
-
-- NDT_MAP
+##NDT_MAP
 
 NDT_MAP 是一种基于正态分布变换（NDT, Normal Distributions Transform）的激光雷达建图方法，特别适合动态变化的复杂环境。NDT_MAP 将**ndt_mapping**技术与**回环检测**结合，实现高精度的环境建模和实时更新。NDT_MAP 使用**右手坐标系**，因此与 Autoware 等右手坐标系的应用平台兼容性极佳，尤其在复杂、动态的场景中表现优异。
 
@@ -218,8 +217,7 @@ NDT_MAP 是一种基于正态分布变换（NDT, Normal Distributions Transform�
   - 参考文档：[ndt_map GitHub 仓库](https://github.com/jyakaranda/ndt_map)
 
 ---
-
-- Cartographer(我们团队选择的工具)
+##Cartographer(我们团队选择的工具)
 
 Cartographer 是 Google 开发的一款实时建图与定位框架，支持**2D** 和 **3D** 的 SLAM 应用，适用于多种场景。该系统结合了激光雷达和 IMU 数据，能够高效地完成建图和定位任务。Cartographer 支持**右手坐标系**，与 Autoware 等主流右手坐标系平台具有良好的兼容性。其模块化设计使其能够处理室内外环境中的复杂建图和定位需求。
 
