@@ -140,8 +140,8 @@
      ```
      ![Autoware.universe与AWISM联合仿真](https://github.com/tier4/AWSIM/raw/v1.0.1/docs/GettingStarted/QuickStartDemo/Image_Initial.png)</br>
 
-
-## 建图</br>
+# 2. 实车部署
+## 2.1 实车建图
 在建图过程当中，我们选择了`Lego-loam`和`ndt_map`两种建图方式，其中`Lego-loam`是左手坐标系建图，`ndt_map`是右手坐标系建图，**autoware.universe需要右手坐标系建图**，所以我们选择`ndt_map`来进行建图
 1. Lego-loam</br>
     - 一种轻量级和地面优化的激光雷达里程计和**建图**方法，用于实时估计地面车辆的六自由度姿态
@@ -150,5 +150,6 @@
     - autoware.universe选择`ndt_map`
     - NDT_MAP 是受到Autoware的启发，结合了ndt_mapping和lego_loam的回环检测技术，能够创建出精细且动态更新的环境模型
     -  参考文档：Github安装 [ndt_map](https://github.com/jyakaranda/ndt_map)
-
+## 2.2 实车定位
+## 2.3 实车导航
 
