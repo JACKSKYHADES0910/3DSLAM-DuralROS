@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/multi_car_goal
+
+Name: multi_car_goal
+Description: Description of multi_car_goal
+Version: 0.0.0
+Cflags: -I/home/xyz/autolabor/src/navigation/multi_car_goal/include
+Libs: -L${prefix}/lib 
+Requires: 

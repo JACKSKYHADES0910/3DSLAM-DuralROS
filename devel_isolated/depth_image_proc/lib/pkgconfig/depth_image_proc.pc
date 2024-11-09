@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/depth_image_proc
+
+Name: depth_image_proc
+Description: Description of depth_image_proc
+Version: 1.12.23
+Cflags: -I/home/xyz/autolabor/src/tool/image_pipeline/depth_image_proc/include
+Libs: -L${prefix}/lib -ldepth_image_proc
+Requires: 

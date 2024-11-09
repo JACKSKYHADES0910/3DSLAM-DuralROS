@@ -1,0 +1,18 @@
+#!/bin/bash
+
+source /opt/autolabor/ros/catkin_ws/devel/setup.bash
+IP=`ifconfig wlan0 | grep "inet 地址:" | awk '{print $2}' | cut -c 8-`
+
+if [ -z "$IP" ]; then
+  IP="127.0.0.1"
+fi
+
+export ROS_MASTER_URI=http://$IP:11311/
+export ROS_IP=$IP
+
+nohup roslaunch pico_zense_driver pico_driver.launch&
+sleep 5
+zenity --no-wrap --info --text="查看图像中有点云出现，pico正常，否则检查pico是否连接到上位机，点确定后再次尝试"
+killall rosmaster
+
+

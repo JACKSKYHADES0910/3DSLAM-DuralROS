@@ -1,0 +1,9 @@
+\subsubsection usage Usage
+\verbatim
+<node name="autolabor_model" pkg="autolabor_pro1_driver" type="autolabor_model">
+  <param name="model_param_cw" type="double" value="0.8" />
+  <param name="model_param_acw" type="double" value="0.8" />
+  <param name="wheel_diameter" type="double" value="0.25" />
+</node>
+\endverbatim
+

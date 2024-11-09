@@ -1,0 +1,25 @@
+<launch>
+
+    <include file="$(find autolabor_navigation_launch)/launch/simulated_environment/second_generation_multicar_navigation_simulation.launch" >
+        <arg name="is_master" value="true"/>
+        <arg name="show_rviz" value="false" />
+        <arg name="robot_prefix" value="car1"/>
+    </include>
+
+    <include file="$(find autolabor_navigation_launch)/launch/simulated_environment/second_generation_multicar_navigation_simulation.launch" >
+        <arg name="is_master" value="false"/>
+        <arg name="show_rviz" value="false" />
+        <arg name="robot_prefix" value="car2"/>
+    </include>
+
+    <node name="multi_car_goal" pkg="multi_car_goal" type="multi_car_goal_node" output="screen">
+        <param name="feedback_topic" value="/car1/move_base/feedback" />
+        <param name="goal_topic" value="/car2/move_base_simple/goal" />
+        <param name="goal_frame" value="car2/map" />
+        <param name="rate" value="1" />
+        <param name="distance_from_front" value="1.0" />
+    </node>
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find autolabor_navigation_launch)/rviz/second_generation_multicar_navigation.rviz" output="screen" />
+
+</launch>

@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/xyz/autolabor/src/driver/car/autolabor_canbus_driver/include/control_model/chassis_config_t.h
+
+/home/xyz/autolabor/src/driver/car/autolabor_canbus_driver/include/control_model/model.h
+chassis_config_t.h
+/home/xyz/autolabor/src/driver/car/autolabor_canbus_driver/include/control_model/chassis_config_t.h
+
+/home/xyz/autolabor/src/driver/car/autolabor_canbus_driver/include/control_model/optimization.h
+model.h
+/home/xyz/autolabor/src/driver/car/autolabor_canbus_driver/include/control_model/model.h
+
+/home/xyz/autolabor/src/driver/car/autolabor_canbus_driver/include/control_model/pi.h
+
+/home/xyz/autolabor/src/driver/car/autolabor_canbus_driver/src/control_model/chassis_config_t.c
+control_model/chassis_config_t.h
+/home/xyz/autolabor/src/driver/car/autolabor_canbus_driver/src/control_model/control_model/chassis_config_t.h
+control_model/pi.h
+/home/xyz/autolabor/src/driver/car/autolabor_canbus_driver/src/control_model/control_model/pi.h
+
+/home/xyz/autolabor/src/driver/car/autolabor_canbus_driver/src/control_model/model.c
+math.h
+-
+control_model/model.h
+/home/xyz/autolabor/src/driver/car/autolabor_canbus_driver/src/control_model/control_model/model.h
+
+/home/xyz/autolabor/src/driver/car/autolabor_canbus_driver/src/control_model/optimization.c
+math.h
+-
+control_model/optimization.h
+/home/xyz/autolabor/src/driver/car/autolabor_canbus_driver/src/control_model/control_model/optimization.h
+

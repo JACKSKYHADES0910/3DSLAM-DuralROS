@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/xyz/autolabor/devel_isolated/move_slow_and_clear/setup.sh

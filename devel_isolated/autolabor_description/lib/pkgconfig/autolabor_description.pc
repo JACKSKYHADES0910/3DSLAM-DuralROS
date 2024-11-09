@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/autolabor_description
+
+Name: autolabor_description
+Description: Description of autolabor_description
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

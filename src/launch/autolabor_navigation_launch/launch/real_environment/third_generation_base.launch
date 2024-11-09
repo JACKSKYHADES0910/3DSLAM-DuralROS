@@ -1,0 +1,202 @@
+<launch>
+
+	<arg name="robot_pub_tf" default="false" />
+	<arg name="lidar2d" value=" " />  # fslidar or ldlidar
+	<arg name="lidar3d" value="rs16 " />  # rs16  or rshelio16
+	<arg name="imu" value="ch104m" />  # ah200b or ch104m
+	<arg name="chassis" value="M1" /> # AP1,M1 or M2
+	<param name="robot_description" command="$(find xacro)/xacro --inorder '$(find autolabor_description)/urdf/third_generation_model.xacro' lidar2d:=$(arg lidar2d) lidar3d:=$(arg lidar3d) chassis:=$(arg chassis)" />
+
+	<!-- autolabor pro 1 驱动 -->
+	<node name="autolabor_driver" pkg="autolabor_pro1_driver" type="autolabor_pro1_driver" output="screen">
+		<remap from="/wheel_odom" to="/odom"/>
+		<param name="port_name" value="/dev/ttyUSB_custom0 " />
+		<param name="odom_frame" value="odom" />
+		<param name="base_frame" value="base_link" />
+
+		<param name="baud_rate" value="115200" />
+		<param name="control_rate" value="10" />
+		<param name="sensor_rate" value="5" />
+
+		<param name="reduction_ratio" value="1.0" />
+		<param name="encoder_resolution" value="1600.0" />
+
+		<param name="wheel_diameter" value="0.25" />
+		<param name="model_param_cw" value="0.80" />
+		<param name="model_param_acw" value="0.80" />
+		<param name="pid_rate" value="50.0" />
+		<param name="maximum_encoding" value="32.0" />
+		<param name="publish_tf" value="$(arg robot_pub_tf)" />
+	</node>
+
+	<group if="$(eval arg('lidar2d') == 'fslidar')">
+		<!-- 雷达驱动 前-->
+		<node pkg="wr_fslidar"  type="fslidar_node" name="fslidar_front" output="screen">
+			<param name="dev_path"         type="string" value="/dev/box_1"/>
+			<param name="inverted"            type="bool"   value="false"/>
+			<param name="frame_id"            type="string" value="lidar_front"/>
+			<param name="sample_rate"         type="int"    value="5000"/>
+			<param name="rotational_speed"    type="int"    value="5"/>
+			<param name="scan_topic"            type="string"   value="/scan_front"/>
+		</node>
+
+		<node pkg="laser_filters" type="scan_to_scan_filter_chain" name="lidar_filter_front">
+			<remap from="/scan" to="/scan_front" />
+			<remap from="/scan_filtered" to="/scan_1" />
+			<rosparam command="load" file="$(find autolabor_navigation_launch)/params/common/front_lidar_config.yaml" />
+		</node>
+
+		<!-- 雷达驱动 后-->
+		<node pkg="wr_fslidar"  type="fslidar_node" name="fslidar_back" output="screen">
+			<param name="dev_path"         type="string" value="/dev/box_2"/>
+			<param name="inverted"            type="bool"   value="false"/>
+			<param name="frame_id"            type="string" value="lidar_back"/>
+			<param name="sample_rate"         type="int"    value="5000"/>
+			<param name="rotational_speed"    type="int"    value="5"/>
+			<param name="scan_topic"            type="string"   value="/scan_back"/>
+		</node>
+		<node pkg="laser_filters" type="scan_to_scan_filter_chain" name="lidar_filter_back">
+			<remap from="/scan" to="/scan_back" />
+			<remap from="/scan_filtered" to="/scan_2" />
+			<rosparam command="load" file="$(find autolabor_navigation_launch)/params/common/back_lidar_config.yaml" />
+		</node>
+	</group>
+
+
+	 <group if="$(eval arg('chassis') == 'AP1')">
+            <group if="$(eval arg('lidar2d') == 'ldlidar')">
+                <!-- 雷达驱动 前-->
+                <node name="LD19front" pkg="ldlidar_stl_ros" type="ldlidar_stl_ros_node" >
+                    <param name="product_name" value="LDLiDAR_LD19"/>
+                    <param name="topic_name" value="/scan_1"/>
+                    <param name="port_name" value ="/dev/box_1"/>
+                    <param name="frame_id" value="lidar_front"/>
+                    <param name="laser_scan_dir" type="bool" value="true"/>
+                    <param name="enable_angle_crop_func" type="bool" value="true"/>
+                    <param name="angle_crop_min" type="double" value="0"/>
+                    <param name="angle_crop_max" type="double" value="180"/>
+                </node>
+                <!-- 雷达驱动 后-->
+                <node name="LD19back" pkg="ldlidar_stl_ros" type="ldlidar_stl_ros_node" >
+                    <param name="product_name" value="LDLiDAR_LD19"/>
+                    <param name="topic_name" value="/scan_2"/>
+                    <param name="port_name" value ="/dev/box_2"/>
+                    <param name="frame_id" value="lidar_back"/>
+                    <param name="laser_scan_dir" type="bool" value="true"/>
+                    <param name="enable_angle_crop_func" type="bool" value="true"/>
+                    <param name="angle_crop_min" type="double" value="0"/>
+                    <param name="angle_crop_max" type="double" value="180"/>
+                </node>
+            </group>
+    	</group>
+
+        <group if="$(eval arg('chassis') == 'M1')">
+                <group if="$(eval arg('lidar2d') == 'ldlidar')">
+                    <!-- 雷达驱动 前-->
+                    <node name="LD19front" pkg="ldlidar_stl_ros" type="ldlidar_stl_ros_node" >
+                        <param name="product_name" value="LDLiDAR_LD19"/>
+                        <param name="topic_name" value="/scan_1"/>
+                        <param name="port_name" value ="/dev/box_1"/>
+                        <param name="frame_id" value="lidar_front"/>
+                        <param name="laser_scan_dir" type="bool" value="true"/>
+                        <param name="enable_angle_keep" type="bool" value="true"/>
+                        <param name="angle_keep_min" type="double" value="185"/>
+                        <param name="angle_keep_max" type="double" value="355"/>
+                    </node>
+                    <!-- 雷达驱动 后-->
+                    <node name="LD19back" pkg="ldlidar_stl_ros" type="ldlidar_stl_ros_node" >
+                        <param name="product_name" value="LDLiDAR_LD19"/>
+                        <param name="topic_name" value="/scan_2"/>
+                        <param name="port_name" value ="/dev/box_2"/>
+                        <param name="frame_id" value="lidar_back"/>
+                        <param name="laser_scan_dir" type="bool" value="true"/>
+                        <param name="enable_angle_keep" type="bool" value="true"/>
+                        <param name="angle_keep_min" type="double" value="185"/>
+                        <param name="angle_keep_max" type="double" value="355"/>
+                    </node>
+                </group>
+       </group>
+
+	<!-- todo 20240726 -->
+	<!-- <node pkg="rslidar_sdk" name="rslidar_sdk_node" type="rslidar_sdk_node" output="screen">
+		<param name="config_path" value="$(find rslidar_sdk)/config/config_$(arg lidar3d).yaml"/>
+	</node> -->
+	 <!-- <arg name="model" default="RS16" />
+	<arg name="device_ip" default="192.168.1.200" />
+	<arg name="msop_port" default="6699" />
+	<arg name="difop_port" default="7788" />
+	<arg name="cut_angle" default="0" doc="If set at [0, 360), cut at specific angle feature activated, otherwise use the fixed packets number mode."/>
+	<arg name="lidar_param_path" default="$(find rslidar_pointcloud)/data/rs_lidar_16/"/>
+
+  <node  name="rslidar_node" pkg="rslidar_driver" type="rslidar_node" output="screen" >
+    <param name="model" value="$(arg model)"/>
+    <param name="device_ip" value="$(arg device_ip)" />
+    <param name="msop_port" value="$(arg msop_port)" />
+    <param name="difop_port" value="$(arg difop_port)"/>
+    <param name="cut_angle" value="$(arg cut_angle)"/> -->
+    <!--param name="pcap" value="path_to_pcap"/-->
+  <!-- </node>
+
+  <node  name="cloud_node" pkg="rslidar_pointcloud" type="cloud_node" output="screen" >
+    <param name="model" value="$(arg model)"/>
+    <param name="curves_path" value="$(arg lidar_param_path)/curves.csv" />
+    <param name="angle_path" value="$(arg lidar_param_path)/angle.csv" />
+    <param name="channel_path" value="$(arg lidar_param_path)/ChannelNum.csv" />
+    <param name="max_distance" value="200"/>
+    <param name="min_distance" value="0.4"/>
+    <param name="resolution_type" value="0.5cm"/>
+    <param name="intensity_mode" value="1"/>
+  </node> -->
+   <node pkg="rslidar_sdk" name="rslidar_sdk_node" type="rslidar_sdk_node" output="screen">
+    <param name="config_path" value=""/>
+  </node>
+
+<!-- imu -->
+	<group if="$(eval arg('imu') == 'ah200b')">
+		<node pkg="ah100b" type="ah100b" name="imu">
+			<param name="port" value="/dev/ttyUSB1" type="string" />
+			<param name="bund" value="115200" type="int" />
+		</node>
+	</group>
+
+
+
+	<group if="$(eval arg('imu') == 'ch104m')">
+		<node pkg="ch104m" type="ch104m" name="imu" output="screen">
+			<param name="port" value="/dev/ttyUSB_custom1" type="string" />
+			<param name="bund" value="115200" type="int" />
+			<param name="fake_acc" value="false" type="bool" />  <!-- 使用里程计模拟加速度 -->
+			<param name="odomtopic" value="/odom" type="string"/>  <!-- 模拟使用的话题 -->
+			<param name="reverse_install" value="false"  type="bool" />  <!-- 是否倒装(出线向车尾) -->
+			<param name="lio_sam" value="false"   type="bool" />  <!-- 是否使用 lio_sam 的左手系 -->
+		</node>
+	</group>
+
+	<!-- 键盘遥控 -->
+	<!-- <node name="keyboard_control" pkg="autolabor_keyboard_control" type="keyboard_control_node">
+		<param name="linear_min" value="0.3" />
+		<param name="linear_max" value="0.75" />
+		<param name="linear_step" value="0.2" />
+
+		<param name="angular_min" value="0.314" />
+		<param name="angular_max" value="1.57" />
+		<param name="angular_step" value="0.314" />
+	</node>
+
+	<node name="joy" pkg="joy" type="joy_node" />
+
+  <node name="joy_to_twist" pkg="joy_to_twist" type="joy_to_twist">
+	<param name="linear_min" value="0.1" />
+	<param name="linear_max" value="1.0" />
+	<param name="linear_step" value="0.1" />
+
+	<param name="angular_min" value="0.1" />
+	<param name="angular_max" value="1.0" />
+	<param name="angular_step" value="0.1" />
+  </node> -->
+
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+</launch>

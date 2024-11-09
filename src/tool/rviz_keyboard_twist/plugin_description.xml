@@ -1,0 +1,9 @@
+<library path="lib/libkeyboard_twist_panel">
+  <class name="rviz_keyboard_twist/KeyboardTwist"
+         type="autolabor_plugin::KeyboardTwistPanel"
+         base_class_type="rviz::Panel">
+    <description>
+      A panel widget using the keyboard to control the autolabor pro1.
+    </description>
+  </class>
+</library>

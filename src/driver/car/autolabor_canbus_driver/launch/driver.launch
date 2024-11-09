@@ -1,0 +1,9 @@
+<launch>
+
+    <node name="canbus_driver" pkg="autolabor_canbus_driver" type="canbus_driver" output="screen">
+        <param name="port_name" value="/dev/autolabor_pro1" />
+    </node>
+
+    <node name="pm1_driver" pkg="autolabor_canbus_driver" type="pm1_driver" output="screen" />
+
+</launch>

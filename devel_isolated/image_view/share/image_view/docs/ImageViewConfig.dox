@@ -1,0 +1,9 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~do_dynamic_scaling" : \b [bool] Do dynamic scaling about pixel values or not min: False, default: False, max: True
+- \b "~colormap" : \b [int] colormap min: -1, default: -1, max: 11
+- \b "~min_image_value" : \b [double] Minimum image value for scaling depth/float image. min: 0.0, default: 0.0, max: std::numeric_limits<double>::infinity()
+- \b "~max_image_value" : \b [double] Maximum image value for scaling depth/float image. min: 0.0, default: 0.0, max: std::numeric_limits<double>::infinity()
+

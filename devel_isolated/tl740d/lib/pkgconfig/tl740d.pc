@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/tl740d
+
+Name: tl740d
+Description: Description of tl740d
+Version: 0.0.0
+Cflags: -I/home/xyz/autolabor/src/driver/imu/tl740d/include
+Libs: -L${prefix}/lib -ltl740d
+Requires: roscpp sensor_msgs

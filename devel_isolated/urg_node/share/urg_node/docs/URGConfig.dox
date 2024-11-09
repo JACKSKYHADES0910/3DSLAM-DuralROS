@@ -1,0 +1,12 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~tf_prefix" : \b [str] tf_prefix for this node's output. min: , default: , max: 
+- \b "~frame_id" : \b [str] Output frame_id for the laserscan. min: , default: laser, max: 
+- \b "~time_offset" : \b [double] A manually calibrated offset (in seconds) to add to the timestamp before publication of a message. min: -10.0, default: 0.0, max: 10.0
+- \b "~angle_min" : \b [double] Controls the angle of the first range measurement in radians. min: -3.141592653589793, default: -3.141592653589793, max: 3.141592653589793
+- \b "~angle_max" : \b [double] Controls the angle of the last range measurement in radians. min: -3.141592653589793, default: 3.141592653589793, max: 3.141592653589793
+- \b "~cluster" : \b [int] The number of adjacent range measurements to cluster into a single reading. min: 1, default: 1, max: 99
+- \b "~skip" : \b [int] The number of input messages to skip between each output message. min: 0, default: 0, max: 9
+

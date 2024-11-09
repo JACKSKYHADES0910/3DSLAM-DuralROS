@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/joy_to_twist
+
+Name: joy_to_twist
+Description: Description of joy_to_twist
+Version: 0.1.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

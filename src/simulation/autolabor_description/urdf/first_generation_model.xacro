@@ -1,0 +1,182 @@
+<?xml version="1.0"?>
+	<!-- Revolute-Revolute Manipulator -->
+	<robot name="autolabor_pro1" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<xacro:property name="PI" value="3.1415926535897931"/>
+	<xacro:property name="shaft_spacing_f" value="0.19649" />
+	<xacro:property name="shaft_spacing_b" value="0.18988" />
+	<xacro:property name="wheel_spacing_2" value="0.2643" />
+	<xacro:property name="height" value="0.11913" />
+
+	<!-- Base Link -->
+	<link name="base_link">
+		<collision>
+			<origin xyz="0 0 0.18288" rpy="0 0 0"/>
+			<geometry>
+				<box size="0.7248 0.4302 0.195"/>
+			</geometry>
+		</collision>
+
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://autolabor_description/meshes/pro1_body_color.dae"/>
+			</geometry>
+		</visual>
+
+		<!-- <inertial>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<mass value="39"/>
+			<inertia ixx="0.7245" ixy="0.0" ixz="0.0" iyy="1.80" iyz="0.0" izz="2.2857"/>
+		</inertial> -->
+	</link>
+
+	<link name="left_front_wheel">
+		<collision>
+			<origin xyz="0 0 0" rpy="1.5708 0 0"/>
+			<geometry>
+				<cylinder length="0.0822" radius="0.127"/>
+			</geometry>
+		</collision>
+
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://autolabor_description/meshes/pro1_wheel_color.dae"/>
+			</geometry>
+		</visual>
+
+		<inertial>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<mass value="1.5"/>
+			<inertia ixx="0.013" ixy="0.0" ixz="0.0" iyy="0.0074" iyz="0.0" izz="0.0074"/>
+		</inertial>
+	</link>
+
+	<link name="left_back_wheel">
+		<collision>
+			<origin xyz="0 0 0" rpy="1.5708 0 0"/>
+			<geometry>
+				<cylinder length="0.0822" radius="0.127"/>
+			</geometry>
+		</collision>
+
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://autolabor_description/meshes/pro1_wheel_color.dae"/>
+			</geometry>
+		</visual>
+
+		<inertial>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<mass value="1.5"/>
+			<inertia ixx="0.013" ixy="0.0" ixz="0.0" iyy="0.0074" iyz="0.0" izz="0.0074"/>
+		</inertial>
+	</link>
+
+	<link name="right_front_wheel">
+		<collision>
+			<origin xyz="0 0 0" rpy="1.5708 0 0"/>
+			<geometry>
+				<cylinder length="0.0822" radius="0.127"/>
+			</geometry>
+		</collision>
+
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 ${PI}"/>
+			<geometry>
+				<mesh filename="package://autolabor_description/meshes/pro1_wheel_color.dae"/>
+			</geometry>
+		</visual>
+
+		<inertial>
+			<origin xyz="0 0 0" rpy="0 0 ${PI}"/>
+			<mass value="1.5"/>
+			<inertia ixx="0.013" ixy="0.0" ixz="0.0" iyy="0.0074" iyz="0.0" izz="0.0074"/>
+		</inertial>
+	</link>
+
+	<link name="right_back_wheel">
+		<collision>
+			<origin xyz="0 0 0" rpy="1.5708 0 0"/>
+			<geometry>
+				<cylinder length="0.0822" radius="0.127"/>
+			</geometry>
+		</collision>
+
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 ${PI}"/>
+			<geometry>
+				<mesh filename="package://autolabor_description/meshes/pro1_wheel_color.dae"/>
+			</geometry>
+		</visual>
+
+		<inertial>
+			<origin xyz="0 0 0" rpy="0 0 ${PI}"/>
+			<mass value="1.5"/>
+			<inertia ixx="0.013" ixy="0.0" ixz="0.0" iyy="0.0074" iyz="0.0" izz="0.0074"/>
+		</inertial>
+	</link>
+
+	<link name="laser">
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<cylinder length="0.05" radius="0.03"/>
+			</geometry>
+		</collision>
+
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<cylinder length="0.05" radius="0.03"/>
+			</geometry>
+		</visual>
+
+		<inertial>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<mass value="0.1"/>
+			<inertia ixx="0.0074" ixy="0.0" ixz="0.0" iyy="0.0074" iyz="0.0" izz="0.013"/>
+		</inertial>
+	</link>
+
+	<joint name="joint_left_front" type="continuous">
+		<parent link="base_link"/>
+		<child link="left_front_wheel"/>
+		<origin xyz="${shaft_spacing_f} ${wheel_spacing_2} ${height}" rpy="0 0 0"/>
+		<axis xyz="0 1 0"/>
+		<dynamics damping="0.7"/>
+	</joint>
+
+	<joint name="joint_left_back" type="continuous">
+		<parent link="base_link"/>
+		<child link="left_back_wheel"/>
+		<origin xyz="-${shaft_spacing_b} ${wheel_spacing_2} ${height}" rpy="0 0 0"/>
+		<axis xyz="0 1 0"/>
+		<dynamics damping="0.7"/>
+	</joint>
+
+	<joint name="joint_right_front" type="continuous">
+		<parent link="base_link"/>
+		<child link="right_front_wheel"/>
+		<origin xyz="${shaft_spacing_f} -${wheel_spacing_2} ${height}" rpy="0 0 0"/>
+		<axis xyz="0 1 0"/>
+		<dynamics damping="0.7"/>
+	</joint>
+
+	<joint name="joint_right_back" type="continuous">
+		<parent link="base_link"/>
+		<child link="right_back_wheel"/>
+		<origin xyz="-${shaft_spacing_b} -${wheel_spacing_2} ${height}" rpy="0 0 0"/>
+		<axis xyz="0 1 0"/>
+		<dynamics damping="0.7"/>
+	</joint>
+
+	<joint name="joint_lidar" type="fixed">
+		<parent link="base_link"/>
+		<child link="laser"/>
+		<origin xyz="0.0 0.0 0.5" rpy="0.0 0.0 1.57"/>
+	</joint>
+
+</robot>

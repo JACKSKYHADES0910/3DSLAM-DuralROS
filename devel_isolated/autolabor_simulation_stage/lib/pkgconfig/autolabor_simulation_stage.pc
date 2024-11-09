@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/autolabor_simulation_stage
+
+Name: autolabor_simulation_stage
+Description: Description of autolabor_simulation_stage
+Version: 0.0.1
+Cflags: -I/home/xyz/autolabor/devel_isolated/autolabor_simulation_stage/include -I/home/xyz/autolabor/src/simulation/autolabor_simulation_stage/include
+Libs: -L${prefix}/lib 
+Requires: 

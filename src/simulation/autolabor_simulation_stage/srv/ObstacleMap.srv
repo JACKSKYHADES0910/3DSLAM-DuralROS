@@ -1,0 +1,3 @@
+string[] ignore_obstacle_id
+---
+nav_msgs/OccupancyGrid obstacle_map

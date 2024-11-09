@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/location_fusion
+
+Name: location_fusion
+Description: Description of location_fusion
+Version: 0.0.1
+Cflags: -I/home/xyz/autolabor/src/navigation/location_fusion/include
+Libs: -L${prefix}/lib 
+Requires: 

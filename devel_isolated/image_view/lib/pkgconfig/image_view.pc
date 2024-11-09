@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/image_view
+
+Name: image_view
+Description: Description of image_view
+Version: 1.12.23
+Cflags: -I/home/xyz/autolabor/devel_isolated/image_view/include
+Libs: -L${prefix}/lib 
+Requires: dynamic_reconfigure

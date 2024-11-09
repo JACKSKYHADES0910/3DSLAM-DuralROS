@@ -1,0 +1,24 @@
+#!/bin/bash
+
+
+if [ ! -e "/dev/kinect2_1" ] && [ ! -e "/dev/kinect2_2" ] && [ ! -e "/dev/kinect2_3" ]; then
+  zenity --no-wrap --error --text="kinect2连接失败，请检查kinect2是否连接至上位机"
+  exit 0
+fi
+
+source /opt/autolabor/ros/catkin_ws/devel/setup.bash
+IP=`ifconfig wlan0 | grep "inet 地址:" | awk '{print $2}' | cut -c 8-`
+
+if [ -z "$IP" ]; then
+  IP="127.0.0.1"
+fi
+
+export ROS_MASTER_URI=http://$IP:11311/
+export ROS_IP=$IP
+
+nohup roslaunch autolabor_test_launch kinect2_test.launch&
+sleep 5
+zenity --no-wrap --info --text="查看图像中有点云出现，kinect2正常，否则检查kinect2是否连接到usb3.0口，点确定后再次尝试"
+killall rosmaster
+
+

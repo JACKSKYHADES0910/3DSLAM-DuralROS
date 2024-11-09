@@ -1,0 +1,19 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~stereo_algorithm" : \b [int] stereo algorithm min: 0, default: 0, max: 1
+- \b "~prefilter_size" : \b [int] Normalization window size, pixels min: 5, default: 9, max: 255
+- \b "~prefilter_cap" : \b [int] Bound on normalized pixel values min: 1, default: 31, max: 63
+- \b "~correlation_window_size" : \b [int] SAD correlation window width, pixels min: 5, default: 15, max: 255
+- \b "~min_disparity" : \b [int] Disparity to begin search at, pixels (may be negative) min: -128, default: 0, max: 128
+- \b "~disparity_range" : \b [int] Number of disparities to search, pixels min: 32, default: 64, max: 256
+- \b "~uniqueness_ratio" : \b [double] Filter out if best match does not sufficiently exceed the next-best match min: 0.0, default: 15.0, max: 100.0
+- \b "~texture_threshold" : \b [int] Filter out if SAD window response does not exceed texture threshold min: 0, default: 10, max: 10000
+- \b "~speckle_size" : \b [int] Reject regions smaller than this size, pixels min: 0, default: 100, max: 1000
+- \b "~speckle_range" : \b [int] Max allowed difference between detected disparities min: 0, default: 4, max: 31
+- \b "~fullDP" : \b [bool] Run the full variant of the algorithm, only available in SGBM min: False, default: False, max: True
+- \b "~P1" : \b [double] The first parameter controlling the disparity smoothness, only available in SGBM min: 0.0, default: 200.0, max: 4000.0
+- \b "~P2" : \b [double] The second parameter controlling the disparity smoothness., only available in SGBM min: 0.0, default: 400.0, max: 4000.0
+- \b "~disp12MaxDiff" : \b [int] Maximum allowed difference (in integer pixel units) in the left-right disparity check, only available in SGBM min: 0, default: 0, max: 128
+

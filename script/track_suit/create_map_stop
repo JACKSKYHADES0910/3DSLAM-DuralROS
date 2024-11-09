@@ -1,0 +1,14 @@
+#!/bin/bash
+
+source /opt/autolabor/ros/catkin_ws/devel/setup.bash
+roscd autolabor_navigation_launch/map/
+
+filename_suffix=`date "+%Y%m%d%H%M%S"`
+if [ -e "map.pbstream" ];then
+    mv map.pbstream map$filename_suffix.pbstream
+fi
+
+rosservice call /finish_trajectory 0
+rosservice call /write_state "filename: '$(pwd)/map.pbstream'"
+
+killall rosmaster

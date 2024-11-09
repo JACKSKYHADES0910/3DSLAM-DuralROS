@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/image_publisher
+
+Name: image_publisher
+Description: Description of image_publisher
+Version: 1.12.23
+Cflags: -I/home/xyz/autolabor/devel_isolated/image_publisher/include
+Libs: -L${prefix}/lib 
+Requires: 

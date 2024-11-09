@@ -1,0 +1,46 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/common/task.h
+set
+-
+absl/synchronization/mutex.h
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/common/absl/synchronization/mutex.h
+glog/logging.h
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/common/glog/logging.h
+thread_pool.h
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/common/thread_pool.h
+
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/common/thread_pool.h
+deque
+-
+functional
+-
+memory
+-
+thread
+-
+vector
+-
+absl/container/flat_hash_map.h
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/common/absl/container/flat_hash_map.h
+absl/synchronization/mutex.h
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/common/absl/synchronization/mutex.h
+cartographer/common/task.h
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/common/cartographer/common/task.h
+
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/common/thread_pool_test.cc
+cartographer/common/thread_pool.h
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/common/cartographer/common/thread_pool.h
+vector
+-
+absl/memory/memory.h
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/common/absl/memory/memory.h
+gtest/gtest.h
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/common/gtest/gtest.h
+

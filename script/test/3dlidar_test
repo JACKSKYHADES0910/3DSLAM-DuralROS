@@ -1,0 +1,21 @@
+#!/bin/bash
+
+source /home/autolabor/.alconfig/sethardware.bash
+source /opt/autolabor/ros/catkin_ws/devel/setup.bash
+IP=`ifconfig wlan0 | grep "inet 地址:" | awk '{print $2}' | cut -c 8-`
+
+if [ -z "$IP" ]; then
+  IP="127.0.0.1"
+fi
+
+
+
+export ROS_MASTER_URI=http://$IP:11311/
+export ROS_IP=$IP
+
+nohup roslaunch autolabor_test_launch 3dlidar_test.launch&
+sleep 5
+zenity --no-wrap --info --text="查看图像中有点云出现，多线激光雷达正常，否则检查雷达是否供电，网线是否连接上位机，上位机IP设置是否正确"
+killall rosmaster
+
+

@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/io/internal/pbstream_info.h
+
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/io/internal/pbstream_migrate.h
+
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/io/pbstream_main.cc
+functional
+-
+absl/container/flat_hash_set.h
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/io/absl/container/flat_hash_set.h
+cartographer/io/internal/pbstream_info.h
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/io/cartographer/io/internal/pbstream_info.h
+cartographer/io/internal/pbstream_migrate.h
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/io/cartographer/io/internal/pbstream_migrate.h
+gflags/gflags.h
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/io/gflags/gflags.h
+glog/logging.h
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/io/glog/logging.h
+

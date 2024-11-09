@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/install_isolated
+
+Name: kinect2_registration
+Description: Description of kinect2_registration
+Version: 0.0.1
+Cflags: -I${prefix}/include -I/usr/include
+Libs: -L${prefix}/lib -lkinect2_registration /usr/lib/x86_64-linux-gnu/libOpenCL.so
+Requires: 

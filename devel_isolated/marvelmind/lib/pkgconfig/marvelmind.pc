@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/marvelmind
+
+Name: marvelmind
+Description: Description of marvelmind
+Version: 0.0.1
+Cflags: -I/home/xyz/autolabor/devel_isolated/marvelmind/include -I/home/xyz/autolabor/src/driver/location/marvelmind/include
+Libs: -L${prefix}/lib 
+Requires: 

@@ -1,0 +1,19 @@
+\subsubsection usage Usage
+\verbatim
+<node name="image_rotate" pkg="image_rotate" type="image_rotate">
+  <param name="target_frame_id" type="str" value="base_link" />
+  <param name="target_x" type="double" value="0.0" />
+  <param name="target_y" type="double" value="0.0" />
+  <param name="target_z" type="double" value="1.0" />
+  <param name="source_frame_id" type="str" value="" />
+  <param name="source_x" type="double" value="0.0" />
+  <param name="source_y" type="double" value="-1.0" />
+  <param name="source_z" type="double" value="0.0" />
+  <param name="output_frame_id" type="str" value="" />
+  <param name="input_frame_id" type="str" value="" />
+  <param name="use_camera_info" type="bool" value="True" />
+  <param name="max_angular_rate" type="double" value="10.0" />
+  <param name="output_image_size" type="double" value="2.0" />
+</node>
+\endverbatim
+

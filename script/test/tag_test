@@ -1,0 +1,26 @@
+#!/bin/bash
+
+
+if [ ! -e "/dev/box_3" ]; then
+  zenity --no-wrap --error --text="定位标签连接失败，请检查定位标签是否连接至上位机"
+  exit 0
+fi
+
+stty -F /dev/box_3 raw
+
+source /opt/autolabor/ros/catkin_ws/devel/setup.bash
+IP=`ifconfig wlan0 | grep "inet 地址:" | awk '{print $2}' | cut -c 8-`
+
+if [ -z "$IP" ]; then
+  IP="127.0.0.1"
+fi
+
+export ROS_MASTER_URI=http://$IP:11311/
+export ROS_IP=$IP
+
+nohup roslaunch autolabor_test_launch tag_test.launch&
+sleep 5
+zenity --no-wrap --info --text="在屏幕中出现圆点则表示定位标签正常"
+killall rosmaster
+
+

@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/src/driver/imu/ch104m/build/devel
+
+Name: ch104m
+Description: Description of ch104m
+Version: 1.0.0
+Cflags: -I/home/xyz/autolabor/src/driver/imu/ch104m/build/devel/include
+Libs: -L${prefix}/lib 
+Requires: roscpp rospy serial std_msgs message_runtime

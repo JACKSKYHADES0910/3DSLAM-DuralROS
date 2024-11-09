@@ -1,0 +1,9 @@
+<library path="lib/libautolabor_calibration_panel">
+  <class name="rviz_autolabor_calibration/AutolaborCalibration"
+         type="autolabor_plugin::AutolaborCalibrationPanel"
+         base_class_type="rviz::Panel">
+    <description>
+      A panel widget used to calibrate the autolabor pro1 chassis odometer.
+    </description>
+  </class>
+</library>

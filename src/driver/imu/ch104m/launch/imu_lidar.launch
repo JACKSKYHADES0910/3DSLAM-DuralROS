@@ -1,0 +1,18 @@
+<launch>
+
+    <arg name="lidar3d" value="rs16" />  # rs16  or rshelio16
+
+    <node pkg="rslidar_sdk" name="rslidar_sdk_node" type="rslidar_sdk_node" output="screen">
+        <param name="config_path" value="$(find rslidar_sdk)/config/config_$(arg lidar3d).yaml"/>
+    </node>
+
+    <node pkg="ch104m" type="ch104m" name="imu" output="screen">
+        <param name="port" value="/dev/box_5" type="string" />
+        <param name="baud" value="115200" type="int" />
+        <param name="odomtopic" value="/odom" type="string"/>
+        <param name="fake_acc" value="true"   type="bool" />
+        <param name="reverse_install" value="true"  type="bool" />
+        <param name="lio_sam" value="true"  type="bool" />
+    </node>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ah200c)/rviz/imu_lidar.rviz" required ="true"/>
+</launch>

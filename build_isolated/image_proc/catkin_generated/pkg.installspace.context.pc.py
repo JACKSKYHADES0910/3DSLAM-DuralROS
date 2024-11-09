@@ -1,0 +1,8 @@
+# generated from catkin/cmake/template/pkg.context.pc.in
+CATKIN_PACKAGE_PREFIX = ""
+PROJECT_PKG_CONFIG_INCLUDE_DIRS = "${prefix}/include;/usr/local/include/opencv4".split(';') if "${prefix}/include;/usr/local/include/opencv4" != "" else []
+PROJECT_CATKIN_DEPENDS = "image_geometry;roscpp;sensor_msgs".replace(';', ' ')
+PKG_CONFIG_LIBRARIES_WITH_PREFIX = "-limage_proc;/usr/local/lib/libopencv_calib3d.so.4.6.0;/usr/local/lib/libopencv_core.so.4.6.0;/usr/local/lib/libopencv_dnn.so.4.6.0;/usr/local/lib/libopencv_features2d.so.4.6.0;/usr/local/lib/libopencv_flann.so.4.6.0;/usr/local/lib/libopencv_gapi.so.4.6.0;/usr/local/lib/libopencv_highgui.so.4.6.0;/usr/local/lib/libopencv_imgcodecs.so.4.6.0;/usr/local/lib/libopencv_imgproc.so.4.6.0;/usr/local/lib/libopencv_ml.so.4.6.0;/usr/local/lib/libopencv_objdetect.so.4.6.0;/usr/local/lib/libopencv_photo.so.4.6.0;/usr/local/lib/libopencv_stitching.so.4.6.0;/usr/local/lib/libopencv_video.so.4.6.0;/usr/local/lib/libopencv_videoio.so.4.6.0".split(';') if "-limage_proc;/usr/local/lib/libopencv_calib3d.so.4.6.0;/usr/local/lib/libopencv_core.so.4.6.0;/usr/local/lib/libopencv_dnn.so.4.6.0;/usr/local/lib/libopencv_features2d.so.4.6.0;/usr/local/lib/libopencv_flann.so.4.6.0;/usr/local/lib/libopencv_gapi.so.4.6.0;/usr/local/lib/libopencv_highgui.so.4.6.0;/usr/local/lib/libopencv_imgcodecs.so.4.6.0;/usr/local/lib/libopencv_imgproc.so.4.6.0;/usr/local/lib/libopencv_ml.so.4.6.0;/usr/local/lib/libopencv_objdetect.so.4.6.0;/usr/local/lib/libopencv_photo.so.4.6.0;/usr/local/lib/libopencv_stitching.so.4.6.0;/usr/local/lib/libopencv_video.so.4.6.0;/usr/local/lib/libopencv_videoio.so.4.6.0" != "" else []
+PROJECT_NAME = "image_proc"
+PROJECT_SPACE_DIR = "/home/xyz/autolabor/install_isolated"
+PROJECT_VERSION = "1.12.23"

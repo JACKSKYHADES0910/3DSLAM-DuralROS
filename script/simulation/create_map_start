@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source /opt/autolabor/ros/catkin_ws/devel/setup.bash
+roslaunch autolabor_navigation_launch second_generation_mapping_simulation.launch
+

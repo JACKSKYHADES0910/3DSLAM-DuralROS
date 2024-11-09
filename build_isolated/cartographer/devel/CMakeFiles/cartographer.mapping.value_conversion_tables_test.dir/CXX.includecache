@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/common/port.h
+boost/iostreams/device/back_inserter.hpp
+-
+boost/iostreams/filter/gzip.hpp
+-
+boost/iostreams/filtering_stream.hpp
+-
+cinttypes
+-
+cmath
+-
+string
+-
+
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/mapping/value_conversion_tables.h
+map
+-
+vector
+-
+cartographer/common/port.h
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/mapping/cartographer/common/port.h
+glog/logging.h
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/mapping/glog/logging.h
+
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/mapping/value_conversion_tables_test.cc
+cartographer/mapping/value_conversion_tables.h
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/mapping/cartographer/mapping/value_conversion_tables.h
+random
+-
+gtest/gtest.h
+/home/xyz/autolabor/src/mapping/cartographer/cartographer/mapping/gtest/gtest.h
+

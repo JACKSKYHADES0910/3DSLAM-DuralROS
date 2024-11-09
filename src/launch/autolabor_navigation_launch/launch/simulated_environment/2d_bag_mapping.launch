@@ -1,0 +1,28 @@
+<launch>
+
+
+	<arg name="robot_pub_tf" default="false" />
+	<param name="use_sim_time" value="true"/>
+	<arg name="lidar2d" value="fslidar" />  # fslidar or ldlidar
+	<arg name="lidar3d" value="rs16" />  # rs16  or rshelio16
+	<param name="robot_description" command="$(find xacro)/xacro --inorder '$(find autolabor_description)/urdf/second_generation_model.xacro' lidar2d:=$(arg lidar2d) lidar3d:=$(arg lidar3d)" />
+
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+	<!-- 建图节点 -->
+	<node name="cartographer_node" pkg="cartographer_ros"
+		type="cartographer_node" args="
+			-configuration_directory $(find autolabor_navigation_launch)/params/cartographer
+			-configuration_basename second_generation_mapping.lua"
+		output="screen">
+	</node>
+<!--	<node pkg="rosbag" type="play" name="player" output="screen" args="&#45;&#45;clock /home/autolabor/2dslam_2022-07-04-17-01-49.bag"/>-->
+
+	<node pkg="rosbag" type="play" name="player"  args="--clock /home/autolabor/full_office.bag"/>
+	<node name="cartographer_occupancy_grid_node" pkg="cartographer_ros" type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
+
+   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find autolabor_navigation_launch)/rviz/2d_bag_mapping.rviz" />
+
+</launch>

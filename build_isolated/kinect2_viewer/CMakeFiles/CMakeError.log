@@ -1,0 +1,58 @@
+Performing C++ SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/xyz/autolabor/build_isolated/kinect2_viewer/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_d5324/fast && /usr/bin/make -f CMakeFiles/cmTC_d5324.dir/build.make CMakeFiles/cmTC_d5324.dir/build
+make[1]: Entering directory '/home/xyz/autolabor/build_isolated/kinect2_viewer/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_d5324.dir/src.cxx.o
+/usr/bin/c++    -std=c++11 -O3 -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_d5324.dir/src.cxx.o -c /home/xyz/autolabor/build_isolated/kinect2_viewer/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_d5324
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d5324.dir/link.txt --verbose=1
+/usr/bin/c++  -std=c++11 -O3 -DCMAKE_HAVE_LIBC_PTHREAD    CMakeFiles/cmTC_d5324.dir/src.cxx.o  -o cmTC_d5324 
+/usr/bin/ld: CMakeFiles/cmTC_d5324.dir/src.cxx.o: in function `main':
+src.cxx:(.text.startup+0x29): undefined reference to `pthread_create'
+/usr/bin/ld: src.cxx:(.text.startup+0x32): undefined reference to `pthread_detach'
+/usr/bin/ld: src.cxx:(.text.startup+0x3d): undefined reference to `pthread_join'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_d5324.dir/build.make:87: cmTC_d5324] Error 1
+make[1]: Leaving directory '/home/xyz/autolabor/build_isolated/kinect2_viewer/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_d5324/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/xyz/autolabor/build_isolated/kinect2_viewer/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_e0b48/fast && /usr/bin/make -f CMakeFiles/cmTC_e0b48.dir/build.make CMakeFiles/cmTC_e0b48.dir/build
+make[1]: Entering directory '/home/xyz/autolabor/build_isolated/kinect2_viewer/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_e0b48.dir/CheckFunctionExists.cxx.o
+/usr/bin/c++    -std=c++11 -O3 -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_e0b48.dir/CheckFunctionExists.cxx.o -c /home/xyz/autolabor/build_isolated/kinect2_viewer/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx
+Linking CXX executable cmTC_e0b48
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e0b48.dir/link.txt --verbose=1
+/usr/bin/c++  -std=c++11 -O3 -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_e0b48.dir/CheckFunctionExists.cxx.o  -o cmTC_e0b48  -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_e0b48.dir/build.make:87: cmTC_e0b48] Error 1
+make[1]: Leaving directory '/home/xyz/autolabor/build_isolated/kinect2_viewer/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_e0b48/fast] Error 2
+
+
+

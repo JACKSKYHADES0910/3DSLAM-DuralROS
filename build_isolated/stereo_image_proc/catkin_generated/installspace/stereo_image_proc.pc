@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/install_isolated
+
+Name: stereo_image_proc
+Description: Description of stereo_image_proc
+Version: 1.12.23
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lstereo_image_proc
+Requires: image_geometry image_proc sensor_msgs stereo_msgs

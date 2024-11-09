@@ -1,0 +1,18 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~target_frame_id" : \b [str] Frame in which the target vector is specified. Empty means the input frame. min: , default: base_link, max: 
+- \b "~target_x" : \b [double] X coordinate of the target vector min: -10.0, default: 0.0, max: 10.0
+- \b "~target_y" : \b [double] Y coordinate of the target vector min: -10.0, default: 0.0, max: 10.0
+- \b "~target_z" : \b [double] Z coordinate of the target vector min: -10.0, default: 1.0, max: 10.0
+- \b "~source_frame_id" : \b [str] Frame in which the source vector is specified. Empty means the input frame. min: , default: , max: 
+- \b "~source_x" : \b [double] X coordinate of the direction the target should be aligned with. min: -10.0, default: 0.0, max: 10.0
+- \b "~source_y" : \b [double] Y coordinate of the direction the target should be aligned with. min: -10.0, default: -1.0, max: 10.0
+- \b "~source_z" : \b [double] Z coordinate of the direction the target should be aligned with. min: -10.0, default: 0.0, max: 10.0
+- \b "~output_frame_id" : \b [str] Frame to publish for the image's new orientation. Empty means add '_rotated' suffix to the image frame. min: , default: , max: 
+- \b "~input_frame_id" : \b [str] Frame to use for the original camera image. Empty means that the frame in the image or camera_info should be used depending on use_camera_info. min: , default: , max: 
+- \b "~use_camera_info" : \b [bool] Indicates that the camera_info topic should be subscribed to to get the default input_frame_id. Otherwise the frame from the image message will be used. min: False, default: True, max: True
+- \b "~max_angular_rate" : \b [double] Limits the rate at which the image can rotate (rad/s). Zero means no limit. min: 0.0, default: 10.0, max: 100.0
+- \b "~output_image_size" : \b [double] Size of the output image as a function of the input image size. Can be varied continuously between the following special settings: 0 ensures no black ever appears, 1 is small image dimension, 2 is large image dimension, 3 is image diagonal. min: 0.0, default: 2.0, max: 3.0
+

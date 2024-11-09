@@ -1,0 +1,59 @@
+<launch>
+
+    <arg name="is_master" default="true"/>
+    <arg name="robot_prefix" default=""/>
+	<arg name="show_rviz" default="true" />
+
+    <include file="$(find autolabor_navigation_launch)/launch/simulated_environment/common_stage_simulation.launch" if="$(arg is_master)" />
+
+	<env name="ROBOT_PREFIX" value="$(arg robot_prefix)" />
+
+    <group ns="$(arg robot_prefix)">
+
+        <include file="$(find autolabor_navigation_launch)/launch/simulated_environment/second_generation_driver_simulation.launch">
+			<arg name="robot_description" value="$(find xacro)/xacro --inorder '$(find autolabor_description)/urdf/second_generation_model.xacro'" />
+			<arg name="enable_multicar" value="true"/>
+            <arg name="robot_prefix" value="$(arg robot_prefix)"/>
+        </include>
+
+		<!-- 定位模块 -->
+		<node name="cartographer_node" pkg="cartographer_ros"
+			type="cartographer_node" args="
+				-configuration_directory $(find autolabor_navigation_launch)/params/cartographer
+				-configuration_basename second_generation_multicar_location.lua
+				-load_state_filename $(find autolabor_navigation_launch)/map/map_simulation.pbstream"
+			>
+		</node>
+
+		<node pkg="cartographer_initialpose" type="cartographer_initialpose" name="cartographer_initialpose" >
+			<param name="configuration_directory" value="$(find autolabor_navigation_launch)/params/cartographer" />
+			<param name="configuration_basename" value="second_generation_multicar_location.lua" />
+		</node>
+
+		<node name="cartographer_occupancy_grid_node" pkg="cartographer_ros" type="cartographer_occupancy_grid_node" args="-resolution 0.05 --noinclude_unfrozen_submaps" />
+
+		<!-- 导航模块 -->
+		<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+			<rosparam file="$(find autolabor_navigation_launch)/params/navigation/move_base/navigation_move_base.yaml" command="load" />
+			<rosparam file="$(find autolabor_navigation_launch)/params/navigation/costmap/two_laser_global_costmap_params.yaml" command="load" ns="global_costmap"/>
+			<rosparam file="$(find autolabor_navigation_launch)/params/navigation/costmap/two_laser_local_costmap_params.yaml" command="load" ns="local_costmap"/>
+			<rosparam file="$(find autolabor_navigation_launch)/params/navigation/global_planer/navfn_params.yaml" command="load" ns="NavfnROS"/>
+			<rosparam file="$(find autolabor_navigation_launch)/params/navigation/local_planer/navigation_teb_local_planner_params.yaml" command="load" ns="TebLocalPlannerROS"/>
+
+			<param name="base_global_planner" value="navfn/NavfnROS" />
+			
+			<param name="global_costmap/global_frame" value="$(arg robot_prefix)/map" />
+			<param name="global_costmap/robot_base_frame" value="$(arg robot_prefix)/base_link" />
+			<param name="local_costmap/global_frame" value="$(arg robot_prefix)/odom" />
+			<param name="local_costmap/robot_base_frame" value="$(arg robot_prefix)/base_link" />
+
+			<param name="TebLocalPlannerROS/map_frame" value="$(arg robot_prefix)/map" />
+			<param name="TebLocalPlannerROS/xy_goal_tolerance" value="0.5" unless="$(arg is_master)" />
+			<param name="TebLocalPlannerROS/yaw_goal_tolerance" value="1.57" unless="$(arg is_master)" />
+		</node>
+
+    </group>
+
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find autolabor_navigation_launch)/rviz/second_generation_multicar_navigation.rviz" if="$(eval arg('is_master') and arg('show_rviz'))" output="screen" />
+
+</launch>

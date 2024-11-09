@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/rviz_imu_plugin
+
+Name: rviz_imu_plugin
+Description: Description of rviz_imu_plugin
+Version: 1.0.15
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: rviz

@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/install_isolated
+
+Name: ps3joy
+Description: Description of ps3joy
+Version: 1.11.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: diagnostic_msgs sensor_msgs rospy rosgraph

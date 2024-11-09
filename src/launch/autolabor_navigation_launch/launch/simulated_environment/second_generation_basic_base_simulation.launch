@@ -1,0 +1,14 @@
+<launch>
+
+	<arg name="robot_pub_tf" default="false" />
+	<arg name="lidar2d" value="$(env AL_LIDAR2D)" />
+	<arg name="lidar3d" value="$(env AL_LIDAR3D)" />
+	<include file="$(find autolabor_navigation_launch)/launch/simulated_environment/common_stage_simulation.launch" />
+
+	<include file="$(find autolabor_navigation_launch)/launch/simulated_environment/second_generation_driver_simulation.launch">
+		<arg name="robot_description" value="$(find xacro)/xacro --inorder '$(find autolabor_description)/urdf/third_generation_model.xacro' lidar2d:=$(arg lidar2d) lidar3d:=$(arg lidar3d)"/>
+		<arg name="robot_pub_tf" value="$(arg robot_pub_tf)"/>
+		<arg name="enable_multicar" value="false"/>
+	</include>
+
+</launch>
