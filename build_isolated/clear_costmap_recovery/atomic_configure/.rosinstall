@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/xyz/autolabor/devel_isolated/clear_costmap_recovery/setup.sh

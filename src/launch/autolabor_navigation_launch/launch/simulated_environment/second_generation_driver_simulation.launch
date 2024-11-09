@@ -1,0 +1,119 @@
+<launch>
+    <arg name="robot_pub_tf" default="false" />
+	<arg name="enable_multicar" default="false"/>
+	<arg name="robot_prefix" default=""/>
+	<arg name="robot_description" default="$(find xacro)/xacro --inorder '$(find autolabor_description)/urdf/second_generation_model.xacro'" />
+
+	<arg name="robot_prefix_list" default="[$(arg robot_prefix)]" />
+
+	<param name="robot_description" command="$(arg robot_description)" />
+
+    <!-- 车辆底层模拟 -->
+	<node pkg="autolabor_simulation_base" type="simulation_base_node" name="autolabor_driver" output="screen">
+		<!-- 单车参数 -->
+		<param name="map_frame" value="map" unless="$(arg enable_multicar)"/>
+		<param name="odom_frame" value="odom" unless="$(arg enable_multicar)"/>
+		<param name="base_link_frame" value="base_link" unless="$(arg enable_multicar)"/>
+		<!-- 多车参数 -->
+		<param name="map_frame" value="$(arg robot_prefix)/map" if="$(arg enable_multicar)"/>
+		<param name="odom_frame" value="$(arg robot_prefix)/odom" if="$(arg enable_multicar)"/>
+		<param name="base_link_frame" value="$(arg robot_prefix)/base_link" if="$(arg enable_multicar)"/>
+
+		<param name="real_map_frame" value="real_map"/>
+
+		<param name="noise_v_linear" value="0.02"/>
+		<param name="noise_v_theta" value="0.02"/>
+
+		<param name="max_a_linear" value="1.0"/>
+		<param name="max_a_theta" value="1.0"/>
+
+		<param name="max_v_linear" value="1.0"/>
+		<param name="max_v_theta" value="1.57"/>
+
+		<param name="rate" value="10"/>
+
+		<param name="is_tf_broadcast" value="$(arg robot_pub_tf)" />
+	</node>
+
+	<node name="obstacle_car" pkg="autolabor_simulation_object" type="simulation_object_bind_node" output="screen" if="$(arg enable_multicar)">
+		<param name="object_id" value="$(arg robot_prefix)"/>
+		<param name="object_frame" value="real_map"/>
+		<param name="bind_frame" value="$(arg robot_prefix)/base_link"/>
+		<param name="rate" value="10"/>
+		<rosparam param="object_footprints">[[0.35,0.3, 0.35,-0.3, -0.35,-0.3, -0.35,0.3]]</rosparam>
+	</node>
+
+	<!-- 雷达驱动 前-->
+	<node name="simulation_lidar_front" pkg="autolabor_simulation_lidar" type="simulation_lidar_node" output="screen">
+		<remap from="scan" to="scan_1" />
+		<param name="min_angle" value="-1.57" />
+		<param name="max_angle" value="1.57" />
+
+		<param name="min_distance" value="0.15" />
+		<param name="max_distance" value="10.00" />
+
+		<param name="size" value="400" />
+		<param name="rate" value="10" />
+		<param name="noise" value="0.005" />
+
+		<param name="global_frame" value="real_map" />
+		
+		<!-- 单车参数 -->
+		<param name="use_map_service" value="false" unless="$(arg enable_multicar)"/>        
+		<param name="lidar_frame" value="lidar_front" unless="$(arg enable_multicar)"/>
+		<param name="stage_map_topic" value="stage_map" unless="$(arg enable_multicar)"/>
+		<!-- 多车参数 -->
+		<param name="use_map_service" value="true" if="$(arg enable_multicar)"/>        
+		<param name="lidar_frame" value="$(arg robot_prefix)/lidar_front" if="$(arg enable_multicar)"/>
+		<param name="map_service_name" value="/map_handle" if="$(arg enable_multicar)"/>
+		<rosparam param="ignore_object_id" subst_value="true" if="$(arg enable_multicar)">$(arg robot_prefix_list)</rosparam>	
+
+	</node>
+
+	<!-- 雷达驱动 后-->
+	<node name="simulation_lidar_back" pkg="autolabor_simulation_lidar" type="simulation_lidar_node" output="screen">
+		<remap from="scan" to="scan_2" />
+		<param name="min_angle" value="-1.57" />
+		<param name="max_angle" value="1.57" />
+
+		<param name="min_distance" value="0.15" />
+		<param name="max_distance" value="10.00" />
+
+		<param name="size" value="400" />
+		<param name="rate" value="10" />
+		<param name="noise" value="0.005" />
+
+		<param name="global_frame" value="real_map" />
+
+		<!-- 单车参数 -->
+		<param name="use_map_service" value="false" unless="$(arg enable_multicar)"/>        
+		<param name="lidar_frame" value="lidar_back" unless="$(arg enable_multicar)"/>
+		<param name="stage_map_topic" value="stage_map" unless="$(arg enable_multicar)"/>
+		<!-- 多车参数 -->
+		<param name="use_map_service" value="true" if="$(arg enable_multicar)"/>        
+		<param name="lidar_frame" value="$(arg robot_prefix)/lidar_back" if="$(arg enable_multicar)"/>
+		<param name="map_service_name" value="/map_handle" if="$(arg enable_multicar)"/>
+		<rosparam param="ignore_object_id" subst_value="true" if="$(arg enable_multicar)">$(arg robot_prefix_list)</rosparam>	
+
+	</node>
+
+	<!-- 键盘遥控 -->
+	<!-- <node name="keyboard_control" pkg="autolabor_keyboard_control" type="keyboard_control_node">
+		<param name="linear_min" value="0.3" />
+		<param name="linear_max" value="0.75" />
+		<param name="linear_step" value="0.2" />
+
+		<param name="angular_min" value="0.314" />
+		<param name="angular_max" value="1.57" />
+		<param name="angular_step" value="0.314" />
+	</node> -->
+
+
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
+		<param name="tf_prefix" value="$(arg robot_prefix)" if="$(arg enable_multicar)"/>
+	</node>
+
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+
+</launch>

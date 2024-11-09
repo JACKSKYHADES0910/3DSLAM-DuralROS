@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd /opt/autolabor/ros/catkin_ws/
+rm -rf build/ devel/ logs/ .catkin_tools/
+catkin build -j2

@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/autolabor_simulation_base
+
+Name: autolabor_simulation_base
+Description: Description of autolabor_simulation_base
+Version: 0.0.1
+Cflags: -I/home/xyz/autolabor/src/simulation/autolabor_simulation_base/include
+Libs: -L${prefix}/lib 
+Requires: 

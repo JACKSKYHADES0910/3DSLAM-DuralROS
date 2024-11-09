@@ -1,0 +1,8 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~frame_id" : \b [str] Frame to use for camera image min: , default: camera, max: 
+- \b "~publish_rate" : \b [double] Rate to publish image min: 0.1, default: 10.0, max: 30.0
+- \b "~camera_info_url" : \b [str] Path to camera_info min: , default: , max: 
+

@@ -1,0 +1,10 @@
+<!--
+
+  All rights reserved.
+  Update: 2017-01-06
+-->
+<launch>
+  <include file="$(find wr_fslidar)/launch/fslidar.launch" />
+     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find wr_fslidar)/launch/fslidar.rviz" />
+</launch>
+

@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/pico_zense_driver
+
+Name: pico_zense_driver
+Description: Description of pico_zense_driver
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

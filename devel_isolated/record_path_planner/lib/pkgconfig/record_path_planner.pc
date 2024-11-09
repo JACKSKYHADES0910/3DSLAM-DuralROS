@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/record_path_planner
+
+Name: record_path_planner
+Description: Description of record_path_planner
+Version: 0.0.0
+Cflags: -I/home/xyz/autolabor/src/navigation/record_path_planner/include
+Libs: -L${prefix}/lib 
+Requires: 

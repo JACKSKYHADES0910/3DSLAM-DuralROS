@@ -1,0 +1,66 @@
+<launch>
+
+	<arg name="robot_pub_tf" default="false" />
+
+	<param name="robot_description" command="$(find xacro)/xacro --inorder '$(find autolabor_description)/urdf/first_generation_model.xacro'" />
+	
+	<include file="$(find autolabor_navigation_launch)/launch/simulated_environment/common_stage_simulation.launch" />
+
+	<!-- 车辆底层模拟 -->
+	<node pkg="autolabor_simulation_base" type="simulation_base_node" name="autolabor_driver" output="screen">
+		<param name="map_frame" value="map"/>
+		<param name="odom_frame" value="odom"/>
+		<param name="base_link_frame" value="base_link"/>
+		<param name="real_map_frame" value="real_map"/>
+
+		<param name="noise_v_linear" value="0.02"/>
+		<param name="noise_v_theta" value="0.02"/>
+
+		<param name="max_a_linear" value="1.0"/>
+		<param name="max_a_theta" value="1.0"/>
+
+		<param name="max_v_linear" value="1.0"/>
+		<param name="max_v_theta" value="1.57"/>
+
+		<param name="rate" value="10"/>
+
+		<param name="is_tf_broadcast" value="$(arg robot_pub_tf)" />
+	</node>
+
+	<!-- 雷达模拟 -->
+	<node name="simulation_lidar" pkg="autolabor_simulation_lidar" type="simulation_lidar_node" output="screen">
+		<param name="min_angle" value="-3.141592654" />
+		<param name="max_angle" value="3.141592654" />
+
+		<param name="min_distance" value="0.15" />
+		<param name="max_distance" value="10.00" />
+
+		<param name="size" value="400" />
+		<param name="rate" value="10" />
+		<param name="noise" value="0.005" />
+
+		<param name="stage_map_topic" value="stage_map" />
+		<param name="global_frame" value="real_map" />
+		<param name="lidar_frame" value="laser" />
+
+		<param name="use_map_service" value="false" />
+	</node>
+
+	<!-- 键盘遥控 -->
+	<!-- <node name="keyboard_control" pkg="autolabor_keyboard_control" type="keyboard_control_node">
+		<param name="linear_min" value="0.3" />
+		<param name="linear_max" value="2.0" />
+		<param name="linear_step" value="0.1" />
+
+		<param name="angular_min" value="0.314" />
+		<param name="angular_max" value="1.57" />
+		<param name="angular_step" value="0.314" />
+	</node> -->
+
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+
+
+</launch>

@@ -1,0 +1,328 @@
+<h1>RTK ROS 驱动/循迹模块使用说明</h1>
+
+<h2>安装设置</h2>
+
+<h3>互联网连接</h3>
+
+<p>由于RTK定位的原理需要使用通过网络分发的差分信号，首先要确保您的AP1套件已经连接互联网，考虑到信号质量和工作范围建议您使用4G网络。如果您手头没有4G路由器和数据卡可从京东等渠道购买。</p>
+
+<p>我们建议采用USB接口的华为4G随身WIFI，此设备经过我们验证可正常工作。在京东等渠道有包含数据卡的套装出售。</p>
+
+<p><img src="resources/huawei4g.jpeg" alt="华为4G随身WIFI" width="30%" height="30%" align="center" />
+华为4G随身WIFI</p>
+
+<p>检查物联网连接的方式可通过使用Firefox浏览器访问qq.com 等常见网站，如网站可正常显示则互联网连接已经可用。</p>
+
+<h3>NTRIP服务账号</h3>
+
+<p>RTK接收，差分信号有几种形式，可自建基站，也可使用已有的差分服务。NTRIP是一种差分服务的协议，目前是服务商提供服务的主流。Autolabor RTK驱动中内置了差分服务商<a href="https://www.qxwz.com/">千寻™</a>的支持，可直接去其官网购买NTRIP账号。 当然也可以通过我们的商务人员通过折扣价购买。</p>
+
+<p><img src="resources/saler.png" alt="销售人员" width="30%" height="30%" align="center" />
+Autolabor商务人员</p>
+
+<p>目前Autolabor RTK 驱动程序仅支持互联网差分服务和千寻服务商。之后会通过软件升级的方式支持其他互联网服务商和自建基站的模式。</p>
+
+<h4>配置账号</h4>
+
+<p>位于桌面的硬件测试快捷方式和RTK循迹快捷方式会启动不同的launch文件，需要分别配置账号。</p>
+
+<h4>硬件测试launch文件</h4>
+
+<p>1.通过Ctrl+Alt+T 打开控制台</p>
+
+<p>2.输入如下命令</p>
+
+<blockquote><p>sudo gedit ~/catkin_ws/src/launch/rtk_tracking/rtk_tracking.launch</p></blockquote>
+
+<p>3.编辑 account 和 passsword 节点的value字段内容， 输入您的账号和密码。</p>
+
+<p><img src="resources/account.png"  width="100%" height="100%" align="center" /></p>
+
+<p>请仔细核对账号内容和双引号正确，否则一旦工作不正常难以查找原因。</p>
+
+<p>4.点击 Save按钮，保存退出</p>
+
+<h4>RTK巡线launch文件</h4>
+
+<p>1.通过Ctrl+Alt+T 打开控制台</p>
+
+<p>2.输入如下命令</p>
+
+<blockquote><p>sudo gedit ~/catkin_ws/src/launch/rtk_tracking/rtk_test.launch</p></blockquote>
+
+<p>3.编辑 account 和 passsword 节点的value字段内容， 输入您的账号和密码。</p>
+
+<p><img src="resources/account.png"  width="100%" height="100%" align="center" /></p>
+
+<p>请仔细核对账号内容和双引号正确，否则一旦工作不正常难以查找原因。</p>
+
+<p>4.点击 Save按钮，保存退出</p>
+
+<h4>RTK巡线脚本</h4>
+
+<h3>电气连接</h3>
+
+<h4>天线</h4>
+
+<p>1.连接主信号线</p>
+
+<p>随机附带有两根信号线，用于连接接收机和天线，其中较短的一根为主信号线。将其一端连接在RTK接收机的ANT1接口，并将另外一端连接位于雷达上方的天线。</p>
+
+<p>2.连接次信号线
+将较长一根信号线连接与接收机ANT2接口，并将另一端连接位于车尾处天线。</p>
+
+<p>主天线用于获取定位的位置信息，次信息线用户获取方向信息。由于当前采用融合算法生成方向信息，次天线可以不接。</p>
+
+<h4>USB数据线</h4>
+
+<p>将Type-C USB接口一端连接在RTK接收机的UART1接口。 另一端连接在USB HUB的3#接口。</p>
+
+<p>注意，由于软件绑定了相应的接口，两端接口不可改变。</p>
+
+<h2>使用步骤</h2>
+
+<h3>硬件测试</h3>
+
+<p>请点击位于桌面硬件测试文件夹内RTK测试的图标</p>
+
+<p><img src="resources/rtktesticon.png" alt="" />&ndash;><img src="resources/rtktesticon2.png" alt="" /></p>
+
+<p>等待若干秒后 rviz将自动启动， 静待几十秒钟待RTK达到收星数量，将会在地图中心显示一紫色圆形，代表卫星接收机已经达到足够的收星数量，并成功输出了固定解位置，即实现了高精度的RTK定位。此圆形代表WGS84经纬度坐标系转化到ENU坐标系的坐标。</p>
+
+<p>获得RTK高精度定位的速度取决于测试环境的情况，测试环境越开阔无遮挡获得固定位置解的速度越快，通常可在1分钟之内完成。如周围有较高建筑或者山峰则可能无法达到获得固定解位置的收星数要求，无法获得固定解的位置。</p>
+
+<p>如果测试环境良好但无法出现下图的情况，请参考<a href="##%20%E6%95%85%E9%9A%9C%E6%8E%92%E9%99%A4">故障排除</a>章节处理。</p>
+
+<p><img src="resources/rtktest_success.png" alt="" /></p>
+
+<p>小范围移动主天线的位置，界面紫点会同时移动，即表示工作正常，可以进行下一步RTK循线的测试。</p>
+
+<p><img src="resources/rtktestmove.gif" alt="" /></p>
+
+<h3>录制RTK路线</h3>
+
+<p>请将AP1套件置于室外空阔卫星收星良好处，并确保已经正确配置nrtip 账号，具备互联网连接。在进行完RTK硬件测试，确认RTK接收机工作正常后，双击打开桌面北斗RTK室外循迹文件夹，点击运行 RTK循迹</p>
+
+<p><img src="resources/rtk_run1.png" alt="" />-><img src="resources/rtk_run2.png" alt="" /></p>
+
+<p>等待几十秒钟，待屏幕出现紫色原点，表明RTK已经获得固定解位置，出于差分工作状态。</p>
+
+<p>使用键盘上下左右按钮，遥控机器人前进约1m，使里程计与卫星定位位置融合校准。在遥控过程中可观察到机器人位置突然跳了一下，即意味已经融合校准完成。</p>
+
+<p>点击录制路径按钮，同时使用键盘遥控机器人行进，将看到一条白线绘制到小车经过区域，该线即为录制的路线。</p>
+
+<p>遥控完成所有路线后，点击保存路线按钮，即将路线保存到 /src/navigation/path_server/path_data/default_path.path 中。</p>
+
+<h3>沿路线自动导航</h3>
+
+<p>启动RTK循迹功能，完成里程计与卫星定位融合校准后，使用键盘将机器人遥控到路线起点附近，点击“开始任务"即可。在循迹过程中机器人会根据障碍物情况进行绕行，在任何时刻点击“取消任务“可终止循线。</p>
+
+<h2>循线工作原理</h2>
+
+<p>卫星接收接收到的WGS84坐标（即经纬度），并不能直接提供给导航和路径规划使用，需要将其转换为平面直角坐标系的坐标。因此al_rtk_ros_driver 将 WGS84坐标转换为ENU坐标后输出。 在转化过程中需要指定一个ENU坐标系的原点坐标，即ENU坐标系的x=0,y=0 对应的经纬度是多少。 为了使用上的方便，al_rtk_ros_driver 会将第一次收到RTK固定解的经纬度坐标设置为ENU坐标系原点。当然您也可以通过参数关闭此功能手动设置。</p>
+
+<p>获得平面直角坐标后，并不能直接用于导航定位，主要原因在于</p>
+
+<p>1.卫星接收机的定位数据频率太低（1Hz）</p>
+
+<p>2.仅有位置无法获悉方向。</p>
+
+<p>因此，需要将卫星的ENU坐标与里程计进行融合，输出频率更高的位姿以提供给定位导航算法。</p>
+
+<p>这一过程是由Autolabor自行研发的一个简单位置融合算法实现的，源代码位于/src/navgation/location_fusion/simple_fusion.cpp</p>
+
+<p>在launch文件中相应配置为。</p>
+
+<p><img src="resources/location_fusion.png" alt="" /></p>
+
+<p>此融合算法的原理也很简单， 将里程计输出的一系列位置点与ENU的一系列位置点进行匹配。 并发布 odom 坐标系和 map 坐标系之间的变换（我们的卫星定位是绝对的，使用map坐标系）。</p>
+
+<p>在进行路线录制时，按照里程计每一定间隔记录base_link 位于 map坐标系的坐标，作为路线的“路点”。 一系列路点组成了一条路线。</p>
+
+<p>循迹过程中 path_server 会将路线从文件中读出，并作为/recorded_path 话题发布。</p>
+
+<p>LoopPathPlanner 作为全局路径规划器在收到/recorded_path.的数据后，将结合机器人的位置决定将路线未走到的部分作为全局路径规划发布，并为局部路径规划器指定下一个目标。</p>
+
+<p>在完成整条路线后，如果设置loop 和 round都设置为true， 则LoopPathPlanner则会路点顺序反转，实现从路线结尾走回到路线开始。</p>
+
+<p>默认配置中，使用teb_local_planner作为局部路径规划器,以实现遇到障碍物灵活的绕行行为。</p>
+
+<p>因为teb_local_planner主要使用优化的方法进行路径规划，其行为较为灵活的同时较不为可控，可能出现预期之外的行为。这种预期之外的行为不一定适应所有使用情景。</p>
+
+<p>如果需要严格循线的效果，可将teb路径规划器更换为carrot_planner 或者自行开发局部路径规划算法。</p>
+
+<h2>开发指引</h2>
+
+<p>实现RTK定位功能的软件包含两部分 RTK RAW 驱动和 RTK ROS包</p>
+
+<p>位于src/driver/location/al_rtk_ros_driver</p>
+
+<p><img src="resources/project.png" alt="rtk" width="50%" height="50%" align="center" /></p>
+
+<h4>RTK RAW驱动</h4>
+
+<p>raw 驱动部分包含从串口获取RTK的数据进行解析 ，并包含支持千寻服务的nrtip client。 可通过配置账号和密码直接获得Fixed解的位置， 其输出格式为WGS84坐标。</p>
+
+<h4>RTK ROS包</h4>
+
+<p>ROS驱动包除实现与ROS的接口外，实现了WGS84坐标系到ENU坐标的转换。ENU的直角坐标可直接被路径规划等算法使用。由于ENU坐标需要参考原点，此软件包会根据设置在第一次获得Fixed解时将当前坐标作为ENU坐标系x=0,y=0点。</p>
+
+<p><img src="resources/launch.png" alt="rtk" width="130%" height="130%" align="center" /></p>
+
+<p>RTK 驱动的所有功能都通过launch文件中的 rtk node 节点进行配置 具体功能如下</p>
+
+<ul>
+<li><p>map_frame 定义发布位置的坐标系，默认为map 无需修改</p></li>
+<li><p>serival_device 计算机连接RTK接收机的串口地址，对于AP1套件已固定为/dev/box_3 对应USB hub#3接口。 如需在其他环境使用修改为对应串口地址即可</p></li>
+<li><p>badurate  串口通讯速率 固定为115200 不能修改</p></li>
+<li><p>domain 千寻ntrip 服务域名 无需修改</p></li>
+<li><p>account 千寻ntrip 账号</p></li>
+<li><p>password 千寻ntrip密码</p></li>
+<li><p>publish_pos_fix_only 是否只在固定解情况下发布位置。 当设置为true时，尽在RTK接收机可以解算出固定解（即误差1-2cm的高精度位置）时发布位置话题的数据，如果无法获得固定解将不发布位置信息。设置为false将不考虑当前解的状态，可能输出误差10米左右的普通定位信息。</p></li>
+<li>auto_use_first_fix_as_enu_origin 是否使用第一次收到的固定解位置作为ENU坐标系的原点。当设置为false时将不自动设置ENU坐标系原点，需要手动调用相应方法设置。默认为true，非必要无需修改</li>
+<li>origin_config_file 保存enu原点WGS84坐标的文件，如果想清除已经设定的ENU坐标原点可手动编辑此文件或将其删除</li>
+<li>log_dir LOG文件输出目录</li>
+<li>stderrthreshold 日志输出级别，在调试过程中可将此级别设置为0 INFO，将输出驱动内部的详细工作信息。</li>
+</ul>
+
+
+<h3>AutolaborOS平台编译</h3>
+
+<p>由于Autolabor OS 已经包含了RTK所有需要使用的库，使编译工作变得极为简单，仅需要进入驱动目录，使用catkin 编译即可</p>
+
+<p>可输入如下命令</p>
+
+<p><code>
+cd ~/catkin_ws/src/driver/location/al_rtk_ros_driver/
+catkin build --this
+</code></p>
+
+<p>在编译前，强烈建议您清空已编译版本，并修改swap大小，进行一次完整的工作空间编译，以防止编译缓存造成的编译错误。</p>
+
+<p>清空已编译的内容可通过如下命令实现</p>
+
+<p><code>
+cd ~/catkin_ws
+catkin clean -y
+</code></p>
+
+<p>由于编译过程中需要使用大量的内存，通常物理内存不能满足要求，可能出现因为内存空间不足导致的编译失败。通常编译过程会通过使用swap空间的方式确保有足够的内存，我们已经提供了自动化修改swap空间的工具 您可通过 如下命令启动，并将swap空间设置15G以上通常可以满足编译的要求。</p>
+
+<p><code>
+sudo ~/Tools/modifyswap.sh
+</code></p>
+
+<p>进行整个工作空间的编译</p>
+
+<p><code>
+cd ~/catkin_ws
+catkin build
+</code></p>
+
+<h3>自行安装ROS编译</h3>
+
+<p>al_rtk_raw_driver 依赖于<a href="https://libevent.org/">libevent</a> ，编译前请确保已经安装。</p>
+
+<p>在Ubuntu 18.04 可利用apt工具进行安装</p>
+
+<p><code>
+sudo apt update
+sudo apt install libevent-dev
+</code></p>
+
+<p>al_rtk_ros_driver 所依赖的库都已在源代码目录包含，可直接在项目目录编译。</p>
+
+<p><code>
+catkin build --this
+</code></p>
+
+<h2>故障排除</h2>
+
+<p>最常见导致故障有以下几种</p>
+
+<ul>
+<li>未正确配置NRTIP服务账号密码</li>
+<li>主机没有互联网连接</li>
+<li>USB接口插错</li>
+<li>主天线未连接或未连接在ANT1接口</li>
+<li>所处位置接收卫星信号不佳</li>
+</ul>
+
+
+<p>通常启动rtk测试功能或循迹功能将会在控制台输出出错信息，通过此信息可以排除大部分故障。</p>
+
+<p>例如：</p>
+
+<h3>没有互联网连接</h3>
+
+<p>当出现此提示时，表示ntrip client 程序无法连接ntrip server，代表本机没有互联网连接。当出现此提示时，可打开浏览器访问常见网站，以检查是否网络连接正常。</p>
+
+<p><img src="resources/nointernet.png" alt="" /></p>
+
+<h3>USB口接口插错</h3>
+
+<p>当出现如下图提示时，代表驱动程序没有检测到卫星接收机硬件，造成这种情况通常时卫星接收的没有插在AP1套件USB HUB对应的#3接口上，如果您使用的不是AP1套件要确保将launch 文件中串口地址修改为您的接口地址， 通常为/dev/ttyUSB0 或者 /dev/ttyUSB1 可通过ls /dev/tty* 查看。</p>
+
+<p>除此以外，另外一端的type-c插头要确保插在 卫星接收机的UART1 接口上， 插在UART2、UART3接口无法正常工作，如果需要使用UART2、UART3接口请修改驱动程序启用相应接口。</p>
+
+<p><img src="resources/wrongusb.png" alt="" /></p>
+
+<h3>主天线未连接/连接错误</h3>
+
+<p>正常情况下，在遮挡不是极为严重的环境卫星接收机都会收到定位信息，即GPGGA消息。驱动程序会将第一包GPGGA信息发送给NTRIP服务以获取后续的差分数据。但是当主天线未连接或者未连接到ANT1接口时，卫星接收机将完全无法收到GPGGA数据，这将导致NTRIP服务等待过长时间超时，出现如下错误。</p>
+
+<p>（当然当网络不佳的情况下，也有可能出现同样的超时错误。）</p>
+
+<p><img src="resources/noant1.png" alt="" /></p>
+
+<h3>判断故障的工具</h3>
+
+<h4>ROS 话题</h4>
+
+<p>多数情况下，您可以通过rostopic 工具将卫星接收机的输出显示出来，以协助判断。</p>
+
+<p>首先，您需要引入当前工作空间的环境变量，通过</p>
+
+<p><code>
+source ~/catkin_ws/devel/setup.bash
+</code></p>
+
+<p>其次您可以通过 rostopic list命令显示所有的话题，确认驱动程序是否已经运行。</p>
+
+<p><code>
+rostopic list
+</code></p>
+
+<p><img src="resources/topiclist.png" alt="" /></p>
+
+<p>如果出现了/al_ros_driver/gpgga /al_ros_driver/location_pos 代表卫星接收机驱动已经工作正常。</p>
+
+<p>/al_ros_driver/gpgga 代表卫星接收机原始的gpgga数据，即未解算的收星数据，通过如下命令可进行显示</p>
+
+<p><code>
+rostopic echo /al_ros_driver/gpgga
+</code></p>
+
+<p><img src="resources/gpgga.png" alt="" /></p>
+
+<p>其中包含经纬度，utc时间，收星数量，高度等信息。此为卫星接收机的原始数据，如此信息输出正常，代表卫星接收机的 USB口、主天线都连接正确。</p>
+
+<p>/al_ros_driver/localtion_pos 话题输出的是固定解位置经ENU坐标系转换后的坐标， 此话题的数据仅仅在卫星接收机处于输出高精度固定解的时候输出。 如果此话题输出数据意味着nrtip 服务配置正确、互联网连接正常、卫星收星数量优秀，可以进行无人导航使用。</p>
+
+<p><img src="resources/rtkpos.png" alt="" /></p>
+
+<h4>日志文件</h4>
+
+<p>al_rtk_raw_driver 会将所有过程以日志形式存储在 rtk_tracking/log 目录下， 通过查看日志文件可以判断卫星接收机的工作状态，可通过如下命令分别查看INFO日志和ERROR日志</p>
+
+<p><code>
+tail -f ~/catkin_ws/src/launch/rtk_tracking/log/al_rtk_driver.INFO
+</code></p>
+
+<p><img src="resources/log_info.png" alt="" /></p>
+
+<p><code>
+tail -f ~/catkin_ws/src/launch/rtk_tracking/log/al_rtk_driver.ERROR
+</code></p>
+
+<p><img src="resources/log_error.png" alt="" /></p>

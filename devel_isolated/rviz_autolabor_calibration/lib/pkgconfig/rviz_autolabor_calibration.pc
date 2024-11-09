@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/rviz_autolabor_calibration
+
+Name: rviz_autolabor_calibration
+Description: Description of rviz_autolabor_calibration
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

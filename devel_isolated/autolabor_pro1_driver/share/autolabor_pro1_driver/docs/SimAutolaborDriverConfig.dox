@@ -1,0 +1,8 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~left_wheel" : \b [int] The number of rotations of the left wheel in a PID control cycle min: -32, default: 0, max: 32
+- \b "~right_wheel" : \b [int] The number of rotations of the right wheel in a PID control cycle min: -32, default: 0, max: 32
+- \b "~run_flag" : \b [bool] start to run the program min: False, default: True, max: True
+

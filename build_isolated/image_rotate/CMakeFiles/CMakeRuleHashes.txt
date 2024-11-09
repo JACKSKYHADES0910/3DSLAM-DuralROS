@@ -1,0 +1,4 @@
+# Hashes of file build rules.
+b77a1b2e276474332dcf8b17aed2a774 /home/xyz/autolabor/devel_isolated/image_rotate/include/image_rotate/ImageRotateConfig.h
+96d6d62a2df52dc337b44bccd672e64c CMakeFiles/clean_test_results
+680f7d37580c55aceae2298bd4717781 CMakeFiles/image_rotate_gencfg

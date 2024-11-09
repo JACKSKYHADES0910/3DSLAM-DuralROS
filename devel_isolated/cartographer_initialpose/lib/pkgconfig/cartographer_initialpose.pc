@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/cartographer_initialpose
+
+Name: cartographer_initialpose
+Description: Description of cartographer_initialpose
+Version: 0.0.0
+Cflags: -I/home/xyz/autolabor/src/tool/cartographer_initialpose/include
+Libs: -L${prefix}/lib 
+Requires: 

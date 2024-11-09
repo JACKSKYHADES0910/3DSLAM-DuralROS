@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/install_isolated
+
+Name: marvelmind
+Description: Description of marvelmind
+Version: 0.0.1
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: 

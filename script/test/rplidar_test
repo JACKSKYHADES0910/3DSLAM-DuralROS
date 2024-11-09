@@ -1,0 +1,24 @@
+#!/bin/bash
+
+
+if [ ! -e "/dev/rplidar" ]; then
+  zenity --no-wrap --error --text="雷达连接失败，请检查雷达是否连接至上位机"
+  exit 0
+fi
+
+source /opt/autolabor/ros/catkin_ws/devel/setup.bash
+IP=`ifconfig wlan0 | grep "inet 地址:" | awk '{print $2}' | cut -c 8-`
+
+if [ -z "$IP" ]; then
+  IP="127.0.0.1"
+fi
+
+export ROS_MASTER_URI=http://$IP:11311/
+export ROS_IP=$IP
+
+nohup roslaunch rplidar_ros view_rplidar.launch&
+sleep 5
+zenity --no-wrap --info --text="遮挡雷达周围，如果发现画面有红点，则雷达正常"
+killall rosmaster
+
+

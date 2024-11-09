@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/camera_calibration
+
+Name: camera_calibration
+Description: Description of camera_calibration
+Version: 1.12.23
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

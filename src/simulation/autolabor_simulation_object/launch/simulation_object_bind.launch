@@ -1,0 +1,48 @@
+<launch>
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find autolabor_description)/urdf/second_generation_model.xacro'" />
+
+    <node pkg="map_server" type="map_server" name="map_server" args="$(find autolabor_simulation_stage)/map/MG_map.yaml" />
+
+    <node name="simulation_stage" pkg="autolabor_simulation_stage" type="simulation_stage_node" output="screen">
+        <param name="input_topic" value="map" />
+        <param name="output_topic" value="stage_map" />
+        <param name="real_map_frame" value="real_map" />
+    </node>  
+
+	<node pkg="autolabor_simulation_base" type="simulation_base_node" name="autolabor_driver" output="screen">
+		<param name="map_frame" value="odom"/>
+		<param name="odom_frame" value="odom"/>
+		<param name="base_link_frame" value="base_link"/>
+		<param name="real_map_frame" value="real_map"/>
+
+		<param name="noise_v_linear" value="0.0"/>
+		<param name="noise_v_theta" value="0.0"/>
+
+		<param name="max_a_linear" value="999.0"/>
+		<param name="max_a_theta" value="999.0"/>
+
+		<param name="max_v_linear" value="1.0"/>
+		<param name="max_v_theta" value="1.57"/>
+
+		<param name="rate" value="10"/>
+
+		<param name="is_tf_broadcast" value="true"/>
+	</node>
+
+	<node name="simulation_object" pkg="autolabor_simulation_object" type="simulation_object_bind_node" output="screen">
+		<param name="object_id" value="car1" />
+		<param name="object_frame" value="real_map" />
+		<param name="bind_frame" value="base_link" />
+		<param name="rate" value="10" />
+		<rosparam param="object_footprints">[[0.4,0.3, 0.4,-0.3, -0.4,-0.3, -0.4,0.3]]</rosparam>
+	</node>
+
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
+		<param name="rate" value="30" />
+	</node>
+
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find autolabor_simulation_object)/rviz/simulation_object_bind.rviz"/>
+
+</launch>

@@ -1,0 +1,11 @@
+<launch>
+    <node pkg="ch104m" type="ch104m" name="imu" output="screen">
+      <param name="port" value="//dev/ttyUSB_custom1" type="string" />
+      <param name="bund" value="115200" type="int" />
+      <param name="fake_acc" value="false" type="bool" />  <!-- 使用里程计模拟加速度 -->
+      <param name="odomtopic" value="/odom" type="string"/>  <!-- 模拟使用的话题 -->
+      <param name="reverse_install" value="false"  type="bool" />  <!-- 是否倒装(出线向车尾) -->
+      <param name="lio_sam" value="true"   type="bool" />  <!-- 是否使用 lio_sam 的左手系 -->
+    </node>
+    <node name="rviz_imu" pkg="rviz" type="rviz" args="-d $(find ch104m)/rviz/imu_test.rviz" required ="true"/>
+</launch>

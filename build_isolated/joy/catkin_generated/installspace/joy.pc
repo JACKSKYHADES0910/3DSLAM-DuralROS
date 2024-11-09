@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/install_isolated
+
+Name: joy
+Description: Description of joy
+Version: 1.11.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: roscpp diagnostic_updater sensor_msgs

@@ -1,0 +1,37 @@
+<launch>
+
+	<include file="$(find autolabor_navigation_launch)/launch/real_environment/third_generation_base.launch">
+		<arg name="robot_pub_tf" value="false"/>
+	</include>
+
+		<!-- 定位模块 -->
+	<node name="cartographer_node" pkg="cartographer_ros"
+		type="cartographer_node" args="
+			-configuration_directory $(find autolabor_navigation_launch)/params/cartographer
+			-configuration_basename  third_generation_location.lua
+			-load_state_filename $(find autolabor_navigation_launch)/map/campus.pbstream"
+		output="screen">
+		<remap from="points2" to="rslidar_points" />
+	</node>
+
+	<node pkg="map_server" type="map_server" name="map_server" args="$(find autolabor_navigation_launch)/map/campus.yaml" />
+
+	<node pkg="cartographer_initialpose" type="cartographer_initialpose" name="cartographer_initialpose" >
+		<param name="configuration_directory" value="$(find autolabor_navigation_launch)/params/cartographer" />
+		<param name="configuration_basename" value="third_generation_location.lua" />
+	</node>
+
+	<!-- 导航模块 -->
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+		<rosparam file="$(find autolabor_navigation_launch)/params/navigation/move_base/navigation_move_base.yaml" command="load" />
+		<rosparam file="$(find autolabor_navigation_launch)/params/navigation/costmap/3d_global_costmap_params.yaml" command="load" ns="global_costmap"/>
+		<rosparam file="$(find autolabor_navigation_launch)/params/navigation/costmap/3d_local_costmap_params.yaml" command="load" ns="local_costmap"/>
+		<rosparam file="$(find autolabor_navigation_launch)/params/navigation/global_planer/global_planner_params.yaml" command="load" ns="GlobalPlanner"/>
+		<rosparam file="$(find autolabor_navigation_launch)/params/navigation/local_planer/navigation_teb_local_planner_params.yaml" command="load" ns="TebLocalPlannerROS"/>
+		<param name="TebLocalPlannerROS/xy_goal_tolerance" value="0.2" />
+		<param name="TebLocalPlannerROS/yaw_goal_tolerance" value="0.5" />
+	</node>
+
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find autolabor_navigation_launch)/rviz/3d_navigation.rviz" />
+
+</launch>

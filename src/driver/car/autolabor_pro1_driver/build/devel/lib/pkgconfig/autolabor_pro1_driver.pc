@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/src/driver/car/autolabor_pro1_driver/build/devel
+
+Name: autolabor_pro1_driver
+Description: Description of autolabor_pro1_driver
+Version: 0.1.0
+Cflags: -I/home/xyz/autolabor/src/driver/car/autolabor_pro1_driver/build/devel/include
+Libs: -L${prefix}/lib 
+Requires: roscpp tf message_runtime

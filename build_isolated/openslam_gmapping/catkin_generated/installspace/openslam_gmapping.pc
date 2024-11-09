@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/install_isolated
+
+Name: openslam_gmapping
+Description: Description of openslam_gmapping
+Version: 0.1.2
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lgridfastslam -lscanmatcher -lsensor_base -lsensor_range -lsensor_odometry -lutils
+Requires: 

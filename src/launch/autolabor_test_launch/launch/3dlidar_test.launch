@@ -1,0 +1,18 @@
+<launch>
+
+	<arg name="robot_pub_tf" default="false" />
+	<arg name="lidar2d" value="$(env AL_LIDAR2D)" />  # fslidar or ldlidar
+	<arg name="lidar3d" value="$(env AL_LIDAR3D)" />  # rs16  or rshelio16
+
+	<param name="robot_description" command="$(find xacro)/xacro --inorder '$(find autolabor_description)/urdf/third_generation_model.xacro' lidar2d:=$(arg lidar2d) lidar3d:=$(arg lidar3d)" />
+	<node pkg="rslidar_sdk" name="rslidar_sdk_node" type="rslidar_sdk_node" output="screen">
+		<param name="config_path" value="$(find rslidar_sdk)/config/config_$(arg lidar3d).yaml"/>
+	</node>
+
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find autolabor_test_launch)/rviz/3dlidar.rviz" required ="true"/>
+
+</launch>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>rtk_tracking</name>
+  <version>1.0.0</version>
+  <description>The autolabor rtk tracking package</description>
+
+  <maintainer email="autolabor@todo.todo">autolabor</maintainer>
+
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+
+  </export>
+</package>

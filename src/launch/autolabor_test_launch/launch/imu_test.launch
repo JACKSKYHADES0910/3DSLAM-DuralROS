@@ -1,0 +1,25 @@
+<launch>
+	<arg name="imu" value="$(env AL_IMU)" />  # ah200b or ch104m
+
+	<group if="$(eval arg('imu') == 'ah200b')">
+		<node pkg="ah100b" type="ah100b" name="imu">
+			<param name="port" value="/dev/box_5" type="string" />
+			<param name="bund" value="115200" type="int" />
+		</node>
+	</group>
+
+
+	<group if="$(eval arg('imu') == 'ch104m')">
+		<node pkg="ch104m" type="ch104m" name="imu" output="screen">
+			<param name="port" value="/dev/box_5" type="string" />
+			<param name="bund" value="115200" type="int" />
+			<param name="fake_acc" value="false" type="bool" />  <!-- 使用里程计模拟加速度 -->
+			<param name="odomtopic" value="/odom" type="string"/>  <!-- 模拟使用的话题 -->
+			<param name="reverse_install" value="false"  type="bool" />  <!-- 是否倒装(出线向车尾) -->
+			<param name="lio_sam" value="false"   type="bool" />  <!-- 是否使用 lio_sam 的左手系 -->
+		</node>
+	</group>
+
+
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find ah100b)/rviz/imu_test.rviz" required ="true"/>
+</launch>

@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/rslidar_sdk
+
+Name: rslidar_sdk
+Description: Description of rslidar_sdk
+Version: 1.5.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: sensor_msgs roslib

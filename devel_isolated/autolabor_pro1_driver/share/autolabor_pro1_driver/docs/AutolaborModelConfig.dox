@@ -1,0 +1,8 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~model_param_cw" : \b [double] model_param_cw min: 0.0, default: 0.8, max: 1.5
+- \b "~model_param_acw" : \b [double] model_param_acw min: 0.0, default: 0.8, max: 1.5
+- \b "~wheel_diameter" : \b [double] wheel_diameter min: 0.0, default: 0.25, max: 1.0
+

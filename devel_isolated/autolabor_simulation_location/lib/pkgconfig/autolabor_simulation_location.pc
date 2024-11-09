@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/autolabor_simulation_location
+
+Name: autolabor_simulation_location
+Description: Description of autolabor_simulation_location
+Version: 0.0.0
+Cflags: -I/home/xyz/autolabor/src/simulation/autolabor_simulation_location/include
+Libs: -L${prefix}/lib 
+Requires: 

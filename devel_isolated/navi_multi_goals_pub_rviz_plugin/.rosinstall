@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/xyz/autolabor/devel_isolated/navi_multi_goals_pub_rviz_plugin/setup.sh

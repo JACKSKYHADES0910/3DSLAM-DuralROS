@@ -1,0 +1,22 @@
+<launch>
+
+	<arg name="robot_pub_tf" default="false" />
+
+	<include file="$(find autolabor_navigation_launch)/launch/simulated_environment/second_generation_basic_base_simulation.launch">
+		<arg name="robot_pub_tf" value="$(arg robot_pub_tf)"/>
+	</include>
+
+	<!-- 定位驱动 -->
+	<node pkg="autolabor_simulation_location" type="simulation_location_node" name="autolabor_location" output="screen">
+		<param name="baselink_frame" value="base_link"/>
+		<param name="real_map_frame" value="real_map"/>
+		<param name="location_frame" value="map"/>
+
+		<param name="location_to_real_map_x" value="0.0"/>
+		<param name="location_to_real_map_y" value="0.0"/>
+		<param name="location_to_real_map_yaw" value="0.0"/>
+
+		<param name="rate" value="5"/>
+	</node>
+
+</launch>

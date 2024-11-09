@@ -1,0 +1,9 @@
+<library path="lib/libnavigation_tools_panel">
+  <class name="rviz_navigation_tools/NavigationTools"
+         type="autolabor_plugin::NavigationToolsPanel"
+         base_class_type="rviz::Panel">
+    <description>
+      A panel widget to switch multi-vehicle control in rviz.
+    </description>
+  </class>
+</library>

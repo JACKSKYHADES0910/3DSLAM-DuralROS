@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/install_isolated
+
+Name: depth_image_proc
+Description: Description of depth_image_proc
+Version: 1.12.23
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -ldepth_image_proc
+Requires: 

@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -fPIE -fPIC -std=c++11 -O2 -D_FORTIFY_SOURCE=2 -fstack-protector -Wformat -Wformat-security -Wall  -z noexecstack -z relro -z now  -shared -Wl,-soname,libgtest_main.so -o ../lib/libgtest_main.so CMakeFiles/gtest_main.dir/src/gtest_main.cc.o  -Wl,-rpath,/home/xyz/autolabor/build_isolated/wiimote/gtest/lib ../lib/libgtest.so -lpthread 

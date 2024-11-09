@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ ! -e "/dev/box_3" ]; then
+  zenity --no-wrap --error --text="RTK连接失败，请检查RTK是否连接至上位机。"
+  exit 0
+fi
+
+stty -F /dev/box_3 raw
+source /home/autolabor/.alconfig/sethardware.bash
+source /opt/autolabor/ros/catkin_ws/devel/setup.bash
+IP=`ifconfig wlan0 | grep "inet 地址:" | awk '{print $2}' | cut -c 8-`
+
+if [ -z "$IP" ]; then
+  IP="127.0.0.1"
+fi
+
+export ROS_MASTER_URI=http://$IP:11311/
+export ROS_IP=$IP
+
+roslaunch rtk_tracking rtk_test.launch

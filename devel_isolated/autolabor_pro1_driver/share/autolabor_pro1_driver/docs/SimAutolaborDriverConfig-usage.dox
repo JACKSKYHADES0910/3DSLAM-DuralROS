@@ -1,0 +1,9 @@
+\subsubsection usage Usage
+\verbatim
+<node name="sim_autolabor_driver" pkg="autolabor_pro1_driver" type="sim_autolabor_driver">
+  <param name="left_wheel" type="int" value="0" />
+  <param name="right_wheel" type="int" value="0" />
+  <param name="run_flag" type="bool" value="True" />
+</node>
+\endverbatim
+

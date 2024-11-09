@@ -1,0 +1,19 @@
+<launch>
+
+ 	<param name="robot_description" command="$(find xacro)/xacro --inorder '$(find autolabor_description)/urdf/second_generation_model.xacro'" />
+
+    <!-- 定位驱动 -->
+    <node pkg="marvelmind" type="marvelmind_driver" name="marvelmind_driver" output="screen">
+        <remap from="/marvelmind_hedge_pos" to="location_pos"/>
+        <param name="port_name" value="/dev/box_3"/>
+        <param name="baud_rate" value="115200"/>
+        <param name="map_frame" value="tag"/>
+    </node>
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find autolabor_test_launch)/rviz/tag.rviz" required ="true"/>
+
+</launch>

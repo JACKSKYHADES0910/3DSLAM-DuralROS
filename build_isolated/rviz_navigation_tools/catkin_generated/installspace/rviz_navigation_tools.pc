@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/install_isolated
+
+Name: rviz_navigation_tools
+Description: Description of rviz_navigation_tools
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

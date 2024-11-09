@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -std=c++11   -shared -Wl,-soname,libgmock.so -o ../lib/libgmock.so CMakeFiles/gmock.dir/src/gmock-all.cc.o  -Wl,-rpath,/home/xyz/autolabor/build_isolated/ldlidar_stl_ros/gtest/lib ../lib/libgtest.so -lpthread 

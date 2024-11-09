@@ -1,0 +1,20 @@
+\subsubsection usage Usage
+\verbatim
+<node name="stereo_image_proc" pkg="stereo_image_proc" type="stereo_image_proc">
+  <param name="stereo_algorithm" type="int" value="0" />
+  <param name="prefilter_size" type="int" value="9" />
+  <param name="prefilter_cap" type="int" value="31" />
+  <param name="correlation_window_size" type="int" value="15" />
+  <param name="min_disparity" type="int" value="0" />
+  <param name="disparity_range" type="int" value="64" />
+  <param name="uniqueness_ratio" type="double" value="15.0" />
+  <param name="texture_threshold" type="int" value="10" />
+  <param name="speckle_size" type="int" value="100" />
+  <param name="speckle_range" type="int" value="4" />
+  <param name="fullDP" type="bool" value="False" />
+  <param name="P1" type="double" value="200.0" />
+  <param name="P2" type="double" value="400.0" />
+  <param name="disp12MaxDiff" type="int" value="0" />
+</node>
+\endverbatim
+

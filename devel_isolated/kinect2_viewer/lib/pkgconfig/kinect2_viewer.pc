@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/kinect2_viewer
+
+Name: kinect2_viewer
+Description: Description of kinect2_viewer
+Version: 0.0.1
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

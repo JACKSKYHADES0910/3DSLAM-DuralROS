@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/xyz/autolabor/src/driver/imu/ch104m/build/devel/setup.sh

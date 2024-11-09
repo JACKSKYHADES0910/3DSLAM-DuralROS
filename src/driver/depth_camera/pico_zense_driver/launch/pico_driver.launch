@@ -1,0 +1,21 @@
+<launch>
+  <node name="pico_driver" pkg="pico_zense_driver" type="pico_zense_driver">
+      <param name="namespace" value="pico_camera"/>
+      <param name="frame_name" value="pico_camera"/>
+      <param name="device_index" value="0"/>
+      <param name="read_frame_interval" value="100"/>
+      <param name="depth_range" value="0"/>
+      <param name="background_filter_threshold" value="20"/>
+      <param name="skip_row" value="2"/>
+      <param name="skip_column" value="2"/>
+      <param name="output_depth_image" value="false"/>
+      <param name="output_color_image" value="false"/>
+      <param name="output_point_cloud" value="true"/>
+      <param name="depth_spatial_filter" value="true"/>
+      <param name="depth_time_filter" value="true"/>
+      <param name="depth_distortion_correction" value="true"/>
+      <param name="depth_straighten_correction" value="true"/>
+  </node>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find pico_zense_driver)/rviz/display.rviz"/>
+</launch>

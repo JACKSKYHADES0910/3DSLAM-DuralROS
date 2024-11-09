@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/install_isolated
+
+Name: kinect2_viewer
+Description: Description of kinect2_viewer
+Version: 0.0.1
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

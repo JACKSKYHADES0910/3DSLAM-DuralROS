@@ -1,0 +1,14 @@
+<launch>
+	<!-- 场景模拟 -->
+	<node pkg="map_server" type="map_server" name="map_server" args="$(find autolabor_navigation_launch)/map/MG_map.yaml" >
+		<remap from="map" to="reserve_map" />
+		<remap from="map_metadata" to="reserve_map_metadata" />
+		<param name="frame_id" value="real_map" />
+	</node>
+
+	<node name="simulation_stage" pkg="autolabor_simulation_stage" type="simulation_stage_node" output="screen">
+		<param name="input_topic" value="reserve_map" />
+		<param name="output_topic" value="stage_map" />
+		<param name="real_map_frame" value="real_map" />
+	</node>
+</launch>

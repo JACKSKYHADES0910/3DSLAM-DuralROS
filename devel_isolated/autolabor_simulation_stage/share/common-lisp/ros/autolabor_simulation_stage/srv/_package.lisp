@@ -1,0 +1,15 @@
+(cl:defpackage autolabor_simulation_stage-srv
+  (:use )
+  (:export
+   "OBSTACLE"
+   "<OBSTACLE-REQUEST>"
+   "OBSTACLE-REQUEST"
+   "<OBSTACLE-RESPONSE>"
+   "OBSTACLE-RESPONSE"
+   "OBSTACLEMAP"
+   "<OBSTACLEMAP-REQUEST>"
+   "OBSTACLEMAP-REQUEST"
+   "<OBSTACLEMAP-RESPONSE>"
+   "OBSTACLEMAP-RESPONSE"
+  ))
+

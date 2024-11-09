@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/kinect2_bridge
+
+Name: kinect2_bridge
+Description: Description of kinect2_bridge
+Version: 0.0.1
+Cflags: -I/home/xyz/autolabor/src/driver/depth_camera/iai_kinect2-master/kinect2_bridge/include
+Libs: -L${prefix}/lib 
+Requires: kinect2_registration

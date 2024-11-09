@@ -1,0 +1,13 @@
+\subsubsection usage Usage
+\verbatim
+<node name="urg_node" pkg="urg_node" type="urg_node">
+  <param name="tf_prefix" type="str" value="" />
+  <param name="frame_id" type="str" value="laser" />
+  <param name="time_offset" type="double" value="0.0" />
+  <param name="angle_min" type="double" value="-3.141592653589793" />
+  <param name="angle_max" type="double" value="3.141592653589793" />
+  <param name="cluster" type="int" value="1" />
+  <param name="skip" type="int" value="0" />
+</node>
+\endverbatim
+

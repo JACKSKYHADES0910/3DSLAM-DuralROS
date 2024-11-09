@@ -1,0 +1,42 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/xyz/autolabor/src/driver/location/marvelmind/include/marvelmind/marvelmind_hedge.h
+stdint.h
+-
+stdbool.h
+-
+stddef.h
+-
+sys/types.h
+-
+
+/home/xyz/autolabor/src/driver/location/marvelmind/src/marvelmind_hedge.c
+stdlib.h
+-
+stdio.h
+-
+string.h
+-
+windows.h
+-
+process.h
+-
+unistd.h
+-
+termios.h
+-
+fcntl.h
+-
+pthread.h
+-
+sys/poll.h
+-
+marvelmind/marvelmind_hedge.h
+/home/xyz/autolabor/src/driver/location/marvelmind/src/marvelmind/marvelmind_hedge.h
+

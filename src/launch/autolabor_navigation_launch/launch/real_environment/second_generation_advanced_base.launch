@@ -1,0 +1,17 @@
+<launch>
+
+	<arg name="robot_pub_tf" default="false" />
+
+	<include file="$(find autolabor_navigation_launch)/launch/real_environment/second_generation_basic_base.launch">
+		<arg name="robot_pub_tf" value="$(arg robot_pub_tf)"/>
+	</include>
+
+	<!-- 定位驱动 -->
+	<node pkg="marvelmind" type="marvelmind_driver" name="marvelmind_driver" output="screen">
+		<remap from="/marvelmind_hedge_pos" to="location_pos"/>
+		<param name="port_name" value="/dev/box_3"/>
+		<param name="baud_rate" value="115200"/>
+		<param name="map_frame" value="map"/>
+	</node>
+
+</launch>

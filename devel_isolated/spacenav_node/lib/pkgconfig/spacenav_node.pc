@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/devel_isolated/spacenav_node
+
+Name: spacenav_node
+Description: Description of spacenav_node
+Version: 1.11.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: roscpp geometry_msgs sensor_msgs

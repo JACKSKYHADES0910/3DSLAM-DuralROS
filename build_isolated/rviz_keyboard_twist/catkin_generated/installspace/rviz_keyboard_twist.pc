@@ -1,0 +1,8 @@
+prefix=/home/xyz/autolabor/install_isolated
+
+Name: rviz_keyboard_twist
+Description: Description of rviz_keyboard_twist
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
