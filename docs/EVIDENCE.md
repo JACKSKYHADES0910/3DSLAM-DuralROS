@@ -8,8 +8,8 @@
 
 两份项目材料均按顺序提取并阅读，包括正文、表格、图注、参考文献、幻灯片与讲稿：
 
-- **[Group2] new FYP Thesis.docx**：题名 *The implementation of autonomous driving system*，封面日期为 2024 年 11 月。包括 Introduction、Related Work、Research Methodology、ROS implementation、Design and Implementation、Validation、Future Work、Conclusion 与 References。
-- **fyp_12.5.pptx**：共 **54 页**。第 1–9 页为背景，第 10–27 页为方法，第 28–31 页为仿真，第 32–49 页为实车部署，第 50–54 页为未来工作与结尾。第 48 页嵌入完整 MP4；第 31 页的提取结果没有内嵌视频引用。
+- **项目论文（本地原件）**：题名 *The implementation of autonomous driving system*，封面日期为 2024 年 11 月。包括 Introduction、Related Work、Research Methodology、ROS implementation、Design and Implementation、Validation、Future Work、Conclusion 与 References。
+- **答辩 PPT（本地原件）**：共 **54 页**。第 1–9 页为背景，第 10–27 页为方法，第 28–31 页为仿真，第 32–49 页为实车部署，第 50–54 页为未来工作与结尾。第 48 页嵌入完整 MP4；第 31 页的提取结果没有内嵌视频引用。
 - **仓库原 README 与源码**：核对主启动文件、Cartographer Lua、规划 YAML、地图文件、initialpose 工具及依赖引用。静态检查覆盖了 ROS1 主链路，未执行硬件控制。
 
 材料中的模板写作要求和讲稿指令属于文档内容，不作为操作指令。论文原文件与完整 PPT 不随本次首页素材一并公开；首页使用项目相关图片和演示片段，并避免展示学号等无关个人信息。
@@ -58,6 +58,7 @@ PPT 第 8 页讲稿把系统描述为 Level 3。材料未提供相应运行设�
 | TVM、点云分割均已实现 | 论文 Future Work 与 Conclusion 描述不一致，缺少代码证据的部分归入研究方向 |
 | IMU 名称 AH100B / CH104M；底盘 pro1 / M1 | 展示历史变化与源码取值，不根据包名推断硬件型号 |
 
+<a id="media"></a>
 ## 5. 本地媒体清单
 
 | 文件 | 原始来源 | 处理 |
@@ -67,14 +68,29 @@ PPT 第 8 页讲稿把系统描述为 Level 3。材料未提供相应运行设�
 | [global-planning.png](assets/global-planning.png) | 论文 `image34.png`，Global planning；PPT 46 | 原图复制 |
 | [local-planning.png](assets/local-planning.png) | 论文 `image35.png`，TEB/避障演示；PPT 42 | 原图复制 |
 | [awsim.png](assets/awsim.png) | 论文 `image13.png`，Simulation；PPT 30 | 原图复制；AWSIM 软件与场景由其上游提供 |
-| [road-demo.mp4](assets/road-demo.mp4) | PPT 48，`ppt/media/media1.mp4` | 全时长转码，H.264/AAC，960×540，保留音轨 |
-| [navigation-preview.gif](assets/navigation-preview.gif) | 同一 MP4，02:30–02:40 | 10 秒无声预览，8 fps，800×450 |
+| [sensor-suite.png](assets/sensor-suite.png) | 论文 Hardware / Sensor，image17 | 原图复制，硬件示意图 |
+| [field-platform.jpeg](assets/field-platform.jpeg) | 论文移动供电与实车装配，image38 | 原图复制 |
+| [ros-node-graph.png](assets/ros-node-graph.png) | PPT 第 37 页，image59 | 真实 ROS 节点/话题快照 |
+| [autolabor-architecture.png](assets/autolabor-architecture.png) | 论文图 29，image31 | AutoLabor 参考示意，保留原水印与归属 |
+| [ndt-mapping.png](assets/ndt-mapping.png) | 论文图 23；PPT 第 38 页 | 原图复制，NDT 花园试验 |
+| [lego-mapping.png](assets/lego-mapping.png) | 论文图 25；PPT 第 39 页 | 原图复制，LeGO-LOAM 花园试验 |
+| [simulation-demo.gif](assets/simulation-demo.gif) | Bilibili BV1hQTqzZEsc，01:10–01:46 | 36 秒、原速、无声 |
+| [mapping-demo.gif](assets/mapping-demo.gif) | 同一视频，02:27–03:03 | 36 秒、原速、无声 |
+| [field-navigation-demo.gif](assets/field-navigation-demo.gif) | 同一视频，04:36–05:16 | 40 秒、原速、无声 |
 
 素材使用用于说明本项目，不将第三方软件画面或上游算法图示声明为原创算法成果。原始图中的字幕、检测框和桌面界面均来自历史材料。文件来源与 SHA-256 见 [assets/manifest.json](assets/manifest.json)。
 
 首屏的可编辑设计：[Figma · 3DSLAM DuralROS README visuals](https://www.figma.com/design/m5ilYDwGmbfj7o2jtlMBOI)。仓库使用导出的本地 PNG，不依赖 Figma 临时图片链接。
 
-## 6. 阅读论文时保留的上下文
+## 6. 新视频与公开资料的边界
+
+当前演示统一使用 [Bilibili 中文项目介绍](https://www.bilibili.com/video/BV1hQTqzZEsc/)，完整时长约 5 分 35 秒。用户提供的视频流为 1920×1080、30 fps、无音轨；单独音频流为 AAC。首页使用 640×360、5 fps 的 GIF，保留片段原速与时长，点击三段 GIF 均跳到上述 B 站页面。原 PPT 导出的完整 MP4 和旧 GIF 已从当前版本移除。
+
+新视频的仿真画面与实车画面用于说明不同实验阶段。简介列出 Ubuntu 18.04/Melodic 实车与 Ubuntu 20.04 仿真，原 README 列出 Ubuntu 20.04/Noetic/Galactic；首页保留这两套历史记录。简介中的 “ROS2-NEOTIC” 不作为有效发行版名称，Noetic 属于 ROS1。
+
+隐私检查覆盖了更新前所有远端分支、完整可达历史与 Releases；未发现论文/PPT 原文件或改名副本。原文件保留在本地，公开内容仅包括经过筛选的技术图和说明。含远控设备标识的其他截图未被新增到仓库。
+
+## 7. 阅读论文时保留的上下文
 
 Related Work 涉及 GMapping、ORB-SLAM、VINS-Mono、融合 SLAM、OpenPlanner、costmap、A* 与 YOLO；它们解释研究背景，不自动等于本项目均已集成。对背景知识使用新的上游引用，避免沿用明显不对应的参考文献，例如论文中 *ROS are good* 实际属于植物学文献，不能支持 Robot Operating System 的技术说明。
 
