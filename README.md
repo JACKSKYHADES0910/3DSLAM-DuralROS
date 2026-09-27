@@ -1,369 +1,248 @@
-**视频展示** [建图定位导航(Youtube)](https://www.youtube.com/watch?v=1bbiSgneRYA)
-# 目录
-1. [3DSLAM-DuralROS概述](#1-3dslam-duralros)
-   - 1.1 [硬件参数](#11-硬件参数)
-   - 1.2 [准备工作](#12-准备工作)
-   - 1.3 [Autoware 部署 AWSIM 联合仿真](#13-autoware-awsim-simulation)
-2. [实车部署](#2-实车部署)
-   - 2.1 [建图](#21-实车建图)
-   - 2.2 [定位](#22-实车定位)
-   - 2.3 [导航](#23-实车导航)
+<div align="center">
 
+<img src="docs/assets/hero.png" alt="3DSLAM DuralROS：AutoLabor M1 实车建图、定位、导航与避障" width="100%">
 
+# 3DSLAM-DuralROS
 
+**把 SLAM、定位和路径规划，接到一台真正行驶的机器人上。**
 
-# 1. 3DSLAM-DuralROS概述
-3DSLAM-DuralROS 是一款针对机器人操作系统（ROS1 和 ROS2）进行优化的先进SLAM（同步定位与地图构建）解决方案。该系统以AutoLabor M1机器人底盘为基础，设计出适用于室内室外的高度可靠的**导航**和**避障**技术。3DSLAM-DuralROS 不仅能够进行高效的**地图建构**和**定位**，还能在复杂多变的环境中实现精确导航和**实时避障**，满足现代自动化需求。
+Field robotics · LiDAR SLAM · Autonomous navigation
 
-## 1.1 硬件参数
+[![ROS 1](https://img.shields.io/badge/ROS_1-Noetic-22314E?style=flat-square)](docs/REPRODUCTION.md) [![ROS 2](https://img.shields.io/badge/ROS_2-integration_study-237D79?style=flat-square)](#dual-ros) [![Platform](https://img.shields.io/badge/Platform-AutoLabor_M1-D5A32C?style=flat-square)](#hardware) [![License](https://img.shields.io/badge/License-Apache_2.0-526277?style=flat-square)](LICENSE)
 
-**主机参数**
+**[观看实车演示](#demo) · [系统架构](#architecture) · [复现教程](docs/REPRODUCTION.md) · [技术演进](docs/ROADMAP.md) · [原版文档](docs/archive/README.original.md)**
+
+</div>
+
+这是一个以 **AutoLabor M1** 为实验平台的自动驾驶毕业设计：使用 **RS-LiDAR-16、IMU 与轮式里程计**构建环境地图、恢复机器人位姿，再通过 **move_base、Dijkstra 和 TEB**完成目标导航与局部避障。项目同时探索了 **ROS1/ROS2 通信桥接**，以及 **Autoware.universe 与 AWSIM** 联合仿真。
+
+这里既记录系统怎样搭起来，也保留它在校园实车实验中遇到的问题。论文、答辩演示与仓库配置一起构成项目证据；完整源码入口和复现条件见下文。
+
+> **版本说明**：实车工作完成于 2024 年，本页于 2026 年重新整理。公开仓库主要保存 ROS1 工作空间与实验配置；ROS2/Autoware、YOLOv5 的演示记录及源码覆盖范围见 [实现状态](#status)。本次更新聚焦文档与展示素材，未重新进行实车验收。
+
+<a id="demo"></a>
+## 01 · 先看机器人怎样工作
+
+[![校园导航与局部避障演示，点击观看完整视频](docs/assets/navigation-preview.gif)](https://www.youtube.com/watch?v=1bbiSgneRYA)
+
+**[▶ YouTube 完整演示](https://www.youtube.com/watch?v=1bbiSgneRYA)** · **[▶ PPT 内嵌视频副本 · 3 分 18 秒](docs/assets/road-demo.mp4)**
+
+上方动图取自答辩 PPT 第 48 页的视频，展示 RViz 中的路径规划、局部轨迹和相机画面。仓库同时提供完整 MP4，便于下载观看；播放分辨率为 960 × 540，保留原视频音轨。视频中的字幕为历史演示原文。
 
 <table>
- <tr>
-    <td>CPU</td>
-    <td align="right">i7-10750H</td>
+  <tr>
+    <td width="50%"><img src="docs/assets/campus-map.png" alt="项目论文中的 Cartographer 加入轮式里程计后的花园地图" width="100%"></td>
+    <td width="50%"><img src="docs/assets/global-planning.png" alt="实车导航演示中的全局路线与相机画面" width="100%"></td>
   </tr>
   <tr>
-    <td>GPU</td>
-    <td align="right">RTX-2070Ti</td>
+    <td><b>环境建图</b><br>Cartographer + Odometry，保留场地结构供后续定位使用。</td>
+    <td><b>目标导航</b><br>全局路线连接当前位置与目标，局部规划响应周围障碍。</td>
   </tr>
   <tr>
-    <td>System</td>
-    <td align="right">Ubuntu 20.04</td>
+    <td><img src="docs/assets/local-planning.png" alt="实车实验中的局部规划轨迹与行人画面" width="100%"></td>
+    <td><img src="docs/assets/awsim.png" alt="项目使用的 AWSIM 虚拟街道与车辆场景" width="100%"></td>
   </tr>
   <tr>
-    <td>ROS1</td>
-    <td align="right">Noetic</td>
-  </tr>
-  <tr>
-    <td>ROS2</td>
-    <td align="right">Galactic</td>
+    <td><b>局部避障</b><br>通过代价地图与 TEB 调整机器人附近的运动轨迹。</td>
+    <td><b>仿真探索</b><br>AWSIM 提供虚拟环境，连接 Autoware.universe 做联合仿真。</td>
   </tr>
 </table>
 
-**硬件参数**
-1. 底盘: [AutoLabor M1](http://www.autolabor.com.cn/usedoc/m1/navigationKit/receivingGuide/inspection "AutoLabor底盘使用手册")
-2. 雷达: [速腾聚创Rslidar16线雷达](https://gitee.com/xiaoxinslam/ros_rslidar "rslidar16-Gitee仓库")
-3. 惯导: [CH104M](https://github.com/hipnuc/products/tree/master "hipnuc-CH104M-Github仓库")
-4. 相机: [Kinetic V2](https://learn.microsoft.com/en-us/windows/apps/design/devices/kinect-for-windows "Kinetic V2 for windows")
-5. 上位机: [惠普暗影精灵](https://www.omen.com/cn/zh/laptops.html "HP-OMEN官网")
+以上图片均来自项目论文或答辩材料；[素材来源与实验说明](docs/EVIDENCE.md)记录了对应章节、幻灯片及使用边界。
+
+<a id="learn"></a>
+## 02 · 这个项目值得看什么
+
+| 项目重点 | 可以学到的东西 | 直接入口 |
+| :-- | :-- | :-- |
+| **传感器真正接起来** | LiDAR、IMU、编码器的数据、时间戳和 TF 怎样进入同一个系统 | [硬件与校准](docs/REPRODUCTION.md#sensors) |
+| **建图方案的取舍** | NDT、LeGO-LOAM 与 Cartographer 的实验观察，以及里程计的作用 | [建图对比](#mapping) |
+| **地图跨启动复用** | 保存 `.pbstream`，加载地图，手动给定初始位姿后持续定位 | [定位流程](docs/REPRODUCTION.md#localization) |
+| **规划落实为底盘运动** | 全局路线、局部轨迹、costmap 与 `/cmd_vel` 的关系 | [导航流程](docs/REPRODUCTION.md#navigation) |
+| **工程问题的处理** | 传感器漂移、反光表面、CPU 负载、供电散热与版本兼容 | [问题与经验](#lessons) |
+| **连接新的研究方向** | ROS2 迁移、LiDAR–inertial–visual odometry、闭环仿真如何接续本项目 | [2026 技术路线](docs/ROADMAP.md) |
+
+<a id="architecture"></a>
+## 03 · 系统如何闭环
+
+### 实车主链路 · ROS1
+
+```mermaid
+flowchart TB
+    sensors["RS-LiDAR-16 · IMU · 轮式里程计"] --> slam["Cartographer 3D<br/>建图 / 定位 / TF"]
+    sensors -->|实时点云| localmap["局部 Costmap<br/>Voxel + Inflation"]
+    slam -->|位姿 / TF| localmap
+    slam -->|保存栅格地图| globalmap["全局 Costmap<br/>Static + Inflation"]
+    goal["RViz 导航目标"] --> global["Dijkstra<br/>全局路径"]
+    globalmap --> global
+    global --> local["TEB<br/>局部轨迹优化"]
+    localmap --> local
+    local --> control["cmd_vel → M1 底盘"]
+    classDef sensing fill:#E7F7F4,stroke:#237D79,color:#173E3A;
+    classDef planning fill:#EEF2FA,stroke:#526B91,color:#22314E;
+    classDef actuation fill:#FFF5DF,stroke:#B58C32,color:#534015;
+    class sensors,slam,globalmap,localmap sensing;
+    class goal,global,local planning;
+    class control actuation;
+```
+
+**3D 建图与地面导航承担不同的任务。** 本仓库的第三代配置使用 Cartographer 3D 处理点云、IMU 和里程计，导航侧使用二维栅格地图及包含点云观测的代价地图。仓库中 `campus.yaml` 的 **0.05 m/cell 是栅格分辨率**，不代表测量精度。
+
+图中同时呈现建图与导航阶段。当前全局代价地图启用静态地图与膨胀层，Dijkstra 据此规划路线；实时点云进入局部体素层，供 TEB 调整附近的轨迹。[全局配置](src/launch/autolabor_navigation_launch/params/navigation/costmap/3d_global_costmap_params.yaml) · [局部配置](src/launch/autolabor_navigation_launch/params/navigation/costmap/3d_local_costmap_params.yaml)
+
+初始化时，RViz 的 `2D Pose Estimate` 发布 `/initialpose`；仓库内的 `cartographer_initialpose` 将位姿转换为 Cartographer 的轨迹服务请求。之后由扫描匹配和位姿图约束持续估计位置。[查看实际实现](src/tool/cartographer_initialpose/src/cartographer_initialpose.cpp)
+
+<a id="dual-ros"></a>
+### 双 ROS 的工程背景
+
+历史硬件驱动主要工作在 ROS1，而 Autoware.universe 使用 ROS2。论文记录了通过 `ros1_bridge` 交换消息的探索；AWSIM 联合仿真则是另一条实验路径。
+
+| 路径 | 当时的目标 | 本仓库提供的内容 |
+| :-- | :-- | :-- |
+| **ROS1 实车** | 建图、定位、导航与底盘控制 | catkin 源码、launch、Lua/YAML、场地地图 |
+| **ROS1 ↔ ROS2** | 连接既有驱动与 ROS2 软件生态 | 论文与 PPT 中的桥接说明；桥接工程需另行配置 |
+| **Autoware + AWSIM** | 在虚拟街道运行自动驾驶软件栈 | 历史部署教程与演示截图；上游软件需独立安装 |
+
+这里的 “DuralROS” 延续项目原名。它描述项目跨 ROS 版本的探索；当前源码并不是两份功能完全对等的 ROS1/ROS2 实车发行包。
+
+<a id="hardware"></a>
+## 04 · 实验平台
+
+| 部件 | 历史配置 | 在系统中的作用 |
+| :-- | :-- | :-- |
+| 移动底盘 | **AutoLabor M1** | 差速运动、编码器反馈与轮式里程计 |
+| 激光雷达 | **RoboSense RS-LiDAR-16** | 环境点云、建图与障碍观测 |
+| 惯性传感器 | **CH104M**；论文也记录了早期 AH100B | 角速度、加速度与姿态信息；以实际接线和 launch 为准 |
+| 深度相机 | **Microsoft Kinect v2** | RGB/深度画面与视觉检测实验 |
+| 上位机 | **HP OMEN · Intel i7-10750H** | 运行 ROS 与相关计算任务 |
+| GPU | 原 README 记为 **RTX-2070Ti** | 保留原记录；准确型号需在原机复核 |
+| 历史系统 | **Ubuntu 20.04 / ROS Noetic / ROS2 Galactic** | 复原当年的环境组合 |
+
+驱动名称 `autolabor_pro1_driver` 与底盘配置 `M1` 同时出现在项目中；不要仅凭包名判断实车型号。硬件手册、驱动来源、历史系统分区和安装入口统一整理在[环境准备](docs/REPRODUCTION.md#environment)。
+
+<a id="mapping"></a>
+## 05 · 为什么最后选 Cartographer
+
+项目实际比较了 **NDT Mapping、LeGO-LOAM、Cartographer（有/无里程计）**。团队最终使用带轮式里程计的 Cartographer，主要考虑地图连续性、定位稳定性与计算负担的平衡。
+
+| 方案 | 在本项目中的观察 | 复现时应关注 |
+| :-- | :-- | :-- |
+| **NDT Mapping** | 论文记录了点云噪声与较高 CPU 占用 | 配准分辨率、初值、运动畸变与具体实现；回环能力取决于系统配置 |
+| **LeGO-LOAM** | 地面优化与较轻的计算负担有吸引力，接入时出现地图/坐标对齐问题 | 线束排列、外参、TF、坐标约定；上游已有基础 ICP 回环 |
+| **Cartographer，无里程计** | 保留了室内建图试验，但材料对其稳定性评价不完全一致 | 场景特征、IMU 数据质量与参数选择 |
+| **Cartographer，有里程计** | 团队在花园/校园场地采用的方案 | 时间同步、轮径与轮距标定、轮滑、闭环约束 |
+
+这是**项目经验比较**，没有统一数据集、相同参数和重复试验支撑的算法排行榜。原文的定性表格及描述全部保留在[历史 README](docs/archive/README.original.md)，技术更正与材料差异见[证据说明](docs/EVIDENCE.md#corrections)。
+
+<details>
+<summary><b>论文报告的结果与解释范围</b></summary>
+
+论文的 “Validation (or Testing)” 写到平均定位准确率 **95%**、建图误差 **小于 2%**、受控场景避障成功率 **大于 90%**；PPT 第 22 页讲稿写到 **3.35 s** 重定位。
+
+这些数值保留为**历史材料报告值**。现有材料没有给出完整的指标定义、样本量、ground truth、原始日志和可重复计算流程，因此不将它们作为当前版本的独立验证成绩，也不将其换算成厘米级精度。下一轮评估应记录 ATE/RPE、定位恢复时间分布、导航成功率、碰撞/接管次数和 CPU/GPU 延迟。[评估计划](docs/ROADMAP.md#evaluation)
+
+</details>
+
+<a id="start"></a>
+## 06 · 怎样开始阅读与复现
+
+**只想了解成果：** 看视频 → 看系统图 → 看算法取舍与工程经验。<br>
+**准备接实车：** 检查依赖与硬件 → 校准传感器 → 建图 → 保存地图 → 初始化定位 → 下发导航目标。<br>
+**准备继续研究：** 先固化历史基线，再独立评估 ROS2 迁移和新算法。
+
+```bash
+git clone https://github.com/JACKSKYHADES0910/3DSLAM-DuralROS.git
+cd 3DSLAM-DuralROS
+```
+
+主流程的源码入口：
+
+| 任务 | 文件 |
+| :-- | :-- |
+| 底盘、LiDAR、IMU 启动 | [third_generation_base.launch](src/launch/autolabor_navigation_launch/launch/real_environment/third_generation_base.launch) |
+| 3D 建图 | [third_generation_cartographer_3d.launch](src/launch/autolabor_navigation_launch/launch/real_environment/third_generation_cartographer_3d.launch) |
+| 建图参数 | [third_generation_mapping.lua](src/launch/autolabor_navigation_launch/params/cartographer/third_generation_mapping.lua) |
+| 定位与导航 | [third_generation_navigation_3d.launch](src/launch/autolabor_navigation_launch/launch/real_environment/third_generation_navigation_3d.launch) |
+| 纯定位参数 | [third_generation_location.lua](src/launch/autolabor_navigation_launch/params/cartographer/third_generation_location.lua) |
+| 全局/局部规划 | [Dijkstra 配置](src/launch/autolabor_navigation_launch/params/navigation/global_planer/global_planner_params.yaml) · [TEB 配置](src/launch/autolabor_navigation_launch/params/navigation/local_planer/navigation_teb_local_planner_params.yaml) |
+
+> **复现前先读这一条：** 历史快照有缺失下载配置的 Git 子仓库引用、空的 LiDAR `config_path`，以及与原机相关的串口/参数。先完成[复现前检查](docs/REPRODUCTION.md#preflight)，再使用教程里的启动命令。本页不会把这些入口包装成已经验证的一键安装。
+
+完整教程：**[环境准备 → 传感器 → 建图 → 地图保存 → 定位 → 导航 → AWSIM](docs/REPRODUCTION.md)**。
+
+<a id="lessons"></a>
+## 07 · 真正让系统跑起来的细节
+
+| 遇到的问题 | 项目记录与下一步检查 |
+| :-- | :-- |
+| **位姿漂移、初始化困难** | 论文记录 IMU 数据异常并更换设备；复现时同时核对四元数、时间戳、安装方向、TF 和角速度/加速度单位 |
+| **玻璃、水面与反射** | 实验中出现稀疏或错误点云；多帧融合、深度补全和其他传感器是材料提出的改进方向 |
+| **算力与实时性** | NDT 实验出现高 CPU 占用；需要同时观察前端处理时间、后端优化和丢帧 |
+| **电源与散热** | 论文记录增加移动电源与调整风扇支持；持续性能需要在移动供电状态下验证 |
+| **ROS 版本不一致** | 通过桥接探索跨版本通信；消息能互通之后，还要检查坐标、QoS、时间与控制接口语义 |
+
+这些经验影响复现效率，也解释了为什么只替换一个算法，通常不能自动解决整个机器人系统的问题。[详细排查路径](docs/REPRODUCTION.md#troubleshooting)
+
+<a id="status"></a>
+## 08 · 实现状态与后续方向
+
+| 模块 | 历史成果 | 当前公开材料 |
+| :-- | :-- | :-- |
+| Cartographer + LiDAR/IMU/Odometry | 实车建图、地图复用与定位演示 | 源码、参数、地图和影像 |
+| move_base + Dijkstra + TEB | 校园目标导航与避障演示 | 启动文件、costmap 和规划参数 |
+| Kinect + YOLOv5 | 论文、视频展示检测画面 | Kinect 驱动在仓库；未找到 YOLOv5 节点、权重及检测到规划器的完整适配链路 |
+| ROS1/ROS2 bridge | 论文与 PPT 记录通信探索 | 未包含可直接复现的完整桥接工作空间 |
+| Autoware.universe + AWSIM | 联合仿真截图与部署记录 | 保留历史教程，需配套上游版本 |
+| 自动探索、增强动态感知、自动泊车 | 原论文/PPT 的未来方向 | 研究计划 |
+
+**2026 年值得接续的方向**包括：先整理可复现基线，再迁移到受支持的 ROS2 版本；用 FAST-LIVO2 等方法研究更紧密的传感器融合；用 Nav2/MPPI 重新评估局部控制；最后在闭环仿真中研究视觉语言动作模型与长尾场景。这些均为**候选工作，尚未集成本仓库**。[技术路线、官方引用与验收指标](docs/ROADMAP.md)
+
+<a id="structure"></a>
+## 09 · 仓库导航
+
+```text
+3DSLAM-DuralROS/
+├── src/
+│   ├── driver/        # 底盘、惯导、激光雷达、深度相机
+│   ├── mapping/       # Cartographer、GMapping 等
+│   ├── navigation/    # move_base、global_planner、TEB、costmap
+│   ├── launch/        # 实车与仿真启动文件、参数、地图
+│   ├── simulation/    # AutoLabor 仿真与机器人模型
+│   └── tool/          # initialpose 桥接、图像等工具
+├── docs/
+│   ├── REPRODUCTION.md  # 复现教程与历史环境
+│   ├── EVIDENCE.md      # 实验依据、素材来源、技术更正
+│   ├── ROADMAP.md       # 现代技术路线与参考资料
+│   ├── CONTENT_MAP.md   # 原 README 内容迁移索引
+│   ├── assets/         # 本地图片、动图与视频
+│   └── archive/        # 原 README 逐字保留
+└── README.md
+```
+
+原仓库还包含历史构建产物和第三方目录。建议在新的工作空间中重建；[教程](docs/REPRODUCTION.md#build)说明了它们与源码的区别。
+
+<a id="credits"></a>
+## 10 · 团队、引用与致谢
+
+本项目来自 2024 年毕业设计 **The implementation of autonomous driving system**。
+
+**GU Tianqi · LUO Kaiyuan · WANG Ruoyu**<br>
+Supervisor: **Zhe Xuanyuan**<br>
+BNU-HKBU United International College · Data Science
+
+感谢 AutoLabor、RoboSense、HIPNUC、Cartographer、ROS Navigation、TEB、LeGO-LOAM、YOLOv5、Autoware 和 AWSIM 社区提供的硬件支持、算法、驱动与工具。项目工作重点是系统集成、配置与实车实践；上游算法归原作者所有。
+
+**References:** [Cartographer](https://github.com/cartographer-project/cartographer) · [Cartographer ROS](https://google-cartographer-ros.readthedocs.io/en/latest/) · [LeGO-LOAM](https://github.com/RobustFieldAutonomyLab/LeGO-LOAM) · [TEB](https://github.com/rst-tu-dortmund/teb_local_planner) · [Autoware](https://github.com/autowarefoundation/autoware.universe) · [AWSIM v1.0.1](https://github.com/tier4/AWSIM/tree/v1.0.1) · [ros1_bridge](https://github.com/ros2/ros1_bridge)
+
+根目录采用 [Apache License 2.0](LICENSE)。仓库收录的第三方代码与图片仍需遵循各自许可证和署名要求；根许可证不替代上游许可。
+
+欢迎通过 [Issues](https://github.com/JACKSKYHADES0910/3DSLAM-DuralROS/issues) 交流复现记录、补充硬件信息或提交文档修正。复现问题请附上系统版本、传感器型号、启动命令和相关日志，便于定位。
 
 ---
 
-## 1.2 准备工作
-  **准备工作部分是根据本人实操所记录的流程，观看者可根据所需内容选取，非必要部分可以跳过！**
-1. 安装系统 Ubuntu 20.04 + 系统分区</br>
-   参考链接:[Windows10+Ubuntu20.04双系统 惠普暗影精灵OMEN](https://blog.csdn.net/Robert_Q/article/details/115842915)
-      >根目录：</br> 
-      / 主分区 250G </br> 
-      /boot：逻辑分区 10G </br> 
-      swap：交换分区， 32G </br> 
-      EFI：启动程序：1G </br> 
-      /home: 逻辑分区，剩下的707G </br> 
+<div align="center">
 
-2. 下载**对应Ubtuntu系统**版本(20.04)[AutoLabor代码(ROS1-noetic)](http://www.autolabor.com.cn/download)</br>
-   由于autolabor所支持的设备太过于老旧以及多器械的驱动未曾更新并存在被删库的风险，步骤2方法会出现诸多不便的操作，包括并不限于手搓驱动，以及自己实时调参。
-3. (推荐)国内大神“鱼香ROS”一键配置Ubuntu操作系统各种配置
-   - 可通过terminal直接安装[主页｜鱼香ROS](https://fishros.org.cn/forum/topic/20/%E5%B0%8F%E9%B1%BC%E7%9A%84%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85%E7%B3%BB%E5%88%97)
-   - 安装说明：[FishROS 安装 GitHub 仓库](https://github.com/fishros/install)
+**看见地图，也看见把地图接到实车上的工程过程。**<br>
+[回到顶部](#3dslam-duralros) · [完整教程](docs/REPRODUCTION.md) · [原文保留索引](docs/CONTENT_MAP.md)
 
-    - 一键安装指令
-    
-        ```bash
-        wget http://fishros.com/install -O fishros && . fishros
-        ```
-4. 安装autoware.ai 和 autoware.universe</br>
-   参考文档：
-   - autoware.ai可以从gitub直接拉包： [autoware.ai](https://github.com/autowarefoundation/autoware_ai)
-   - autoware.universe比较复杂，需要配置nvidia/tensort/cudnn等配置，可以参看CSDN大佬编写文档： [autoware.universe](https://blog.csdn.net/zardforever123/article/details/132528899)
-5. 安装autolabor以及调参cmd_vel
-   - 准备另一台电脑，下载autolabor官方网站制作的`.iso`文件安装系统，拷贝`catkin_ws`文件并备份到U盘中
-   - 下载连接： [AutolaborOS-24.04-amd64.iso (Ubuntu18.04 ROS Melodic)](http://www.autolabor.com.cn/download?hmsr=gwstastics&hmpl=os&hmcu=24.04)</br>
-   - 将`catkin_ws`拷贝至所运行的主机中，此文件运行在`ROS1-neotic`环境下运行 
-
----
-
-## 1.3 Autoware AWSIM Simulation
-   **参考文档**: [AWSIM官方安装文档](https://github.com/tier4/AWSIM/blob/v1.0.1/docs/GettingStarted/QuickStartDemo/index.md)
-
-1. 进入 `.bashrc` 
-    ```bash
-    sudo gedit ./bashrc
-
-2. 在`.bashrc`文件中添加**AWSIM**所需要的环境变量
-    ```bash
-    export ROS_LOCALHOST_ONLY=1
-    export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-    
-    if [ ! -e /tmp/cycloneDDS_configured ]; then
-        sudo sysctl -w net.core.rmem_max=2147483647
-        sudo ip link set lo multicast on
-        touch /tmp/cycloneDDS_configured
-    fi
-3. 安装所需依赖
-   ```bash
-   sudo apt update
-   ```
-   ```bash
-   sudo apt install libvulkan1
-   ````
-4. 下载 `AWSIM_vXXX.zip` 并解压</br>
-   `AWSIM_v1.0.1.zip`: [AWSIM Demo for ubuntu](https://github.com/tier4/AWSIM/releases/download/v1.0.1/AWSIM_v1.0.1.zip)</br>
-   修改文件权限</br>
-   ![修改图片权限](https://github.com/tier4/AWSIM/raw/v1.0.1/docs/GettingStarted/QuickStartDemo/Image_1.png)</br>
-   在`Download`路径打开`terminal`
-   ```bash
-   sudo apt install unzip
-   sudo unzip AWSIM_v1.0.1
-   ```
-5. 打开AWSIM仿真器
-   ```bash
-   ./<path to AWSIM folder>/AWSIM.x86_64
-   ```
-   查看`topic`订阅情况
-   ```
-   ros2 topic list
-   ```
-6. 下载AWSIM在autoware上面运行的地图</br>
-     [AWSIM_autoware_map](https://github.com/tier4/AWSIM/releases/download/v1.0.0/nishishinjuku_autoware_map.zip)</br>
-     同上步骤解压，放在与`AWSIM.x86_64`启动项同级目录位置
-
-   - 启动AWISM仿真器
-     ```bash
-     ./<path to AWSIM folder>/AWSIM.x86_64
-     ```
-
-   - 启动autoware.universe(`map`地址要指向AWSIM地图路径)
-     ```bash
-     # 新开一个终端
-     cd autoware_universe
-     source install/setup.bash
-     ros2 launch autoware_launch e2e_simulator.launch.xml vehicle_model:=sample_vehicle sensor_model:=awsim_sensor_kit map_path:=<your mapfile location>
-     ```
-     ![Autoware.universe与AWISM联合仿真](https://github.com/tier4/AWSIM/raw/v1.0.1/docs/GettingStarted/QuickStartDemo/Image_Initial.png)</br>
----
-
-# 2. 实车部署
-## 2.1 实车建图
-
-在建图过程中，我们选择了 `Lego-LOAM`、`ndt_map` 和 `Cartographer` 三种建图方式。每种方式都有其特点和适用场景，以下对各方法进行了详细说明：
-
-
-### 对比（请按照适配场景选择所需建图工具）
-
-| 特性           | **Lego-LOAM**                                                                                                                                                  | **NDT_MAP**                                                                                                                                                                | **Cartographer**                                                                                                                                                               |
-|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **适用坐标系** | 左手坐标系，不适用于所有系统                                                                                                                                     | 右手坐标系，适配 Autoware 等系统                                                                                                                                            | 右手坐标系，与 Autoware 等平台良好集成                                                                                                                                           |
-| **实时性**     | 高，适合实时建图                                                                                                                                               | 中等，计算量较大                                                                                                                                                           | 高，计算速度快，适用于实时应用                                                                                                                                                  |
-| **精度**       | 高精度建图，适合静态或平坦环境                                                                                                                                  | 高精度定位，适合复杂动态环境                                                                                                                                               | 高精度建图，提供回环检测与闭环校正                                                                                                                                            |
-| **回环检测**   | 不支持回环检测，主要用于短时定位                                                                                                                                 | 支持回环检测，可动态更新环境模型                                                                                                                                            | 支持回环检测与闭环校正，生成准确地图                                                                                                                                            |
-| **环境适用性** | 静态、平坦环境，地面优化效果良好                                                                                                                               | 复杂、动态环境，适合自动驾驶和城市交通                                                                                                                                    | 室内外环境，适合物流、自动驾驶和巡检等场景                                                                                                                                      |
-| **硬件需求**   | 硬件需求较低，适合一般计算设备                                                                                                                                  | 硬件需求较高，适合配备 GPU 的计算环境                                                                                                                                       | 内存消耗大，对传感器配置要求高                                                                                                                                                  |
-| **安装配置**   | 简单，依赖较少                                                                                                                                                 | 中等，需要配置 Autoware 环境                                                                                                                                                | 配置复杂，需要多个传感器的支持                                                                                                                                                  |
-
-## Lego-LOAM
-
-Lego-LOAM（Lightweight and Ground-Optimized LiDAR Odometry and Mapping）是一种轻量级的激光雷达建图方式，专为地面车辆设计，能够实时生成车辆周围的高精度点云地图。它的核心是通过**六自由度（6DoF）姿态估计**进行实时定位和建图，利用激光雷达测距数据在静态或平坦环境中进行建图，适合小规模场景的高效建图和里程计应用。Lego-LOAM 使用**左手坐标系**，因此不适合右手坐标系需求的 Autoware 环境，但在其他系统中有广泛的应用价值。
-
-- **核心算法**：
-  - **LOAM（LiDAR Odometry and Mapping）**：Lego-LOAM 基于 LOAM 框架，将激光雷达的里程计与建图功能分离，确保里程计实时运行并以一定频率构建地图。其分割过程包括特征提取、点云配准和地图更新。
-  - **特征点提取**：通过计算激光雷达点云的曲率，Lego-LOAM 提取出角点和平面点，减少计算量的同时提高定位精度。
-  - **ICP（Iterative Closest Point）**：Lego-LOAM 采用 ICP 算法将连续扫描的数据进行匹配，实现高效、精确的点云配准。
-
-
-- **安装与配置**：
-  - Lego-LOAM 需要在 ROS1 Noetic 版本下运行，并依赖 Eigen 和 PCL 等库。请确认安装 ROS Noetic 版本，并确保安装了 Eigen、PCL 和其他必要的依赖项。
-  - Lego-LOAM 的安装步骤如下：
-    ```bash
-    # 克隆仓库
-    git clone https://github.com/RobustFieldAutonomyLab/LeGO-LOAM.git
-    cd LeGO-LOAM
-
-    # 设置工作空间并安装必要的依赖项
-    rosdep install --from-paths src --ignore-src -r -y
-
-    # 编译项目
-    mkdir build && cd build
-    cmake ..
-    make
-    ```
-  - 参考文档：[LeGO-LOAM GitHub 仓库](https://github.com/RobustFieldAutonomyLab/LeGO-LOAM)
-
-
-## NDT_MAP
-
-NDT_MAP 是一种基于正态分布变换（NDT, Normal Distributions Transform）的激光雷达建图方法，特别适合动态变化的复杂环境。NDT_MAP 将**ndt_mapping**技术与**回环检测**结合，实现高精度的环境建模和实时更新。NDT_MAP 使用**右手坐标系**，因此与 Autoware 等右手坐标系的应用平台兼容性极佳，尤其在复杂、动态的场景中表现优异。
-
-- **核心算法**：
-  - **Normal Distributions Transform（NDT）**：NDT 利用正态分布来表示激光雷达点云中的特征区域，将空间划分成多个栅格，并为每个栅格建立正态分布模型，从而对环境特征进行建模。通过在模型中匹配新的点云数据，可以高效实现定位和建图。
-  - **回环检测**：NDT_MAP 结合回环检测技术，能够在已建图的区域中识别重复路径，从而实现地图的闭环校正和更新，提升建图的精确性和连续性。
-
-
-- **安装与配置**：
-  - NDT_MAP 需要在 ROS 环境下运行，建议在 ROS1 Noetic 版本中使用。安装前确保已配置 Eigen 和 PCL 等必备依赖库。
-  - NDT_MAP 的安装步骤如下：
-    ```bash
-    # 克隆仓库
-    git clone https://github.com/jyakaranda/ndt_map.git
-    cd ndt_map
-
-    # 安装所需依赖项
-    rosdep install --from-paths src --ignore-src -r -y
-
-    # 编译项目
-    mkdir build && cd build
-    cmake ..
-    make
-    ```
-  - 参考文档：[ndt_map GitHub 仓库](https://github.com/jyakaranda/ndt_map)
-
-## Cartographer(我们团队选择的工具)
-
-Cartographer 是 Google 开发的一款实时建图与定位框架，支持**2D** 和 **3D** 的 SLAM 应用，适用于多种场景。该系统结合了激光雷达和 IMU 数据，能够高效地完成建图和定位任务。Cartographer 支持**右手坐标系**，与 Autoware 等主流右手坐标系平台具有良好的兼容性。其模块化设计使其能够处理室内外环境中的复杂建图和定位需求。
-
-- **核心算法**：
-  - **Graph SLAM（图优化 SLAM）**：Cartographer 采用图优化的 SLAM 算法，将环境中多个传感器数据构建成图结构，通过前端的里程计估计和后端的图优化来提升定位和建图精度。
-  - **回环检测和闭环校正**：在地图的回环检测中，Cartographer 自动检测路径闭环并进行调整，从而修正定位误差并优化地图结构，以提高长时间建图的精确性。
-  - **扫描匹配**：通过激光雷达数据的扫描匹配技术，Cartographer 能够在动态环境下实现高效的定位与建图，适应性强。
-
-
-- **安装与配置**：
-  - Cartographer 需要在 ROS 环境下运行，建议使用 ROS1 Noetic 版本，安装前需确保配置了 Eigen、PCL、Cerres 等必要的依赖项。
-  - Cartographer 的安装步骤如下：
-    ```bash
-    # 安装基础依赖
-    sudo apt-get update
-    sudo apt-get install -y python3-wstool python3-rosdep ninja-build
-
-    # 克隆仓库并初始化工作空间
-    mkdir -p ~/cartographer_ws/src
-    cd ~/cartographer_ws
-    wstool init src
-    wstool merge -t src https://raw.githubusercontent.com/cartographer-project/cartographer_ros/master/cartographer_ros.rosinstall
-    wstool update -t src
-
-    # 安装 ROS 依赖项
-    rosdep update
-    rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} -y
-
-    # 编译
-    catkin_make_isolated --install --use-ninja
-    ```
-  - 参考文档：[Cartographer GitHub 仓库](https://github.com/cartographer-project/cartographer)
-
-
-### 建图方式选择建议
-
-- **如果需要实时性和较高精度的建图**：推荐使用 Cartographer，其速度和精度在实际应用中表现良好。
-- **如果环境较为平坦，且对实时性要求高**：可以选择 Lego-LOAM，特别适合地面应用。
-- **如果环境复杂、动态变化较大**：建议使用 NDT_MAP，其回环检测和更新能力适合复杂环境。
-
----
-
-## 2.2 实车定位
-
-定位部分采用**手动标定与自动匹配相结合**的策略，以确保初始定位精确并实现后续的自动定位。主要定位算法基于 Cartographer，通过其独特的扫描匹配和图优化机制来实现高精度定位。具体流程如下：
-
-## 2.2 实车定位
-
-实车定位采用**手动标定与自动匹配相结合**的策略，以确保初始定位的精确性并在后续实现持续的自动定位。Cartographer 是核心定位算法，其通过独特的扫描匹配和图优化机制，实现高精度的实时定位。具体流程如下：
-
-### 1. 首次手动标定
-   - 在首次启动时，操作人员需要进行手动标定，以确保机器人准确识别其初始位置。
-   - 在建好的地图上选择起始位置，并将其与实际环境对齐，包括：
-     - **初始姿态调整**：确保机器人朝向与地图方向一致，减少算法的初始误差。
-     - **传感器数据同步**：启用 LiDAR、IMU 等传感器，确保各传感器的数据与初始位置同步。
-   - 手动标定后，系统将该位置和姿态作为起始参考点，供 Cartographer 定位算法使用。
-
-   ```xml
-   <!-- cartographer_node 启动文件的示例配置 -->
-   <node name="cartographer_node" pkg="cartographer_ros" type="cartographer_node" output="screen">
-       <param name="use_sim_time" value="false"/>
-       <param name="initial_pose_x" value="0.0"/>
-       <param name="initial_pose_y" value="0.0"/>
-       <param name="initial_pose_a" value="0.0"/>
-       <remap from="scan" to="velodyne_scan"/>
-   </node>
-   ```
-   - 上述配置文件示例用于设定 Cartographer 节点的初始位置和姿态角度（`initial_pose_x`, `initial_pose_y`, `initial_pose_a`），以便进行精确的初始标定。
-
-### 2. 自动匹配定位（基于 Cartographer）
-   - 手动标定完成后，系统启用 Cartographer 的自动定位算法，根据实时传感器数据与地图匹配，实现持续自动定位。
-   - **Cartographer 定位算法的关键技术**：
-     - **前端扫描匹配**：Cartographer 使用激光雷达的点云数据与现有地图进行实时扫描匹配，通过**匹配精细的点云数据**来估计机器人的相对位移。前端会在局部地图中持续校正机器人位置，确保高实时性。
-     - **IMU 融合**：Cartographer 会使用 IMU 数据来改进姿态估计，尤其在点云不足的区域（如长直走廊）中，IMU 能提供更稳定的姿态信息，减少位姿误差的积累。
-     - **回环检测和闭环校正**：当机器人识别到已访问过的区域时，Cartographer 的回环检测模块会触发闭环校正，将当前位置与之前的位置对齐，从而消除累积误差。这一特性确保地图长期稳定，特别适合大范围巡航。
-     - **自动纠偏**：Cartographer 不断在前端扫描匹配和后端图优化之间交替工作，以确保机器人在长时间运行中的定位精度和稳定性。
-     ```xml
-     #trajectory_builder 配置文件示例
-         TRAJECTORY_BUILDER.pure_localization = true
-         TRAJECTORY_BUILDER_2D.min_range = 0.3
-         TRAJECTORY_BUILDER_2D.max_range = 30.0
-         TRAJECTORY_BUILDER_2D.use_imu_data = true
-         TRAJECTORY_BUILDER_2D.use_online_correlative_scan_matching = true
-         TRAJECTORY_BUILDER_2D.submaps.num_range_data = 35
-         MAP_BUILDER.use_trajectory_builder_2d = true
-     ```
-     - 以上配置文件示例中，将 `TRAJECTORY_BUILDER.pure_localization` 设置为 `true` 以启用纯定位模式，并对激光雷达的最小和最大范围、IMU 数据、在线相关扫描匹配等参数进行了调整，适用于自动匹配定位。
-
-
-### 3. 动态环境下的定位优化
-   - Cartographer 的自动匹配系统能够根据实时传感器数据和先验地图进行动态调整。针对复杂和动态变化的环境，Cartographer 会通过其扫描匹配机制不断更新机器人位置。
-   - 在动态环境中，Cartographer 利用 NDT 和 ICP 算法适应环境变化，确保机器人在有障碍物或移动物体的场景中定位稳定。
-   ```xml
-   #动态环境的优化配置示例
-      POSE_GRAPH.optimization_problem.huber_scale = 1e1
-      POSE_GRAPH.optimize_every_n_nodes = 90
-      POSE_GRAPH.constraint_builder.min_score = 0.55
-      POSE_GRAPH.constraint_builder.global_localization_min_score = 0.6
-   ```
-   - 上述配置文件示例中设置了 `POSE_GRAPH.optimization_problem.huber_scale` 和 `POSE_GRAPH.constraint_builder.min_score` 等参数，以应对动态环境下的定位优化需求，提高对动态物体的适应性。
-
-
-### 4. 定位精度与误差管理
-   - 系统会持续监测定位精度，并根据实时环境和传感器反馈自适应调整参数，减小误差。
-   - Cartographer 的闭环检测和多传感器融合机制能够在长时间运行后自动校准累积误差，确保长期定位的稳定性。通过后端的图优化，Cartographer 将多个扫描结果整合到全局地图中，以进一步降低漂移。
-   ```xml
-   #调用 Cartographer ROS 服务完成路径优化
-   rosservice call /finish_trajectory 0
-   rosservice call /write_state "{filename: '/path/to/map.bag.pbstream'}"
-   ```
-   - 保存的 `.pbstream` 文件可以在后续启动 Cartographer 时加载，以快速恢复先前的地图状态，适用于重复性任务或多次启动需求的应用场景。
-
-  ```xml
-  <!-- 恢复 .pbstream 地图文件的 Cartographer 启动文件示例 -->
-  <node name="cartographer_node" pkg="cartographer_ros" type="cartographer_node" output="screen">
-      <param name="use_sim_time" value="false"/>
-      <param name="load_state_filename" value="/path/to/map.bag.pbstream"/>
-      <remap from="scan" to="velodyne_scan"/>
-  </node>
-  ```
-   - 上述启动文件示例中，通过设置 `load_state_filename` 参数，将 `.pbstream` 文件加载到 Cartographer 中，实现地图和定位状态的恢复。这样，机器人可以直接基于已有地图进行定位，而无需重新进行完整的地图构建。
-
-   - 注意事项：
-
-      - 文件路径：确保 `.pbstream` 文件的路径正确且可访问，否则 Cartographer 将无法加载地图。
-      - 坐标对齐：在加载保存的地图状态时，请确保机器人实际位置与地图中的初始位置一致，以减少误差。
-      - 地图更新：如果环境发生显著变化，建议重新构建或更新地图，以确保定位准确性。
-   - 总结：通过 Cartographer 的 `.pbstream` 文件保存和恢复功能，用户可以在多次启动或重复任务中快速恢复地图状态，减少重复构图的时间消耗。同时，通过回环检测和图优化，Cartographer 提供了稳定可靠的定位效果，适应动态环境的变化。
-
-
-
-## 2.3 实车导航
-# 机器人导航系统概述
-
-使用`nav goal`指定目标地点后，`global_planner`会进行全局规划以确定机器人从当前位置到目标位置的最佳路径。随后，`cost_map`模块会基于静态环境数据进行障碍物避让，确保路径不会穿越固定障碍物。而在动态避障方面，系统结合了`YOLOv5`和`teb_local_planner`的功能。`YOLOv5`负责实时识别机器人周围的动态物体，例如椅子或人等，并将这些识别信息传递给`teb_local_planner`。`teb_local_planner`则根据这些动态物体的位置和移动轨迹，动态调整路径，以确保机器人能够顺利避开障碍物，安全到达目的地。
-
-## YOLOv5介绍
-`YOLOv5`（You Only Look Once version 5）是一种实时物体检测算法，它采用单次前馈神经网络结构来识别图像中的目标。相比于其他检测算法，`YOLOv5`在速度和准确率上都具有较好的平衡，特别适合对延迟要求较高的应用场景。通过训练，`YOLOv5`可以识别多种物体类别，比如人、椅子、车等。在本系统中，`YOLOv5`的主要功能是实时检测机器人周围的动态障碍物，并向`teb_local_planner`提供其位置信息，以便进行实时避障和路径调整。
-
-## 导航模块（move_base）
-`move_base`是一个ROS包，用于结合路径规划和障碍物避免，来帮助机器人实现自主导航。在图中，`move_base`模块整合了多个规划模块，包括`global_planner`（全局规划）和`teb_local_planner`（局部规划）模块。`move_base`接收来自传感器（如激光雷达、编码器等）获取的周围环境信息，并根据这些信息进行导航和避障。
-
-## 全局规划（global_planner，使用Dijkstra算法）
-`global_planner`模块负责计算机器人从当前位姿到目标位姿的全局路径，使用了Dijkstra算法。Dijkstra算法是一种经典的图搜索算法，可以在已知地图上找到从起始点到目标点的最短路径。`global_planner`会根据地图数据和目标位置生成一个理想路径，这个路径会被传递给后续的局部规划模块。
-
-## 局部规划（teb_local_planner）
-`teb_local_planner`模块是一个基于时间弹性带（Time Elastic Band, TEB）的局部路径规划器，专门用于处理机器人避障和动态环境下的路径调整。`teb_local_planner`结合了来自`YOLOv5`的识别结果，根据实时的障碍物信息（如前后雷达数据及YOLO识别到的动态物体），在全局路径的基础上进行微调，以确保机器人可以平稳、安全地避开障碍物，跟随最优路径前进。
-
+</div>

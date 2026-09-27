@@ -1,0 +1,81 @@
+{
+  "review_date": "2026-09-27",
+  "source_commit": "4a58f4072a5083435625af805da9258500ca0d70",
+  "archive_sha256": "33e4e5661cf965494942c010c1834fe1eccd2061d453e27e349343e4c970277d",
+  "assets": [
+    {
+      "file": "hero.png",
+      "source": "thesis/media/image37.jpeg",
+      "note": "Thesis Figure 34; typography composed in Figma",
+      "bytes": 597215,
+      "sha256": "a9030566b59e05f1795fd270ee9796bc82b373211d8ae24cbba5abd64ee9460a",
+      "source_sha256": "855174ebad1912129dbae93e61de0cf85cb629a08e496a48761ad356c23790bd",
+      "width": 1600,
+      "height": 650,
+      "frames": 1
+    },
+    {
+      "file": "campus-map.png",
+      "source": "thesis/media/image30.png",
+      "note": "Thesis Figure 28; presentation slide 40",
+      "bytes": 178072,
+      "sha256": "29d9b751f4544ff4a1bcc064148ca7fabb363301923e2ad3256d9784cb594f84",
+      "source_sha256": "29d9b751f4544ff4a1bcc064148ca7fabb363301923e2ad3256d9784cb594f84",
+      "width": 1204,
+      "height": 790,
+      "frames": 1
+    },
+    {
+      "file": "global-planning.png",
+      "source": "thesis/media/image34.png",
+      "note": "Thesis Global Planning; presentation slide 46",
+      "bytes": 1306742,
+      "sha256": "51cf4835f477eaba31419cbd82d45840c38a673930e7f530cdf877140a7225f9",
+      "source_sha256": "51cf4835f477eaba31419cbd82d45840c38a673930e7f530cdf877140a7225f9",
+      "width": 1471,
+      "height": 738,
+      "frames": 1
+    },
+    {
+      "file": "local-planning.png",
+      "source": "thesis/media/image35.png",
+      "note": "Thesis Local Planner; presentation slide 42",
+      "bytes": 1361762,
+      "sha256": "ae07e8c1406183b4d115639101cbf7dea93588c58e234d5d7c8487270aecf0f1",
+      "source_sha256": "ae07e8c1406183b4d115639101cbf7dea93588c58e234d5d7c8487270aecf0f1",
+      "width": 1470,
+      "height": 730,
+      "frames": 1
+    },
+    {
+      "file": "awsim.png",
+      "source": "thesis/media/image13.png",
+      "note": "Thesis Simulation; presentation slide 30",
+      "bytes": 1933185,
+      "sha256": "81285939b8386ae27517961e7852feb1c6747216ede77fda34a47246cad75f11",
+      "source_sha256": "81285939b8386ae27517961e7852feb1c6747216ede77fda34a47246cad75f11",
+      "width": 1269,
+      "height": 951,
+      "frames": 1
+    },
+    {
+      "file": "navigation-preview.gif",
+      "source": "presentation/media/media1.mp4",
+      "note": "Presentation slide 48; 150-160 seconds, 8 fps, 800x450",
+      "bytes": 4675584,
+      "sha256": "961e27bc4344821c10f0c0437522d252b0a2528b89fb2a703e1dbadfea6b70d3",
+      "source_sha256": "9793e66614b89e0d8baa65dca4b469b2fc42f8a9b0ea0dcb2e94870702318af0",
+      "width": 800,
+      "height": 450,
+      "frames": 80
+    },
+    {
+      "file": "road-demo.mp4",
+      "source": "presentation/media/media1.mp4",
+      "note": "Presentation slide 48; full duration transcoded, H.264/AAC, 960x540",
+      "bytes": 17937028,
+      "sha256": "3d0e78427e0047493a3e683321b506a9a97fc3f80c0c6e118c2824b28b779ef8",
+      "source_sha256": "9793e66614b89e0d8baa65dca4b469b2fc42f8a9b0ea0dcb2e94870702318af0"
+    }
+  ]
+}
