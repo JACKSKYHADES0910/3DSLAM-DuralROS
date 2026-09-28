@@ -75,6 +75,7 @@ PPT 第 8 页讲稿把系统描述为 Level 3。材料未提供相应运行设�
 | [autolabor-architecture.png](assets/autolabor-architecture.png) | 论文图 29，image31 | AutoLabor 参考示意，保留原水印与归属 |
 | [ndt-mapping.png](assets/ndt-mapping.png) | 论文图 23；PPT 第 38 页 | 原图复制，NDT 花园试验 |
 | [lego-mapping.png](assets/lego-mapping.png) | 论文图 25；PPT 第 39 页 | 原图复制，LeGO-LOAM 花园试验 |
+| [完整中文视频](https://github.com/user-attachments/assets/183c8e36-d6cf-413a-a5fd-3159e0e1e749) | Bilibili BV1hQTqzZEsc，00:00–05:35 | 完整保留内容与声音，720p / 30 fps，H.264 + AAC；通过 GitHub 视频附件在首页播放 |
 | [simulation-demo.gif](assets/simulation-demo.gif) | Bilibili BV1hQTqzZEsc，01:10–01:46 | 36 秒、原速、无声 |
 | [mapping-demo.gif](assets/mapping-demo.gif) | 同一视频，02:46–03:22 | 36 秒、原速、无声；跳过终端启动与界面设置 |
 | [field-navigation-demo.gif](assets/field-navigation-demo.gif) | 同一视频，04:36–05:16 | 40 秒、原速、无声 |
@@ -85,7 +86,7 @@ PPT 第 8 页讲稿把系统描述为 Level 3。材料未提供相应运行设�
 
 ## 6. 新视频与公开资料的边界
 
-当前演示使用 [Bilibili 中文项目视频](https://www.bilibili.com/video/BV1hQTqzZEsc/?t=284)，完整时长约 5 分 35 秒，首页入口从 **04:44 实车目标导航**开始。用户提供的视频流为 1920×1080、30 fps、无音轨；单独音频流为 AAC。首页 GIF 为 640×360、5 fps，按原速播放。仿真与建图动图分别跳转至原片 **01:10**、**02:46**，导航动图跳转至车辆开始按目标行驶的 **04:44**。原 PPT 导出的完整 MP4 和旧 GIF 已从当前版本移除。
+当前演示使用 [Bilibili 中文项目视频](https://www.bilibili.com/video/BV1hQTqzZEsc/?t=284)，完整时长约 5 分 35 秒。首页内嵌播放器保留全片，支持播放、暂停、拖动与声音开关；Bilibili 入口从 **04:44 实车目标导航**开始。用户提供的视频流为 1920×1080、30 fps、无音轨；单独音频流为 AAC。两者合成为完整有声视频后，压缩为 1280×720、30 fps、H.264 + AAC，并上传为 GitHub 视频附件。GitHub 原生播放器忽略链接中的起播时间，因此定点导航通过 Bilibili 入口提供。首页 GIF 为 640×360、5 fps，按原速播放。仿真与建图动图分别跳转至原片 **01:10**、**02:46**，导航动图跳转至车辆开始按目标行驶的 **04:44**。原 PPT 导出的完整 MP4 和旧 GIF 已从当前版本移除。
 
 新视频的仿真画面与实车画面用于说明不同实验阶段。简介列出 Ubuntu 18.04/Melodic 实车与 Ubuntu 20.04 仿真，原 README 列出 Ubuntu 20.04/Noetic/Galactic；首页保留这两套历史记录。简介中的 “ROS2-NEOTIC” 不作为有效发行版名称，Noetic 属于 ROS1。
 

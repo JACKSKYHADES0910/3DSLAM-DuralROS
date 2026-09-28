@@ -180,5 +180,22 @@
       "width": 760,
       "height": 1320
     }
+  ],
+  "videos": [
+    {
+      "name": "3dslam-project-overview.mp4",
+      "url": "https://github.com/user-attachments/assets/183c8e36-d6cf-413a-a5fd-3159e0e1e749",
+      "source": "https://www.bilibili.com/video/BV1hQTqzZEsc/",
+      "source_sha256": "4bd0996e33f46465be7633e0ed51a1cb4e87cd5e8d9d95b8d33f00e5c0336122",
+      "bytes": 55772263,
+      "sha256": "bd719ceab6035203045031071ca9a014b576d37167b199e87cb410697b69afc4",
+      "duration_seconds": 335.07,
+      "width": 1280,
+      "height": 720,
+      "fps": 30,
+      "video_codec": "H.264",
+      "audio_codec": "AAC",
+      "note": "Full original timeline and audio retained; GitHub inline player. Bilibili link starts at 04:44."
+    }
   ]
 }

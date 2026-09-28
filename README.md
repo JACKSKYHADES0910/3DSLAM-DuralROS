@@ -23,11 +23,16 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-526277?style=flat-square" alt="Apache License 2.0"></a>
 </p>
 
+<p align="center"><strong>🎬 完整项目演示 · 05:35</strong></p>
+
+https://github.com/user-attachments/assets/183c8e36-d6cf-413a-a5fd-3159e0e1e749
+
 <p align="center">
   <a href="https://www.bilibili.com/video/BV1hQTqzZEsc/?t=284"><strong>▶ Bilibili 完整中文视频 · 从 04:44 实车导航开始</strong></a>
 </p>
 
 <p align="center">
+  <a href="#contents">目录</a> ·
   <a href="#demo">演示预览</a> ·
   <a href="#architecture">系统架构</a> ·
   <a href="#environment">部署教程</a> ·
@@ -38,8 +43,36 @@
 
 ---
 
+<a id="contents"></a>
+## 📖 目录
+
+<details>
+<summary><strong>展开完整目录：从演示预览，到实车部署与进阶研究</strong></summary>
+
+1. [项目概览](#overview)
+2. [仿真与实车演示](#demo)
+3. [实验平台](#hardware)
+4. [系统架构与真实运行图](#architecture)
+5. [环境与驱动准备](#environment)
+6. [Autoware 与 AWSIM 联合仿真](#awsim)
+7. [建图方案：原理、对比与选择](#mapping)
+8. [工作空间、传感器与 TF](#start)
+9. [实车建图与地图保存](#field-mapping)
+10. [地图加载与实车定位](#localization)
+11. [实车导航与视觉检测](#navigation)
+12. [工程问题与排查经验](#lessons)
+13. [后续方向](#future)
+14. [实现状态与源码](#status)
+15. [团队与致谢](#credits)
+
+</details>
+
+**阅读路线：** 先看[演示](#demo)与[架构](#architecture)了解项目；准备复现，从[环境配置](#environment)进入[工作空间](#start)，再依次建图、定位和导航；进阶内容见[建图方案](#mapping)与[后续方向](#future)。
+
+---
+
 <a id="overview"></a>
-## 01 · 项目概览
+## 🎯 01 · 项目概览
 
 **基于 AutoLabor M1 的实车建图、定位与导航系统。** 激光雷达、惯性传感器（IMU）和轮式里程计提供环境与运动数据；Cartographer 完成同步定位与建图（SLAM），move_base 通过 Dijkstra 规划全局路径、TEB 调整局部轨迹，最终输出底盘速度指令。
 
@@ -54,21 +87,8 @@
 
 > 实车演示完成于 2024 年，中文视频于 2025 年公开。当前源码以 ROS1 实车链路为主；视觉到规划的完整接口和 ROS2 实车工作空间尚未收录。详见[实现状态](#status)。
 
-<details>
-<summary><strong>完整目录</strong></summary>
-
-| 展示与理解 | 环境与部署 | 原理与进阶 |
-| :-- | :-- | :-- |
-| [02 仿真与实车演示](#demo) | [05 环境与驱动](#environment) | [07 建图方案](#mapping) |
-| [03 实验平台](#hardware) | [06 AWSIM 联合仿真](#awsim) | [10 地图加载与定位](#localization) |
-| [04 系统架构](#architecture) | [08 工作空间与传感器](#start) | [11 导航与视觉检测](#navigation) |
-| [12 工程问题](#lessons) | [09 实车建图与保存](#field-mapping) | [13 后续方向](#future) |
-| [14 实现状态与源码](#status) | [问题排查](#troubleshooting) | [15 团队与致谢](#credits) |
-
-</details>
-
 <a id="demo"></a>
-## 02 · 仿真与实车演示
+## 🎬 02 · 仿真与实车演示
 
 以下片段按原速循环播放。点击动图，进入原视频对应演示。
 
@@ -93,7 +113,7 @@
 [▶ 观看原视频与声音 · 从实车导航开始](https://www.bilibili.com/video/BV1hQTqzZEsc/?t=284)
 
 <a id="hardware"></a>
-## 03 · 实验平台
+## 🤖 03 · 实验平台
 
 | 部件 | 配置 | 作用 |
 | :-- | :-- | :-- |
@@ -132,7 +152,7 @@
 </details>
 
 <a id="architecture"></a>
-## 04 · 系统架构与真实运行图
+## 🧩 04 · 系统架构与真实运行图
 
 ### 从传感器到车辆运动
 
@@ -182,7 +202,7 @@ AutoLabor 的通用架构示意，保留原水印；实车传感器与连接方�
 
 
 <a id="environment"></a>
-## 05 · 环境与驱动准备
+## 📦 05 · 环境与驱动准备
 
 实车环境采用 **Ubuntu 20.04 / ROS1 Noetic**，ROS2 集成记录使用 Galactic。以下步骤用于恢复项目环境；仿真依赖见[下一节](#awsim)。
 
@@ -198,6 +218,9 @@ AutoLabor 的通用架构示意，保留原水印；实车传感器与连接方�
 | [Kinect for Windows](https://learn.microsoft.com/en-us/windows/apps/design/devices/kinect-for-windows) | 相机资料；Ubuntu 驱动见仓库 `iai_kinect2-master` |
 | [HP OMEN](https://www.omen.com/cn/zh/laptops.html) | 上位机产品资料 |
 
+<details>
+<summary><strong>展开部署补充：系统分区、厂商软件与安装工具</strong></summary>
+
 ### 系统分区与厂商软件
 
 项目使用 Windows 10 + Ubuntu 20.04 双系统，安装可参考 [HP OMEN 双系统笔记](https://blog.csdn.net/Robert_Q/article/details/115842915)。原机分区为 `/` 250 GB、`/boot` 10 GB、swap 32 GB、EFI 1 GB、`/home` 约 707 GB；容量按实际磁盘调整。
@@ -212,12 +235,17 @@ AutoLabor 的通用架构示意，保留原水印；实车传感器与连接方�
 wget http://fishros.com/install -O fishros && . fishros
 ```
 
+</details>
+
 <a id="awsim"></a>
-## 06 · Autoware 与 AWSIM 联合仿真
+## 🖥️ 06 · Autoware 与 AWSIM 联合仿真
 
 本节是独立的仿真路线，使用 **AWSIM v1.0.1 与配套 Autoware**。GPU 驱动、CUDA、TensorRT、cuDNN 和 ROS 版本按[对应官方教程](https://github.com/tier4/AWSIM/blob/v1.0.1/docs/GettingStarted/QuickStartDemo/index.md)配置。
 
 相关资料：[Autoware.AI](https://github.com/autowarefoundation/autoware_ai) · [Autoware.universe](https://github.com/autowarefoundation/autoware.universe) · [早期安装笔记](https://blog.csdn.net/zardforever123/article/details/132528899)。安装以所选版本的官方文档为准。
+
+<details>
+<summary><strong>展开联合仿真部署：DDS、地图与启动步骤</strong></summary>
 
 ### 6.1 DDS 与依赖
 
@@ -272,6 +300,8 @@ ros2 launch autoware_launch e2e_simulator.launch.xml \
 
 确认传感器与地图对齐、规划路线正确、模拟车辆按指令响应。新环境请从 [Autoware 官方文档](https://autowarefoundation.github.io/autoware-documentation/main/)选择配套版本。
 
+</details>
+
 <details>
 <summary><b>AWSIM 权限设置与联合启动截图</b></summary>
 
@@ -286,7 +316,7 @@ ros2 launch autoware_launch e2e_simulator.launch.xml \
 ![AWSIM 仿真场景](docs/assets/awsim.png)
 
 <a id="mapping"></a>
-## 07 · 建图方案：原理、对比与选择
+## 🧪 07 · 建图方案：原理、对比与选择
 
 团队比较了 **LeGO-LOAM、NDT Mapping、Cartographer（有/无轮式里程计）**，最终采用带里程计的 Cartographer。以下从地图效果、算法原理和配置要求说明选择。
 
@@ -317,6 +347,9 @@ ros2 launch autoware_launch e2e_simulator.launch.xml \
 | **硬件需求** | 关注点云规格与 CPU 负载 | CPU/GPU 取决于所选库，GPU 不是 NDT 的必需条件 | 关注 IMU、点云、内存与后端计算开销 |
 | **安装配置** | ROS/catkin、GTSAM、Eigen/PCL 及传感器参数 | ROS/catkin、NDT 库、GTSAM、点云/里程计/IMU 接口 | Cartographer/ROS 接口、Ceres 等依赖、Lua 配置与 TF |
 
+<details>
+<summary><strong>展开 LeGO-LOAM：原理、传感器适配与构建</strong></summary>
+
 ### 7.2 LeGO-LOAM：地面优化与 6DoF 位姿
 
 LeGO-LOAM 面向地面车辆，利用地面与几何特征估计六自由度位姿（6DoF）。它将里程计与建图分开处理，通过曲率等特征选取边缘点、平面点，减少计算量；上游包含基础 **ICP 回环检测**。
@@ -337,6 +370,11 @@ source devel/setup.bash
 # 完成传感器/TF/时间参数适配后再启动
 roslaunch lego_loam run.launch
 ```
+
+</details>
+
+<details>
+<summary><strong>展开 NDT：配准原理、依赖与构建</strong></summary>
 
 ### 7.3 NDT：用栅格内的统计分布配准
 
@@ -359,11 +397,16 @@ source devel/setup.bash
 roslaunch ndt_map test.launch
 ```
 
+</details>
+
 ### 7.4 Cartographer：局部子地图与全局图优化
 
 Cartographer 支持 **2D/3D** 建图与定位。局部前端进行扫描匹配并形成子地图；全局后端寻找扫描与子地图之间的约束，将局部结果放到一致的位姿图中。LiDAR 描述环境几何，IMU 帮助估计姿态和重力方向，轮式里程计提供运动信息。回环约束有助于降低累积漂移，其效果仍依赖可观测的环境与正确的数据。[算法说明](https://google-cartographer-ros.readthedocs.io/en/latest/algo_walkthrough.html)
 
 校园试验中，轮式里程计改善了地图连续性与定位稳定性；Cartographer 也便于接入现有驱动、ROS Navigation 和地图复用流程。
+
+<details>
+<summary><strong>展开 Cartographer 上游独立构建步骤</strong></summary>
 
 **独立构建上游版本：**
 
@@ -382,6 +425,8 @@ catkin_make_isolated --install --use-ninja
 
 核对 Eigen、PCL、Ceres 等依赖版本。恢复本项目时，应保留定制代码与 Lua 参数，按[下一节](#build)构建整个工作空间。[Cartographer 上游](https://github.com/cartographer-project/cartographer)
 
+</details>
+
 ### 7.5 怎样选择
 
 - **关注实时性与地图连续性：** 可以从本项目的 Cartographer + Odometry 基线开始，测量前端延迟和后端优化开销。
@@ -389,7 +434,7 @@ catkin_make_isolated --install --use-ninja
 - **研究 NDT/Autoware 配准或复杂动态环境：** 先锁定具体实现，明确初值、动态点处理与回环模块，再用同一记录比较。
 
 <a id="start"></a>
-## 08 · 工作空间、传感器与 TF
+## ⚙️ 08 · 工作空间、传感器与 TF
 
 ```bash
 git clone https://github.com/JACKSKYHADES0910/3DSLAM-DuralROS.git
@@ -475,7 +520,7 @@ Kinect 提供 RGB/深度图像，用于视觉检测实验；当前 Cartographer 
 TF 描述传感器之间的位置关系，时间戳记录观测时刻；两者一致，才能正确融合数据。
 
 <a id="field-mapping"></a>
-## 09 · 实车建图与地图保存
+## 🗺️ 09 · 实车建图与地图保存
 
 底层数据正常后，停止单独运行的底层 launch，启动包含驱动的建图入口：
 
@@ -520,7 +565,7 @@ MAP_BUILDER.num_background_threads = 4
 ![校园 Cartographer 地图](docs/assets/campus-map.png)
 
 <a id="localization"></a>
-## 10 · 地图加载与实车定位
+## 📍 10 · 地图加载与实车定位
 
 **加载已有地图 → 给出初始位姿 → 持续匹配定位。** 首次运行时，在 RViz 中设置车辆的位置和朝向，并确认 LiDAR、IMU、里程计及 TF 正常。
 
@@ -566,6 +611,9 @@ POSE_GRAPH.optimize_every_n_nodes = 50
 | 时钟 | 实车使用真实时钟；回放和仿真按需设置 `use_sim_time` |
 | 地图维护 | 场地显著变化后更新或重建地图 |
 
+<details>
+<summary><strong>展开定位调参：参数作用与观察重点</strong></summary>
+
 ### 10.3 定位调参
 
 保存同一组传感器记录，每次只调整一项，对比误差、处理延迟和失效恢复：
@@ -579,8 +627,10 @@ POSE_GRAPH.optimize_every_n_nodes = 50
 
 这些参数控制扫描匹配与位姿图优化，不能替代动态障碍处理。具体值应根据传感器和场地验证。[定位配置](src/launch/autolabor_navigation_launch/params/cartographer/third_generation_location.lua)
 
+</details>
+
 <a id="navigation"></a>
-## 11 · 实车导航与视觉检测
+## 🧭 11 · 实车导航与视觉检测
 
 ### 11.1 启动并设置目标
 
@@ -632,7 +682,7 @@ YOLOv5 从 Kinect 图像中预测目标类别、置信度和二维检测框。�
 视频可观察到检测画面；当前源码可核实的避障链路为 **LiDAR → 局部 costmap → TEB**。各模块的源码收录情况见[实现状态](#status)。
 
 <a id="lessons"></a>
-## 12 · 工程问题与排查经验
+## 🛠️ 12 · 工程问题与排查经验
 
 | 现象 | 实验经验与检查方法 |
 | :-- | :-- |
@@ -645,9 +695,12 @@ YOLOv5 从 Kinect 图像中预测目标类别、置信度和二维检测框。�
 **先验证输入，再调整算法。** IMU 更换后仍需重新检查标定与时间同步；定位、建图和避障效果应使用固定路线、重复试验和明确指标评估。[故障速查](#troubleshooting) · [评估计划](#evaluation)
 
 <a id="future"></a>
-## 13 · 后续方向
+## 🚀 13 · 后续方向
 
 以下为待验证的研究与工程计划，尚未集成本仓库。详细资料见[路线说明](docs/ROADMAP.md)。
+
+<details>
+<summary><strong>展开研究路线：ROS2、传感器融合、动态障碍与仿真</strong></summary>
 
 ### 13.1 建立可复现基线
 
@@ -681,6 +734,8 @@ YOLOv5 从 Kinect 图像中预测目标类别、置信度和二维检测框。�
 
 自动探索可比较边界搜索（Frontier Exploration）与快速随机树（RRT）方法，评估信息增益、重复行驶和频繁停顿。泊车任务可从倒车入位与侧方停车开始，测量最终位置、角度误差和失败恢复能力。
 
+</details>
+
 <a id="evaluation"></a>
 ### 13.7 实验指标
 
@@ -695,7 +750,7 @@ YOLOv5 从 Kinect 图像中预测目标类别、置信度和二维检测框。�
 | 实时性 | 处理延迟分布、CPU/GPU、内存 | 运行日志、硬件与供电状态 |
 
 <a id="status"></a>
-## 14 · 实现状态与源码
+## 🗂️ 14 · 实现状态与源码
 
 | 模块 | 已有成果 | 仓库内容 |
 | :-- | :-- | :-- |
@@ -707,6 +762,9 @@ YOLOv5 从 Kinect 图像中预测目标类别、置信度和二维检测框。�
 | 自动探索、动态感知、泊车 | 后续计划 | [研究方向](#future) |
 
 <a id="structure"></a>
+<details>
+<summary><strong>展开仓库结构与目录用途</strong></summary>
+
 ### 仓库结构
 
 ```text
@@ -726,6 +784,8 @@ YOLOv5 从 Kinect 图像中预测目标类别、置信度和二维检测框。�
 ```
 
 仓库还包含旧构建产物；复现时按[构建步骤](#build)在新工作空间编译。
+
+</details>
 
 ### 实车入口
 
@@ -757,7 +817,7 @@ YOLOv5 从 Kinect 图像中预测目标类别、置信度和二维检测框。�
 </details>
 
 <a id="credits"></a>
-## 15 · 团队与致谢
+## 🤝 15 · 团队与致谢
 
 **Jack GU** · 项目作者<br>
 **Fred LUO** · 技术支持与项目参与
