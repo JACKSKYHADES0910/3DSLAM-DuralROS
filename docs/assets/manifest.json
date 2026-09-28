@@ -142,14 +142,14 @@
     },
     {
       "file": "mapping-demo.gif",
-      "bytes": 9602454,
-      "sha256": "2b4046bdf5c68700f772983620c5d4b16cf62cc40967cd46a912866844b7b159",
-      "source": "Bilibili BV1hQTqzZEsc; user-provided video stream",
-      "source_sha256": "5de1ee16f7a5b524f259aef02428d40cdd9020cc0f52f3b04ac714f6c44cdfee",
-      "start_seconds": 147,
+      "bytes": 10123505,
+      "sha256": "23c1d5ceae8de43018154fee28b4797b5ac5af70635d51af19754d6ff2cdfb39",
+      "source": "Bilibili BV1hQTqzZEsc; bilibili-project-combined.mp4",
+      "source_sha256": "4bd0996e33f46465be7633e0ed51a1cb4e87cd5e8d9d95b8d33f00e5c0336122",
+      "start_seconds": 166,
       "duration_seconds": 36,
       "fps": 5,
-      "processing": "Original speed; scale 640x360; 64-color GIF; no audio",
+      "processing": "Original speed; scale 640x360; 64-color GIF; Bayer dithering (scale 5); no audio",
       "width": 640,
       "height": 360,
       "frames": 180,
@@ -169,6 +169,15 @@
       "height": 360,
       "frames": 200,
       "actual_duration_seconds": 40.0
+    },
+    {
+      "file": "ros1-navigation-architecture.svg",
+      "bytes": 7682,
+      "sha256": "94099e4bd582e9de6c62c13b7e912420a7bcf94e863eb98604669639f61b61af",
+      "source": "ROS1 launch files and global/local costmap configuration in this repository",
+      "note": "Static vector architecture diagram; sensors, Cartographer, maps, Dijkstra, TEB and M1 feedback",
+      "width": 760,
+      "height": 1320
     }
   ]
 }

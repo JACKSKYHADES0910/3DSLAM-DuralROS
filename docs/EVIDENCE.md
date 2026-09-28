@@ -71,11 +71,12 @@ PPT 第 8 页讲稿把系统描述为 Level 3。材料未提供相应运行设�
 | [sensor-suite.png](assets/sensor-suite.png) | 论文 Hardware / Sensor，image17 | 原图复制，硬件示意图 |
 | [field-platform.jpeg](assets/field-platform.jpeg) | 论文移动供电与实车装配，image38 | 原图复制 |
 | [ros-node-graph.png](assets/ros-node-graph.png) | PPT 第 37 页，image59 | 真实 ROS 节点/话题快照 |
+| [ros1-navigation-architecture.svg](assets/ros1-navigation-architecture.svg) | 当前 ROS1 启动文件与代价地图配置 | 静态矢量图，说明传感器、建图定位、规划与底盘反馈；替换首页 Mermaid 渲染 |
 | [autolabor-architecture.png](assets/autolabor-architecture.png) | 论文图 29，image31 | AutoLabor 参考示意，保留原水印与归属 |
 | [ndt-mapping.png](assets/ndt-mapping.png) | 论文图 23；PPT 第 38 页 | 原图复制，NDT 花园试验 |
 | [lego-mapping.png](assets/lego-mapping.png) | 论文图 25；PPT 第 39 页 | 原图复制，LeGO-LOAM 花园试验 |
 | [simulation-demo.gif](assets/simulation-demo.gif) | Bilibili BV1hQTqzZEsc，01:10–01:46 | 36 秒、原速、无声 |
-| [mapping-demo.gif](assets/mapping-demo.gif) | 同一视频，02:27–03:03 | 36 秒、原速、无声 |
+| [mapping-demo.gif](assets/mapping-demo.gif) | 同一视频，02:46–03:22 | 36 秒、原速、无声；跳过终端启动与界面设置 |
 | [field-navigation-demo.gif](assets/field-navigation-demo.gif) | 同一视频，04:36–05:16 | 40 秒、原速、无声 |
 
 素材使用用于说明本项目，不将第三方软件画面或上游算法图示声明为原创算法成果。原始图中的字幕、检测框和桌面界面均来自历史材料。文件来源与 SHA-256 见 [assets/manifest.json](assets/manifest.json)。
@@ -84,7 +85,7 @@ PPT 第 8 页讲稿把系统描述为 Level 3。材料未提供相应运行设�
 
 ## 6. 新视频与公开资料的边界
 
-当前演示统一使用 [Bilibili 中文项目介绍](https://www.bilibili.com/video/BV1hQTqzZEsc/)，完整时长约 5 分 35 秒。用户提供的视频流为 1920×1080、30 fps、无音轨；单独音频流为 AAC。首页使用 640×360、5 fps 的 GIF，保留片段原速与时长，点击三段 GIF 均跳到上述 B 站页面。原 PPT 导出的完整 MP4 和旧 GIF 已从当前版本移除。
+当前演示使用 [Bilibili 中文项目视频](https://www.bilibili.com/video/BV1hQTqzZEsc/?t=284)，完整时长约 5 分 35 秒，首页入口从 **04:44 实车目标导航**开始。用户提供的视频流为 1920×1080、30 fps、无音轨；单独音频流为 AAC。首页 GIF 为 640×360、5 fps，按原速播放。仿真与建图动图分别跳转至原片 **01:10**、**02:46**，导航动图跳转至车辆开始按目标行驶的 **04:44**。原 PPT 导出的完整 MP4 和旧 GIF 已从当前版本移除。
 
 新视频的仿真画面与实车画面用于说明不同实验阶段。简介列出 Ubuntu 18.04/Melodic 实车与 Ubuntu 20.04 仿真，原 README 列出 Ubuntu 20.04/Noetic/Galactic；首页保留这两套历史记录。简介中的 “ROS2-NEOTIC” 不作为有效发行版名称，Noetic 属于 ROS1。
 

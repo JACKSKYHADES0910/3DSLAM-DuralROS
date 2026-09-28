@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="1320" viewBox="0 0 760 1320" role="img" aria-labelledby="title desc">
+  <title id="title">ROS1 实车建图、定位与导航架构</title>
+  <desc id="desc">RS-LiDAR-16、IMU 和轮式里程计输入 Cartographer 3D。建图时保存状态和栅格地图，导航时加载状态进行定位，由 map_server 加载栅格地图。move_base 结合位姿、全局代价地图和 RViz 导航目标，通过 Dijkstra 生成全局路径；TEB 结合局部代价地图优化轨迹，输出 cmd_vel 控制 AutoLabor M1。只有 LiDAR 的实时点云输入局部障碍地图。底盘里程计反馈给定位系统。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 8 4 0 8Z" fill="#5C7685"/></marker>
+    <marker id="teal-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 8 4 0 8Z" fill="#238775"/></marker>
+    <style>
+      text{font-family:"Microsoft YaHei","Noto Sans SC","PingFang SC",Arial,sans-serif;fill:#143247}
+      .title{font-size:22px;font-weight:700}
+      .body{font-size:18px;fill:#496475}
+      .small{font-size:17px;fill:#587080}
+      .step{font-size:20px;font-weight:700;fill:#3C6475}
+      .line{fill:none;stroke:#5C7685;stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round;marker-end:url(#arrow)}
+      .teal{fill:none;stroke:#238775;stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round;marker-end:url(#teal-arrow)}
+      .card{fill:#FFF;stroke:#C8D8E0;stroke-width:1.5}
+    </style>
+  </defs>
+
+  <rect x="1" y="1" width="758" height="1318" rx="22" fill="#F5F8FA" stroke="#D7E3E9"/>
+  <path d="M23 1H737Q759 1 759 23V99H1V23Q1 1 23 1Z" fill="#0B2132"/>
+  <rect x="32" y="30" width="5" height="40" rx="2.5" fill="#67D9B9"/>
+  <text x="52" y="51" font-size="30" font-weight="700" fill="#F3F8FA" style="fill:#F3F8FA">ROS1 实车导航架构</text>
+  <text x="52" y="79" font-size="17" style="fill:#A8C4D0">感知与定位 → 路径规划 → 底盘执行</text>
+
+  <text x="104" y="138" class="step">01 · 感知与定位</text>
+
+  <!-- Only LiDAR supplies the real-time point-cloud branch. -->
+  <rect x="104" y="170" width="160" height="88" rx="12" class="card"/>
+  <text x="184" y="205" text-anchor="middle" font-size="21" font-weight="700">RS-LiDAR-16</text>
+  <text x="184" y="237" text-anchor="middle" class="body">三维点云</text>
+  <rect x="284" y="170" width="160" height="88" rx="12" class="card"/>
+  <text x="364" y="205" text-anchor="middle" class="title">IMU</text>
+  <text x="364" y="237" text-anchor="middle" class="body">惯性测量</text>
+  <rect x="464" y="170" width="190" height="88" rx="12" class="card"/>
+  <text x="559" y="205" text-anchor="middle" class="title">轮式里程计</text>
+  <text x="559" y="237" text-anchor="middle" class="body">车辆运动数据</text>
+  <path d="M184 258V279H559V258M364 258V304" fill="none" stroke="#5C7685" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M364 279V305" class="line"/>
+
+  <rect x="104" y="305" width="550" height="116" rx="14" fill="#E4F3EE" stroke="#92CBB9" stroke-width="1.5"/>
+  <text x="379" y="342" text-anchor="middle" font-size="27" font-weight="700">Cartographer 3D</text>
+  <text x="379" y="373" text-anchor="middle" class="title">建图 / 定位</text>
+  <text x="379" y="402" text-anchor="middle" class="body">建图保存 .pbstream，导航时加载</text>
+
+  <path d="M229 421V486" class="line"/>
+  <path d="M529 421V486" class="line"/>
+  <text x="246" y="460" class="small">地图</text>
+  <text x="546" y="460" class="small">定位</text>
+
+  <rect x="104" y="486" width="250" height="124" rx="12" class="card"/>
+  <text x="229" y="523" text-anchor="middle" class="title">栅格地图</text>
+  <text x="229" y="555" text-anchor="middle" class="body">保存 .pgm + .yaml</text>
+  <text x="229" y="584" text-anchor="middle" class="body">map_server 加载</text>
+  <rect x="404" y="486" width="250" height="124" rx="12" class="card"/>
+  <text x="529" y="523" text-anchor="middle" class="title">位姿 / TF</text>
+  <text x="529" y="555" text-anchor="middle" class="body">确定车辆的位置与朝向</text>
+  <text x="529" y="584" text-anchor="middle" class="body">提供规划所需坐标变换</text>
+
+  <text x="104" y="659" class="step">02 · 路径规划</text>
+  <rect x="84" y="681" width="590" height="352" rx="16" fill="#EBF1F8" stroke="#C6D5E5" stroke-width="1.5"/>
+  <text x="104" y="707" class="small">move_base</text>
+  <path d="M294 610V719" class="line"/>
+  <rect x="257" y="682" width="74" height="27" rx="7" fill="#EBF1F8"/>
+  <text x="294" y="701" text-anchor="middle" class="small">/map</text>
+  <path d="M529 610V681" class="line"/>
+  <text x="529" y="707" text-anchor="middle" class="small">为规划提供位姿</text>
+
+  <rect x="104" y="720" width="250" height="112" rx="12" fill="#FFF" stroke="#B8CBE0" stroke-width="1.5"/>
+  <text x="229" y="757" text-anchor="middle" class="title">全局代价地图</text>
+  <text x="229" y="789" text-anchor="middle" class="body">静态地图 + 安全膨胀</text>
+  <text x="229" y="815" text-anchor="middle" class="small">Global Costmap</text>
+  <rect x="404" y="720" width="250" height="112" rx="12" fill="#FFF" stroke="#B8CBE0" stroke-width="1.5"/>
+  <text x="529" y="757" text-anchor="middle" class="title">局部代价地图</text>
+  <text x="529" y="789" text-anchor="middle" class="body">点云障碍 + 安全膨胀</text>
+  <text x="529" y="815" text-anchor="middle" class="small">Local Costmap</text>
+  <path d="M184 170V152H711V777H654" class="teal"/>
+  <text x="696" y="584" text-anchor="middle" class="small" transform="rotate(-90 696 584)" style="fill:#238775">LiDAR 实时点云</text>
+
+  <path d="M229 832V897" class="line"/>
+  <path d="M529 832V897" class="line"/>
+  <rect x="104" y="898" width="250" height="113" rx="12" fill="#DCE9F6" stroke="#9AB6D3" stroke-width="1.5"/>
+  <text x="229" y="934" text-anchor="middle" class="title">Dijkstra 全局规划</text>
+  <text x="229" y="966" text-anchor="middle" class="body">按 RViz 导航目标</text>
+  <text x="229" y="993" text-anchor="middle" class="body">生成全局路径</text>
+  <path d="M354 954H403" class="line"/>
+  <rect x="404" y="898" width="250" height="113" rx="12" fill="#DCE9F6" stroke="#9AB6D3" stroke-width="1.5"/>
+  <text x="529" y="934" text-anchor="middle" class="title">TEB 局部规划</text>
+  <text x="529" y="966" text-anchor="middle" class="body">结合障碍与运动约束</text>
+  <text x="529" y="993" text-anchor="middle" class="body">优化行驶轨迹</text>
+
+  <text x="104" y="1090" class="step">03 · 底盘执行</text>
+  <path d="M529 1011V1147" class="line"/>
+  <rect x="459" y="1061" width="142" height="38" rx="10" fill="#F5F8FA"/>
+  <text x="529" y="1087" text-anchor="middle" class="title">/cmd_vel</text>
+  <rect x="104" y="1148" width="550" height="107" rx="14" fill="#0B2132"/>
+  <text x="379" y="1190" text-anchor="middle" font-size="27" font-weight="700" style="fill:#F3F8FA">AutoLabor M1</text>
+  <text x="379" y="1225" text-anchor="middle" font-size="20" style="fill:#BBD9E2">执行速度指令 · 输出轮式里程计</text>
+
+  <!-- Odometry closes the sensing-control loop. -->
+  <path d="M104 1201H46V363H103" class="teal" stroke-dasharray="7 6"/>
+  <text x="34" y="798" text-anchor="middle" font-size="18" style="fill:#238775" transform="rotate(-90 34 798)">/odom · 里程计反馈</text>
+  <text x="379" y="1292" text-anchor="middle" class="small">先建图并保存，再加载地图进行定位与导航</text>
+</svg>

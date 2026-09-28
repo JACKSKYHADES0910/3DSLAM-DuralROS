@@ -2,7 +2,7 @@
 
 [返回项目首页](../README.md) · [原 README 全文快照](archive/README.original.md)
 
-原来的安装、算法原理、参数、命令和导航讲解已重新纳入**主 README**。主文按项目流程重排，并结合论文/PPT 的技术图、新视频和现代研究方向扩充；归档提供逐字历史对照，不替代主文中的完整内容。唯一合并的重复段是原文两次出现的定位引言。
+安装、算法原理、参数、命令和导航讲解位于**主 README**。主文按项目流程组织，配合技术图与实车视频说明；重复解释和修订说明已合并，归档保留逐字历史对照。
 
 | 原内容 | 现在的主 README 位置 |
 | :-- | :-- |
@@ -30,15 +30,15 @@
 | 传感器同步、TF、IMU/里程计检查 | [08 工作空间与传感器](../README.md#start) |
 | finish_trajectory、write_state、地图文件 | [09 建图与保存](../README.md#field-mapping) |
 | 手动位置/朝向 + 自动匹配定位 | [10 定位](../README.md#localization) |
-| 原 initial_pose_x/y/a、use_sim_time、velodyne_scan | [10.3 参数对照](../README.md#localization)，逐字段保留 |
-| 原 2D 定位七项参数及数值 | [10.4 参数对照](../README.md#localization) |
-| 四个 POSE_GRAPH 参数及原值 | [10.5 动态环境与误差管理](../README.md#localization) |
+| 初始位姿、时钟与传感器输入 | [10.2 设置初始位姿](../README.md#localization)；旧 `velodyne_scan` 示例见[历史快照](archive/README.original.md) |
+| 原 2D 定位七项参数及数值 | [历史快照](archive/README.original.md)；主 README 说明当前 3D 配置 |
+| 四个 POSE_GRAPH 参数 | [10.3 定位调参](../README.md#localization)；非活动示例值见[历史快照](archive/README.original.md) |
 | 地图恢复 XML、状态路径、坐标对齐、环境变化后更新 | [10 定位](../README.md#localization) |
 | nav goal、move_base、costmap、Dijkstra | [11 导航](../README.md#navigation) |
-| YOLOv5 单次前馈、速度/准确率、人/椅子/车 | [11.4 视觉辅助设计](../README.md#vision) |
+| YOLOv5 检测与规划输入 | [11.3 从视觉检测到规划输入](../README.md#vision) |
 | TEB 局部轨迹、动态障碍、原 YOLO 到规划器设计 | [11 导航](../README.md#navigation) |
 
-原文中有误的坐标/回环判断、构建步骤和 ROS 参数，均在原主题所在章节说明更正。新版保留其操作目的、原理和参数信息；不会让读者把历史示例误当成当前活动配置。原 URL 也保留在相关章节，主视频入口除外：按作者要求使用 B 站，YouTube 仅作历史对照。
+主 README 说明当前配置与操作流程，历史错误和非活动示例不再重复展开。旧参数与原视频入口可在历史快照中查阅。
 
 ## 设计参考与检索口径
 
@@ -52,6 +52,8 @@
 | [Hugging Face Transformers](https://github.com/huggingface/transformers) | 清晰项目定位，简短上手入口，深入文档分层 |
 | [3Blue1Brown Manim](https://github.com/3b1b/manim) | 让实际视觉成果解释工具价值，说明不同实现的关系 |
 | [FAST-LIVO2](https://github.com/hku-mars/FAST-LIVO2) | 机器人项目的论文/视频/数据/硬件/安装入口组织方式 |
+| [My Spider Project](https://github.com/JACKSKYHADES0910/University-Application-Information-Scraper) | 深色封面、绿蓝点缀、居中导航、折叠目录与分层教程 |
+| [EnrollKit](https://github.com/JACKSKYHADES0910/enrollkit) | 简短项目定位、图文并排、能力表格与可折叠细节 |
 
 新版的具体素材全部来自本项目，未复制其他首页的图片或营销文案。英文用于技术术语、短标语与引用；中文承担主要说明。
 
