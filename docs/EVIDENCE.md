@@ -63,7 +63,7 @@ PPT 第 8 页讲稿把系统描述为 Level 3。材料未提供相应运行设�
 
 | 文件 | 原始来源 | 处理 |
 | :-- | :-- | :-- |
-| [hero.png](assets/hero.png) | 论文 `word/media/image37.jpeg`，Figure 34 附近的实车照片 | Figma 中加入标题与排版，未生成虚构车辆 |
+| [hero.png](assets/hero.png) | 用户提供的 AutoLabor M1 实车照片 | 使用 imagegen 去除室内背景、合成深蓝点云背景并放大车体展示；[编辑提示词](assets/hero.prompt.txt) |
 | [campus-map.png](assets/campus-map.png) | 论文 `image30.png`，Figure 28；PPT 40 的 `image65.png` | 原图复制，Cartographer with odometry 花园地图 |
 | [global-planning.png](assets/global-planning.png) | 论文 `image34.png`，Global planning；PPT 46 | 原图复制 |
 | [local-planning.png](assets/local-planning.png) | 论文 `image35.png`，TEB/避障演示；PPT 42 | 原图复制 |
@@ -81,7 +81,7 @@ PPT 第 8 页讲稿把系统描述为 Level 3。材料未提供相应运行设�
 
 素材使用用于说明本项目，不将第三方软件画面或上游算法图示声明为原创算法成果。原始图中的字幕、检测框和桌面界面均来自历史材料。文件来源与 SHA-256 见 [assets/manifest.json](assets/manifest.json)。
 
-首屏的可编辑设计：[Figma · 3DSLAM DuralROS README visuals](https://www.figma.com/design/m5ilYDwGmbfj7o2jtlMBOI)。仓库使用导出的本地 PNG，不依赖 Figma 临时图片链接。
+当前首屏使用仓库内的 PNG，车体与搭载设备以用户提供的实车照片为参考，背景与版式经图像编辑生成。早期版式保留在 [Figma · 3DSLAM DuralROS README visuals](https://www.figma.com/design/m5ilYDwGmbfj7o2jtlMBOI)，不对应当前首图。
 
 ## 6. 新视频与公开资料的边界
 

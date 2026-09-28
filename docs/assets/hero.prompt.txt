@@ -1,0 +1,21 @@
+Use case: compositing.
+Asset type: final replacement GitHub README hero banner for 3DSLAM-DuralROS.
+Input image 1 is the ONLY source photograph of the real robot to preserve. Input image 2 is the existing banner, used ONLY for its typography, colors and exact wording. Do NOT use the robot photo in image 2.
+
+Create one polished landscape banner, approximately 1536 x 960 (8:5 aspect ratio), edge-to-edge. Precisely cut out the yellow AutoLabor M1 robot and all equipment mounted on it from input 1. Remove ALL original room, carpet, tile seams, wall, sockets, skirting and unrelated objects, including background seen THROUGH gaps between wheels, posts and cables. Preserve the actual vehicle perspective and its distinctive geometry: yellow chassis, black rubber wheels, aluminum extrusion rack, orange-and-black equipment/power unit, off-white electronics enclosure, blue cylindrical RoboSense LiDAR, small black mounted sensors, brackets, cable loops and ties. No laptop from the older banner. Keep the original real photographic texture and hardware configuration, not a stylized 3D reinterpretation. Do not add or remove components. Keep the wheels and upper LiDAR inside the canvas with a small clean margin; complete only the tiny clipped lower tire edge naturally if necessary.
+
+Layout: compact type block on the LEFT about 40% of banner; enlarged robot showcase on the RIGHT about 58%-60% of banner. The robot silhouette itself must occupy approximately HALF the full banner width and nearly the full available height. Move its left edge close to the text block without overlap, eliminating the old empty middle. Do not squeeze or distort the vehicle. No small portrait-photo box. The subject blends cleanly into the new backdrop without a rectangular photo border.
+
+Background: sophisticated deep navy (#0B1322 / #0B2132) consistent with the old banner. Very subtle teal blue gradient behind the robot, sparse elegant point-cloud dots and faint LiDAR scan arcs in the right-hand backdrop only, plus a soft grounded contact shadow. Quiet technical robotics visual, not a dramatic sci-fi environment. Left background calm and uniform for excellent text contrast. No real-world floor, no room furniture, no clutter, no bright glowing neon, no map legend, no extra labels.
+
+Typography: clean professional sans serif, crisp accurate readable Chinese and Latin text. Use the same words as the existing hero but rebalance line sizes and line wrapping to fit the narrower left column. Main "3DSLAM" large off-white; "DuralROS" large teal. Other copy smaller but readable. Vertically center the text composition in the left column with consistent spacing and comfortable left padding. Exact text to render, and no other copy:
+"FIELD ROBOTICS / PROJECT 2024"
+"3DSLAM"
+"DuralROS"
+"实车建图 · 定位 · 导航 · 避障"
+"AutoLabor M1"
+"LiDAR + IMU + Odometry"
+"ROS 1 navigation"
+"+ ROS 2 integration study"
+
+Preserve spelling DuralROS exactly. Never render filenames, FYP, thesis, Chinese developer names, or watermarks. Output only the finished hero artwork, not a GitHub interface screenshot.

@@ -6,14 +6,15 @@
   "assets": [
     {
       "file": "hero.png",
-      "bytes": 597215,
-      "sha256": "a9030566b59e05f1795fd270ee9796bc82b373211d8ae24cbba5abd64ee9460a",
-      "source": "thesis/media/image37.jpeg",
-      "note": "Figma composition using original project photograph",
-      "source_sha256": "855174ebad1912129dbae93e61de0cf85cb629a08e496a48761ad356c23790bd",
-      "width": 1600,
-      "height": 650,
-      "frames": 1
+      "bytes": 1897652,
+      "sha256": "e091fc182d34d9cebc8d4b3163cae40cfe09de50fd0683e10c45c1ed437e6192",
+      "source": "User-provided AutoLabor M1 field photograph",
+      "note": "Built-in imagegen edit: isolated robot and mounted equipment, navy point-cloud background, enlarged right-hand composition",
+      "source_sha256": "734bafd1091c8f4aeb831659f0af4728f45301c9ca5b6128317a8ef88bc5b6f8",
+      "width": 1586,
+      "height": 992,
+      "frames": 1,
+      "prompt": "hero.prompt.txt"
     },
     {
       "file": "campus-map.png",
