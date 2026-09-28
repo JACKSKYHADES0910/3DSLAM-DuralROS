@@ -179,6 +179,15 @@
       "note": "Static vector architecture diagram; sensors, Cartographer, maps, Dijkstra, TEB and M1 feedback",
       "width": 760,
       "height": 1320
+    },
+    {
+      "file": "mapping-algorithms.svg",
+      "bytes": 9518,
+      "sha256": "1682e4ffc9b931332abe48e2a03dbbe4348eb95e7cdd48767dc6713b16ce8bc0",
+      "source": "PCL NDT, jyakaranda/ndt_map, LeGO-LOAM, Cartographer documentation and repository mapping configuration",
+      "note": "Original vector layout; three alternative mapping pipelines. Cartographer online correlative matching enabled, periodic global optimization disabled, final optimization on normal shutdown.",
+      "width": 1000,
+      "height": 962
     }
   ],
   "videos": [

@@ -335,6 +335,12 @@ ros2 launch autoware_launch e2e_simulator.launch.xml \
 
 三张图来自不同试验，展示各方案的输出效果；定量比较需要使用相同数据、参数条件与测量基准。
 
+**算法架构：从传感器输入到地图输出**
+
+[![NDT、LeGO-LOAM 与 Cartographer 建图算法架构，青绿色为本项目采用的方案](docs/assets/mapping-algorithms.svg)](docs/assets/mapping-algorithms.svg)
+
+三列分别对应上方的建图方案，按箭头从上往下阅读；点击图片可放大。[流程依据](docs/EVIDENCE.md#mapping-algorithms)
+
 ### 7.1 方案对比
 
 | 比较维度 | LeGO-LOAM | NDT Mapping / ndt_map | Cartographer |

@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="962" viewBox="0 0 1000 962" role="img" aria-labelledby="title desc">
+  <title id="title">NDT Mapping、LeGO-LOAM 与 Cartographer 建图算法架构</title>
+  <desc id="desc">三列从上向下展示建图算法的主要阶段。NDT 通过高斯分布网格进行扫描配准，回环来自 ndt_map 工程实现。LeGO-LOAM 通过地面与几何特征匹配估计位姿，ICP 回环为可选功能。本项目采用 LiDAR、IMU 与轮式里程计输入 Cartographer 3D，通过相关性粗匹配和 Ceres 精配准构建子地图。虚线框表示 Cartographer 全局后端能力；当前建图配置关闭周期性优化，正常结束时仍执行最终优化。</desc>
+  <defs>
+    <marker id="blue-arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 8 4.5 0 9Z" fill="#64819B"/></marker>
+    <marker id="teal-arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 8 4.5 0 9Z" fill="#238775"/></marker>
+    <style>
+      text{font-family:"Microsoft YaHei","Noto Sans SC","PingFang SC",Arial,sans-serif;fill:#17364A}
+      .name{font-size:27px;font-weight:700}
+      .kind{font-size:18px;fill:#527083}
+      .step{font-size:15px;font-weight:700;letter-spacing:1px;fill:#607C90}
+      .label{font-size:23px;font-weight:700}
+      .detail{font-size:17px;fill:#496475}
+      .card{fill:#FFFFFF;stroke:#CEDCE5;stroke-width:1.4}
+      .selected{fill:#FFFFFF;stroke:#9BCDBE;stroke-width:1.4}
+      .link{fill:none;stroke:#64819B;stroke-width:2.2;marker-end:url(#blue-arrow)}
+      .active-link{fill:none;stroke:#238775;stroke-width:2.2;marker-end:url(#teal-arrow)}
+    </style>
+  </defs>
+
+  <rect x="1" y="1" width="998" height="960" rx="22" fill="#F5F8FA" stroke="#D7E3E9"/>
+  <path d="M23 1H977Q999 1 999 23V113H1V23Q1 1 23 1Z" fill="#0B2132"/>
+  <rect x="30" y="32" width="5" height="47" rx="2.5" fill="#67D9B9"/>
+  <text x="50" y="55" font-size="32" font-weight="700" style="fill:#F3F8FA">建图算法架构</text>
+  <text x="50" y="87" font-size="19" style="fill:#B2CCD7">三条处理链路 · 从传感器输入到地图输出</text>
+  <rect x="779" y="40" width="191" height="38" rx="19" fill="#193D43" stroke="#407B73"/>
+  <circle cx="800" cy="59" r="4" fill="#67D9B9"/>
+  <text x="816" y="65" font-size="17" style="fill:#9AE8D2">青绿色为项目方案</text>
+
+  <!-- Independent columns: the three methods are alternatives, not a serial pipeline. -->
+  <rect x="28" y="136" width="302" height="744" rx="16" fill="#ECF1F7" stroke="#D5E0EA"/>
+  <rect x="349" y="136" width="302" height="744" rx="16" fill="#ECF1F7" stroke="#D5E0EA"/>
+  <rect x="670" y="136" width="302" height="744" rx="16" fill="#E6F3EE" stroke="#83BEAB" stroke-width="1.8"/>
+  <text x="48" y="175" class="name">NDT Mapping</text>
+  <text x="48" y="202" class="kind">用空间分布配准点云</text>
+  <text x="369" y="175" class="name">LeGO-LOAM</text>
+  <text x="369" y="202" class="kind">提取地面与几何特征</text>
+  <text x="690" y="175" class="name">Cartographer 3D</text>
+  <text x="690" y="202" class="kind" style="fill:#227561">融合运动信息，构建子地图</text>
+
+  <!-- 01: input -->
+  <rect x="44" y="224" width="270" height="94" rx="12" class="card"/>
+  <text x="60" y="247" class="step">01 / 输入</text>
+  <text x="179" y="277" text-anchor="middle" class="label">LiDAR 点云</text>
+  <text x="179" y="302" text-anchor="middle" class="detail">配合位姿初值</text>
+  <path d="M179 318V346" class="link"/>
+
+  <rect x="365" y="224" width="270" height="94" rx="12" class="card"/>
+  <text x="381" y="247" class="step">01 / 输入</text>
+  <text x="500" y="277" text-anchor="middle" class="label">LiDAR 点云</text>
+  <text x="500" y="302" text-anchor="middle" class="detail">可选 IMU 辅助</text>
+  <path d="M500 318V346" class="link"/>
+
+  <rect x="686" y="224" width="270" height="94" rx="12" class="selected"/>
+  <text x="702" y="247" class="step" style="fill:#227561">01 / 输入</text>
+  <text x="821" y="277" text-anchor="middle" class="label">LiDAR + IMU</text>
+  <text x="821" y="302" text-anchor="middle" class="detail">轮式里程计 Odometry</text>
+  <path d="M821 318V346" class="active-link"/>
+
+  <!-- 02: preparation -->
+  <rect x="44" y="350" width="270" height="100" rx="12" class="card"/>
+  <text x="60" y="373" class="step">02 / 预处理</text>
+  <text x="179" y="403" text-anchor="middle" class="label">滤波与分布建模</text>
+  <text x="179" y="431" text-anchor="middle" class="detail">参考地图 → 高斯分布网格</text>
+  <path d="M179 450V478" class="link"/>
+
+  <rect x="365" y="350" width="270" height="100" rx="12" class="card"/>
+  <text x="381" y="373" class="step">02 / 预处理</text>
+  <text x="500" y="403" text-anchor="middle" class="label">投影、分割与特征</text>
+  <text x="500" y="431" text-anchor="middle" class="detail">地面点 · 边缘点 · 平面点</text>
+  <path d="M500 450V478" class="link"/>
+
+  <rect x="686" y="350" width="270" height="100" rx="12" class="selected"/>
+  <text x="702" y="373" class="step" style="fill:#227561">02 / 预处理</text>
+  <text x="821" y="403" text-anchor="middle" class="label">滤波与运动预测</text>
+  <text x="821" y="431" text-anchor="middle" class="detail">点云降采样 · 位姿初值</text>
+  <path d="M821 450V478" class="active-link"/>
+
+  <!-- 03: local pose estimation -->
+  <rect x="44" y="482" width="270" height="100" rx="12" class="card"/>
+  <text x="60" y="505" class="step">03 / 位姿估计</text>
+  <text x="179" y="535" text-anchor="middle" class="label">NDT 扫描配准</text>
+  <text x="179" y="563" text-anchor="middle" class="detail">优化当前扫描的位置与朝向</text>
+  <path d="M179 582V610" class="link"/>
+
+  <rect x="365" y="482" width="270" height="100" rx="12" class="card"/>
+  <text x="381" y="505" class="step">03 / 位姿估计</text>
+  <text x="500" y="535" text-anchor="middle" class="label">激光里程计</text>
+  <text x="500" y="563" text-anchor="middle" class="detail">两步特征匹配 → 6DoF 位姿</text>
+  <path d="M500 582V610" class="link"/>
+
+  <rect x="686" y="482" width="270" height="100" rx="12" class="selected"/>
+  <text x="702" y="505" class="step" style="fill:#227561">03 / 局部 SLAM</text>
+  <text x="821" y="535" text-anchor="middle" class="label">扫描匹配与子地图</text>
+  <text x="821" y="563" text-anchor="middle" class="detail">相关性粗匹配 → Ceres 精配准</text>
+  <path d="M821 582V610" class="active-link" stroke-dasharray="5 4"/>
+
+  <!-- 04: mapping and global correction -->
+  <rect x="44" y="614" width="270" height="116" rx="12" class="card"/>
+  <text x="60" y="637" class="step">04 / 地图更新</text>
+  <text x="179" y="667" text-anchor="middle" class="label">关键帧与地图更新</text>
+  <text x="179" y="693" text-anchor="middle" class="detail">按估计位姿累积点云</text>
+  <text x="179" y="717" text-anchor="middle" class="detail">ndt_map 的回环与图优化 *</text>
+  <path d="M179 730V758" class="link"/>
+
+  <rect x="365" y="614" width="270" height="116" rx="12" class="card"/>
+  <text x="381" y="637" class="step">04 / 地图优化</text>
+  <text x="500" y="667" text-anchor="middle" class="label">关键帧与图优化</text>
+  <text x="500" y="693" text-anchor="middle" class="detail">特征与局部地图匹配</text>
+  <text x="500" y="717" text-anchor="middle" class="detail">可选 ICP 回环约束</text>
+  <path d="M500 730V758" class="link"/>
+
+  <rect x="686" y="614" width="270" height="116" rx="12" fill="#F2F8F5" stroke="#7EB49F" stroke-width="1.6" stroke-dasharray="6 4"/>
+  <text x="702" y="637" class="step" style="fill:#227561">04 / 全局 SLAM 能力</text>
+  <text x="821" y="667" text-anchor="middle" class="label">回环与位姿图优化</text>
+  <text x="821" y="693" text-anchor="middle" class="detail">建立节点与子地图之间的约束</text>
+  <text x="821" y="717" text-anchor="middle" class="detail" style="fill:#227561">本配置：关闭周期优化</text>
+  <path d="M821 730V758" class="active-link" stroke-dasharray="5 4"/>
+
+  <!-- 05: outputs -->
+  <rect x="44" y="762" width="270" height="94" rx="12" fill="#DCE7F1"/>
+  <text x="60" y="785" class="step">05 / 输出</text>
+  <text x="179" y="816" text-anchor="middle" class="label">位姿 + 点云地图</text>
+  <text x="179" y="841" text-anchor="middle" class="detail">扫描配准支撑地图累积</text>
+
+  <rect x="365" y="762" width="270" height="94" rx="12" fill="#DCE7F1"/>
+  <text x="381" y="785" class="step">05 / 输出</text>
+  <text x="500" y="816" text-anchor="middle" class="label">位姿 + 点云地图</text>
+  <text x="500" y="841" text-anchor="middle" class="detail">地面与几何特征支撑匹配</text>
+
+  <rect x="686" y="762" width="270" height="94" rx="12" fill="#173F3D"/>
+  <text x="702" y="785" class="step" style="fill:#99D7C6">05 / 项目输出</text>
+  <text x="821" y="816" text-anchor="middle" class="label" style="fill:#F3FAF7">轨迹 + 子地图</text>
+  <text x="821" y="841" text-anchor="middle" class="detail" style="fill:#B9E1D5">保存 .pbstream 状态</text>
+
+  <text x="30" y="912" font-size="17" fill="#496475">* NDT 是配准方法；回环来自 ndt_map 的具体实现。</text>
+  <text x="30" y="940" font-size="17" fill="#496475">虚线为全局后端能力：当前 Cartographer 建图配置在正常结束时执行最终优化。</text>
+</svg>

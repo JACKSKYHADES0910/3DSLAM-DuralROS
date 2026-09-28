@@ -72,6 +72,7 @@ PPT 第 8 页讲稿把系统描述为 Level 3。材料未提供相应运行设�
 | [field-platform.jpeg](assets/field-platform.jpeg) | 论文移动供电与实车装配，image38 | 原图复制 |
 | [ros-node-graph.png](assets/ros-node-graph.png) | PPT 第 37 页，image59 | 真实 ROS 节点/话题快照 |
 | [ros1-navigation-architecture.svg](assets/ros1-navigation-architecture.svg) | 当前 ROS1 启动文件与代价地图配置 | 静态矢量图，说明传感器、建图定位、规划与底盘反馈；替换首页 Mermaid 渲染 |
+| [mapping-algorithms.svg](assets/mapping-algorithms.svg) | NDT、LeGO-LOAM、Cartographer 上游资料与当前建图配置 | 自绘静态矢量图，对照输入、预处理、位姿估计、地图优化与输出；[流程依据](#mapping-algorithms) |
 | [autolabor-architecture.png](assets/autolabor-architecture.png) | 论文图 29，image31 | AutoLabor 参考示意，保留原水印与归属 |
 | [ndt-mapping.png](assets/ndt-mapping.png) | 论文图 23；PPT 第 38 页 | 原图复制，NDT 花园试验 |
 | [lego-mapping.png](assets/lego-mapping.png) | 论文图 25；PPT 第 39 页 | 原图复制，LeGO-LOAM 花园试验 |
@@ -83,6 +84,17 @@ PPT 第 8 页讲稿把系统描述为 Level 3。材料未提供相应运行设�
 素材使用用于说明本项目，不将第三方软件画面或上游算法图示声明为原创算法成果。原始图中的字幕、检测框和桌面界面均来自历史材料。文件来源与 SHA-256 见 [assets/manifest.json](assets/manifest.json)。
 
 当前首屏使用仓库内的 PNG，车体与搭载设备以用户提供的实车照片为参考，背景与版式经图像编辑生成。早期版式保留在 [Figma · 3DSLAM DuralROS README visuals](https://www.figma.com/design/m5ilYDwGmbfj7o2jtlMBOI)，不对应当前首图。
+
+<a id="mapping-algorithms"></a>
+### 建图算法架构图的依据
+
+[算法架构图](assets/mapping-algorithms.svg)按主要处理阶段简化，用三列分别说明三种方案；青绿色标识本项目采用的 Cartographer 3D + 轮式里程计。图形与排版为本仓库绘制，算法归属不变。
+
+- **NDT Mapping：** 高斯分布网格来自参考地图，当前点云经配准得到位姿；回环与图优化来自 `ndt_map` 的工程实现，不是 NDT 配准本身的组成部分。[PCL NDT 教程](https://pointclouds.org/documentation/tutorials/normal_distributions_transform.html) · [ndt_map 源码](https://github.com/jyakaranda/ndt_map/blob/master/src/ndt_map.cpp)
+- **LeGO-LOAM：** 先投影和分割点云，再提取几何特征，以两步匹配估计位姿，并进行关键帧地图匹配和图优化。ICP 回环为可选功能，上游 `loopClosureEnableFlag` 默认关闭。[官方说明](https://github.com/RobustFieldAutonomyLab/LeGO-LOAM) · [默认配置](https://github.com/RobustFieldAutonomyLab/LeGO-LOAM/blob/master/LeGO-LOAM/include/utility.h)
+- **Cartographer：** 局部前端构建子地图，全局后端组织约束并优化位姿图。[官方算法说明](https://google-cartographer-ros.readthedocs.io/en/latest/algo_walkthrough.html)；本仓库[实车建图入口](../src/launch/autolabor_navigation_launch/launch/real_environment/third_generation_cartographer_3d.launch)加载 [third_generation_mapping.lua](../src/launch/autolabor_navigation_launch/params/cartographer/third_generation_mapping.lua)，启用 3D、轮式里程计和相关性粗匹配，再由 Ceres 精配准。
+
+图中的虚线标明配置边界：建图配置包含的 [pose_graph.lua](../src/launch/autolabor_navigation_launch/params/cartographer/pose_graph.lua) 将 `optimize_every_n_nodes` 设为 `0`，关闭周期性全局优化；[node_main.cc](../src/mapping/cartographer_ros/cartographer_ros/cartographer_ros/node_main.cc) 仍在正常结束时调用 `RunFinalOptimization()`。这与[定位配置](../src/launch/autolabor_navigation_launch/params/cartographer/third_generation_location.lua)中的 `50` 不同。`.pbstream` 表示可保存的建图状态。
 
 ## 6. 新视频与公开资料的边界
 
